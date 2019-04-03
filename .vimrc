@@ -1,16 +1,10 @@
-call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-Plug 'scrooloose/nerdtree' "树形目录
-Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
-Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
-Plug 'mhinz/vim-signify' "vim 显示git 状态
-call plug#end()
-
 "基本配置
 syntax on
 set cmdheight=2
 "set hidden
 "set noshowmode
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors "开启真彩色
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
@@ -27,6 +21,14 @@ set background=dark
 "colorscheme hybrid
 colorscheme molokai
 
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'scrooloose/nerdtree' "树形目录
+Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
+Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
+Plug 'mhinz/vim-signify' "vim 显示git 状态
+call plug#end()
+
 "coc.nvim 配置
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -40,6 +42,9 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+"set wildcharm=<tab>
+"set wildmenu
+"set wildmode=list:longest,list:full
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -53,7 +58,7 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-"hi default CocHighlightText  guibg=Grey ctermbg=#ffff60
+hi default CocHighlightText  guibg=#474e52
 "hi default link CocHighlightRead  CocHighlightText
 "hi default link CocHighlightWrite  CocHighlightText
 autocmd CursorHold * silent call CocActionAsync('highlight')
