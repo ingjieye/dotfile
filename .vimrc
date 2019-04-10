@@ -1,10 +1,11 @@
 "基本配置
-syntax on
+syntax enable
 set cmdheight=2
 "set hidden
 "set noshowmode
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
 set termguicolors "开启真彩色
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
@@ -14,6 +15,14 @@ set number "显示行号
 set signcolumn=yes "永远显示signcolumn
 "set wildmenu 
 "set showmatch   "显示匹配的括号"
+set scrolloff=3 "显示光标上下文
+cnoremap w!! %!sudo tee > /dev/null % "忘记打sudo，打w!!可写
+
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
 
 "颜色主题
 set background=dark
@@ -26,7 +35,8 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
-Plug 'mhinz/vim-signify' "vim 显示git 状态
+Plug 'mhinz/vim-signify' "vim 状态栏显示git 状态
+Plug 'itchyny/lightline.vim' "vim 状态栏
 call plug#end()
 
 "coc.nvim 配置
@@ -66,12 +76,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
 "NERDTree 配置"
 autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -89,9 +93,24 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
+let g:NERDTreeUpdateOnCursorHold = 0 "打开会与 coc.nvim preview window 冲突, 造成 preview window 自动关闭
+let g:NERDTreeWinSize=25
+
 "vim-signify 配置
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
+
+" Add diagnostic info for https://github.com/itchyny/lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ }
 
 "测试"
 set showbreak=↪
