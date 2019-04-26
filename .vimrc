@@ -32,7 +32,7 @@ set background=dark
 colorscheme molokai
 
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
