@@ -17,7 +17,9 @@ set signcolumn=yes "永远显示signcolumn
 "set wildmenu 
 "set showmatch   "显示匹配的括号"
 set scrolloff=3 "显示光标上下文
-cnoremap w!! %!sudo tee > /dev/null % "忘记打sudo，打w!!可写
+
+"忘记打sudo，打w!!可写
+cnoremap w!! %!sudo tee > /dev/null %
 
 " Smaller updatetime for CursorHold & CursorHoldI
 set updatetime=300
@@ -148,3 +150,9 @@ nn <M-2> :tabnext 2<cr>
 nn <M-3> :tabnext 3<cr>
 nn <M-4> :tabnext 4<cr>
 nn <M-5> :tabnext 5<cr>
+"for macos
+"nn ¡ :tabnext 1<cr>
+"nn ™ :tabnext 2<cr>
+"nn £ :tabnext 3<cr>
+"nn ¢ :tabnext 4<cr>
+"nn ∞ :tabnext 5<cr>
