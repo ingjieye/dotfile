@@ -30,8 +30,8 @@ set shortmess+=c
 "颜色主题
 set background=dark
 "colorscheme gruvbox
-"colorscheme hybrid
-colorscheme molokai
+colorscheme hybrid
+"colorscheme molokai
 
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
@@ -42,6 +42,7 @@ Plug 'mhinz/vim-signify' "vim 状态栏显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
+Plug 'majutsushi/tagbar' "显示tag 
 call plug#end()
 
 "coc.nvim 配置
@@ -83,6 +84,9 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Using CocList
 " Show all diagnostics
@@ -151,8 +155,8 @@ nn <M-3> :tabnext 3<cr>
 nn <M-4> :tabnext 4<cr>
 nn <M-5> :tabnext 5<cr>
 "for macos
-"nn ¡ :tabnext 1<cr>
-"nn ™ :tabnext 2<cr>
-"nn £ :tabnext 3<cr>
-"nn ¢ :tabnext 4<cr>
-"nn ∞ :tabnext 5<cr>
+nn ¡ :tabnext 1<cr>
+nn ™ :tabnext 2<cr>
+nn £ :tabnext 3<cr>
+nn ¢ :tabnext 4<cr>
+nn ∞ :tabnext 5<cr>
