@@ -13,7 +13,9 @@ set shiftwidth=4        "同上"
 set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a
-set signcolumn=yes "永远显示signcolumn
+"signcolumn
+autocmd BufRead,BufNewFile * setlocal signcolumn=yes
+autocmd FileType tagbar,nerdtree setlocal signcolumn=no
 "set wildmenu 
 "set showmatch   "显示匹配的括号"
 set scrolloff=3 "显示光标上下文
@@ -160,3 +162,6 @@ nn ™ :tabnext 2<cr>
 nn £ :tabnext 3<cr>
 nn ¢ :tabnext 4<cr>
 nn ∞ :tabnext 5<cr>
+
+"tagbar设置
+let g:tagbar_width = 30
