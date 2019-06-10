@@ -16,7 +16,7 @@ set mouse=a
 "signcolumn
 autocmd BufRead,BufNewFile * setlocal signcolumn=yes
 autocmd FileType tagbar,nerdtree setlocal signcolumn=no
-"set wildmenu 
+set wildmenu 
 "set showmatch   "显示匹配的括号"
 set scrolloff=3 "显示光标上下文
 
@@ -125,8 +125,11 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
-let g:NERDTreeUpdateOnCursorHold = 0 "打开会与 coc.nvim preview window 冲突, 造成 preview window 自动关闭
+"let g:NERDTreeUpdateOnCursorHold = 0 "打开会与 coc.nvim preview window 冲突, 造成 preview window 自动关闭 - 已修复
 let g:NERDTreeWinSize=25
+
+let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
+let g:NERDTreeMapJumpNextSibling=""
 
 "vim-signify 配置
 let g:signify_sign_show_text = 0
