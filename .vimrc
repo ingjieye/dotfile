@@ -12,7 +12,8 @@ set tabstop=4   "设置table长度"
 set shiftwidth=4        "同上"
 set cursorline "高亮光标所在行
 set number "显示行号
-set mouse=a
+set mouse=a "永远使用鼠标
+let mapleader="," "leader键变为逗号
 "signcolumn
 autocmd BufRead,BufNewFile * setlocal signcolumn=yes
 autocmd FileType tagbar,nerdtree setlocal signcolumn=no
@@ -40,7 +41,7 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
-Plug 'mhinz/vim-signify' "vim 状态栏显示git 状态
+Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
@@ -125,7 +126,6 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
-"let g:NERDTreeUpdateOnCursorHold = 0 "打开会与 coc.nvim preview window 冲突, 造成 preview window 自动关闭 - 已修复
 let g:NERDTreeWinSize=25
 
 let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
@@ -134,6 +134,7 @@ let g:NERDTreeMapJumpNextSibling=""
 "vim-signify 配置
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
+let g:signify_realtime = 0 "实时
 
 " Add diagnostic info for https://github.com/itchyny/lightline.vim
 let g:lightline = {
