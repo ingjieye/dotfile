@@ -1,15 +1,16 @@
 "基本配置
 syntax enable
 set cmdheight=2
-"set hidden
-"set noshowmode
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+set t_Co=256
 
 set termguicolors "开启真彩色
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
 set shiftwidth=4        "同上"
+"set expandtab
 set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a "永远使用鼠标
@@ -23,12 +24,6 @@ set scrolloff=3 "显示光标上下文
 
 "忘记打sudo，打w!!可写
 cnoremap w!! %!sudo tee > /dev/null %
-
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
 
 "颜色主题
 set background=dark
@@ -45,10 +40,30 @@ Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
-Plug 'majutsushi/tagbar' "显示tag 
+Plug 'majutsushi/tagbar' "显示c语言tag 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
+Plug 'junegunn/fzf.vim' "模糊搜索
+Plug 'mhinz/vim-grepper' "文件内容搜索
 call plug#end()
 
-"coc.nvim 配置
+"----------------------------------coc.nvim配置--------------------------------------------
+" caller
+nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
+" callee
+nn <silent> gC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+" if hidden is not set, TextEdit might fail.
+set hidden
+"
+" " Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=200
+
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -61,6 +76,9 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+" Use <s-space> to trigger completion.
+inoremap <silent><expr> <S-Space> coc#refresh()
 
 " Use K for show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -81,6 +99,11 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+"noremap <leader>f  :Neoformat<cr> 
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -147,6 +170,9 @@ let g:lightline = {
       \   'cocstatus': 'coc#status'
       \ },
       \ }
+"golang
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 "测试"
 set showbreak=↪
@@ -167,5 +193,13 @@ nn £ :tabnext 3<cr>
 nn ¢ :tabnext 4<cr>
 nn ∞ :tabnext 5<cr>
 
+"快捷键保存
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <Esc>:update<CR>
+
+
+
 "tagbar设置
 let g:tagbar_width = 30
+

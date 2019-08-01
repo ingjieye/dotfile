@@ -1,25 +1,3 @@
-alias go='http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go'
-alias ..='cd ..'
-alias ....='cd ../..'
-
-function _cmakeSave(){
-	\cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES "$@" && 
-		echo `date` `pwd` >> ~/cmake_history.txt &&
-	    echo "cmake $@" >> ~/cmake_history.txt
-		echo "" >> ~/cmake_history.txt
-}
-alias cmake=_cmakeSave
-
-# manpages colored
-export LESS_TERMCAP_mb=$'\e[1;32m'
-export LESS_TERMCAP_md=$'\e[1;32m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[1;4;31m'
-export LESS_TERMCAP_so=$'\E[30;43m'
-
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -144,3 +122,32 @@ fi
 # if [ -f ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh ]; then source ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh; fi
 
 eval $(thefuck --alias)
+
+export GOROOT=/usr/lib/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+alias go='http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go'
+alias ..='cd ..'
+alias ....='cd ../..'
+
+function _cmakeSave(){
+	\cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES "$@" && 
+		echo `date` `pwd` >> ~/cmake_history.txt &&
+	    echo "cmake $@" >> ~/cmake_history.txt
+		echo "" >> ~/cmake_history.txt
+}
+alias cmake=_cmakeSave
+
+# manpages colored
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+export LESS_TERMCAP_so=$'\E[30;43m'
+
+stty -ixon
