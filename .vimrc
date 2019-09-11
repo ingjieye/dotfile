@@ -10,7 +10,9 @@ set termguicolors "开启真彩色
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
 set shiftwidth=4        "同上"
-"set expandtab
+set expandtab
+set hlsearch " 高亮搜索
+set incsearch " 实时搜索 
 set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a "永远使用鼠标
@@ -28,8 +30,10 @@ cnoremap w!! %!sudo tee > /dev/null %
 "颜色主题
 set background=dark
 "colorscheme gruvbox
-colorscheme hybrid
 "colorscheme molokai
+colorscheme hybrid
+"colorscheme space-vim-dark
+packadd termdebug
 
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
@@ -154,6 +158,8 @@ let g:NERDTreeWinSize=25
 let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
 let g:NERDTreeMapJumpNextSibling=""
 
+nmap <leader>ne :NERDTreeToggle<cr> 
+
 "vim-signify 配置
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
@@ -198,8 +204,13 @@ noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
 inoremap <silent> <C-S>         <Esc>:update<CR>
 
-
-
 "tagbar设置
 let g:tagbar_width = 30
 
+if exists(':tnoremap')
+ tnoremap <silent> <c-h> <c-w>:TmuxNavigateLeft<cr>
+ tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
+ tnoremap <silent> <c-k> <c-w>:TmuxNavigateUp<cr>
+ tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
+ tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
+endif
