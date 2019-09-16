@@ -24,7 +24,7 @@
         "index": {
           "onChange": false,
           "initialNoLinkage": true,
-          "threads": 2
+          "threads": 3
         }
       }
     }
