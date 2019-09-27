@@ -161,3 +161,11 @@ alias cm=cmake
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
     tmux attach-session|| tmux new-session
 fi
+
+export EDITOR=vim
+
+alias socks5="http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 all_proxy=http://192.168.10.23:8118 "
+
+function brew() {
+    PATH="/home/linuxbrew/.linuxbrew/bin:$PATH" /home/linuxbrew/.linuxbrew/bin/brew "$@"
+}

@@ -139,6 +139,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 "NERDTree 配置"
 autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd VimEnter * wincmd p
 
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "M",
