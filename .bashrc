@@ -150,10 +150,9 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 export LESS_TERMCAP_so=$'\E[30;43m'
 
-stty -ixon #unmap Ctrl-s for slient
-
-#export HTTP_PROXY=http://127.0.0.1:8118
-#export HTTPS_PROXY=http://127.0.0.1:8118
+stty -ixon #防止 ctrl+s silent 当前 shell
+set -o ignoreeof #防止ctrl+d kill 当前 shell
+IGNOREEOF=100000000
 
 alias m='make'
 alias cm=cmake
