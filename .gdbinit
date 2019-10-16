@@ -1,8 +1,9 @@
-#set prompt \033[1;31m(gdb) \033[m
-set confirm off
+#source ~/.gdb/gdb-colour-filter/colour_filter.py
+#source ~/.gdb/stl-views-1.0.3.gdb
+#source ~/.gdb/gdbinit
+#source ~/.gdb/colors.gdb
 
-# prevent "Type <return> to continue"
+set confirm off
+set pagination off
 set height unlimited
 set width 0
-
-source ~/.gdb/stl-views-1.0.3.gdb

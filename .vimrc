@@ -1,12 +1,12 @@
 "基本配置
 syntax enable
 set cmdheight=2
+
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-set t_Co=256
-
+"set t_Co=256
 set termguicolors "开启真彩色
+
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
 set shiftwidth=4        "同上"
@@ -16,6 +16,8 @@ set incsearch " 实时搜索
 set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a "永远使用鼠标
+"分割线变为空格
+set fillchars=vert:\ 
 let mapleader="," "leader键变为逗号
 "signcolumn
 autocmd BufRead,BufNewFile * setlocal signcolumn=yes
@@ -33,6 +35,7 @@ set background=dark
 "colorscheme molokai
 colorscheme hybrid
 "colorscheme space-vim-dark
+
 packadd termdebug
 
 call plug#begin('~/.vim/plugged')
@@ -205,6 +208,9 @@ noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
 inoremap <silent> <C-S>         <Esc>:update<CR>
 
+"快捷键清除搜索高亮
+nnoremap H :noh<Enter>
+
 "tagbar设置
 let g:tagbar_width = 30
 
@@ -215,3 +221,5 @@ if exists(':tnoremap')
  tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
  tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
 endif
+
+

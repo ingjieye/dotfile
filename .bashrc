@@ -164,7 +164,26 @@ fi
 export EDITOR=vim
 
 alias socks5="http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 all_proxy=http://192.168.10.23:8118 "
+alias zh=LC_ALL=zh_CN.UTF-8
+
+function brew_enable() {
+	BREW='/home/linuxbrew/.linuxbrew'
+	brew_disable
+	export PATH="$BREW/bin:$BREW/sbin:$PATH"
+	export MANPATH="$BREW/share/man:$MANPATH"
+	export INFOPATH="$BREW/share/info:$INFOPATH"
+	export HOMEBREW_NO_AUTO_UPDATE=1
+}
+
+function brew_disable() {
+	export PATH=${PATH##*"/.linuxbrew/bin:"}
+	export PATH=${PATH##*"/.linuxbrew/sbin:"}
+	export MANPATH=${MANPATH##*"/.linuxbrew/share/man:"}
+	export INFOPATH=${INFOPATH##*"/.linuxbrew/share/info:"}
+}
 
 function brew() {
     PATH="/home/linuxbrew/.linuxbrew/bin:$PATH" /home/linuxbrew/.linuxbrew/bin/brew "$@"
 }
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
