@@ -1,8 +1,8 @@
 [user]
 	email = ingjieye@gmail.com
 	name = ingjieye
-[http "https://github.com"]
-	proxy = http://192.168.10.23:8118
+;[http "https://github.com"]
+	;proxy = http://192.168.10.23:8118
 [core]
 	excludesfile = ~/.gitignore_global
 [push]
