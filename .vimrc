@@ -4,7 +4,7 @@ set cmdheight=2
 
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"set t_Co=256
+set t_Co=256
 set termguicolors "开启真彩色
 
 set cindent     "设置C样式的缩进格式"
@@ -29,13 +29,6 @@ set scrolloff=3 "显示光标上下文
 "忘记打sudo，打w!!可写
 cnoremap w!! %!sudo tee > /dev/null %
 
-"颜色主题
-set background=dark
-"colorscheme gruvbox
-"colorscheme molokai
-colorscheme hybrid
-"colorscheme space-vim-dark
-
 packadd termdebug
 
 call plug#begin('~/.vim/plugged')
@@ -43,15 +36,30 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
+"Plug 'bfrg/vim-cpp-modern' "c++高亮
 Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
-Plug 'majutsushi/tagbar' "显示c语言tag 
+Plug 'majutsushi/tagbar' "显示tag 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
 Plug 'mhinz/vim-grepper' "文件内容搜索
+Plug 'junegunn/seoul256.vim'
 call plug#end()
+
+
+"颜色主题
+"colorscheme gruvbox
+"colorscheme molokai
+colorscheme hybrid
+"colorscheme space-vim-dark
+"let g:seoul256_background = 234
+"let g:seoul256_srgb = 1
+"colorscheme seoul256
+set background=dark
+"let g:cpp_no_function_highlight = 1
+"let g:cpp_simple_highlight = 1
 
 "----------------------------------coc.nvim配置--------------------------------------------
 " caller
@@ -114,6 +122,7 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -138,6 +147,11 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 "NERDTree 配置"
 autocmd vimenter * NERDTree

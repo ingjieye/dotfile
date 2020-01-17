@@ -1,11 +1,12 @@
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=10000000
+setopt HIST_IGNORE_DUPS
 bindkey -e
 
 source ~/.zsh/antigen.zsh
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
+#antigen bundle zsh-users/zsh-syntax-highlighting
+#antigen bundle zsh-users/zsh-autosuggestions
 antigen apply
 
 zstyle :compinstall filename '/home/yeyj/.zshrc'
@@ -38,7 +39,7 @@ export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
-alias go='http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 go'
+alias go='http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 go'
 alias ..='cd ..'
 alias ....='cd ../..'
 
@@ -72,7 +73,7 @@ fi
 
 export EDITOR=vim
 
-alias socks5="http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 all_proxy=http://192.168.10.23:8118 "
+alias socks5="http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 all_proxy=http://192.168.10.23:8118 HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
 
 function brew_enable() {
@@ -95,5 +96,18 @@ function brew() {
     PATH="/home/linuxbrew/.linuxbrew/bin:$PATH" /home/linuxbrew/.linuxbrew/bin/brew "$@"
 }
 
-export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export HOMEBREW_NO_AUTO_UPDATE=1
 
+export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/dev/source_code/webrtc/depot_tools:$PATH"
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Enable Ctrl-x-e to edit command line
+autoload -U edit-command-line
+# Emacs style
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
+eval $(thefuck --alias)
