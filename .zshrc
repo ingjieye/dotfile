@@ -5,10 +5,10 @@ SAVEHIST=10000000
 setopt HIST_IGNORE_DUPS
 bindkey -e
 
-source ~/.zsh/antigen.zsh
+#source ~/.zsh/antigen.zsh
 #antigen bundle zsh-users/zsh-syntax-highlighting
 #antigen bundle zsh-users/zsh-autosuggestions
-antigen apply
+#antigen apply
 
 zstyle :compinstall filename '/home/yeyj/.zshrc'
 PROMPT=$'%F{blue}%F{CYAN}%B%F{cyan}%n %F{white}@ %F{magenta}%m %F{white}>>= %F{green}%~ %1(j,%F{red}:%j,)%b\n%F{blue}%B%(?..[%?] )%{%F{red}%}%# %F{white}%b'
@@ -45,6 +45,7 @@ bindkey '^x^e' edit-command-line
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 
     # manpages colored
 export LESS_TERMCAP_mb=$'\e[1;32m'
@@ -71,6 +72,7 @@ alias cmake=_cmakeSave
 # OS specific settings {{{4
 case "$OSTYPE" in
     darwin*)
+        alias ls='ls -G '
 
     ;;
     linux*)
