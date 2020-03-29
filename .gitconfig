@@ -1,11 +1,17 @@
 [user]
-	email = ingjieye@gmail.com
-	name = ingjieye
-[http "https://github.com"]
+	email = bernard.ye@ringcentral.com
+	name = Bernard Ye
+[http]
     proxy = http://127.0.0.1:8118
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/bernard/.gitignore_global
 [push]
 	default = simple
 [icdiff]
 	options = --highlight --line-numbers
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

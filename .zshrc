@@ -63,7 +63,7 @@ export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_mod
 alias go='http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 go'
 alias ..='cd ..'
 alias ....='cd ../..'
-alias socks5="http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 all_proxy=http://192.168.10.23:8118 HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
+alias socks5="http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 all_proxy=http://127.0.0.1:8118 HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
 alias m='make'
 alias cm=cmake
