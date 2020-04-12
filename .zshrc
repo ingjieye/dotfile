@@ -41,7 +41,7 @@ zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 
-# exports {{{2
+# Exports {{{1
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -59,17 +59,18 @@ export EDITOR=vim
 export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/dev/source_code/webrtc/depot_tools:$PATH"
 
-# aliases {{{3
+# Aliases {{{1
 alias go='http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 go'
 alias ..='cd ..'
 alias ....='cd ../..'
 alias socks5="http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 all_proxy=http://127.0.0.1:8118 HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
-alias m='make'
-alias cm=cmake
-alias cmake=_cmakeSave
+alias vim=nvim
+#alias m='make'
+#alias cm=cmake
+#alias cmake=_cmakeSave
 
-# OS specific settings {{{4
+# OS specific settings {{{1
 case "$OSTYPE" in
     darwin*)
         alias ls='ls -G '

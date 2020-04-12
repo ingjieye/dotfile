@@ -1,12 +1,13 @@
-"基本配置
+"Options {{{1
+
 syntax enable
 set cmdheight=2
 
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set t_Co=256
+set t_Co=&term
 set termguicolors "开启真彩色
-
+set fdm=marker
 set cindent     "设置C样式的缩进格式"
 set tabstop=4   "设置table长度"
 set shiftwidth=4        "同上"
@@ -30,7 +31,44 @@ set scrolloff=3 "显示光标上下文
 cnoremap w!! %!sudo tee > /dev/null %
 
 packadd termdebug
+set showbreak=↪
+set breakindent
 
+"切换tab快捷键
+nn <M-down> :lnext<cr>zvzz
+nn <M-up> :lprevious<cr>zvzz
+nn <M-1> :tabnext 1<cr>
+nn <M-2> :tabnext 2<cr>
+nn <M-3> :tabnext 3<cr>
+nn <M-4> :tabnext 4<cr>
+nn <M-5> :tabnext 5<cr>
+"for macos
+nn ¡ :tabnext 1<cr>
+nn ™ :tabnext 2<cr>
+nn £ :tabnext 3<cr>
+nn ¢ :tabnext 4<cr>
+nn ∞ :tabnext 5<cr>
+
+"快捷键保存
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <Esc>:update<CR>
+
+"快捷键清除搜索高亮
+nnoremap H :noh<Enter>
+
+"Colorschemes {{{1
+set background=dark
+"colorscheme gruvbox
+"colorscheme molokai
+colorscheme hybrid
+"colorscheme space-vim-dark
+"let g:seoul256_background = 234
+"let g:seoul256_srgb = 1
+"colorscheme seoul256
+"let g:cpp_no_function_highlight = 1
+"let g:cpp_simple_highlight = 1
+"Plugins {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
@@ -44,24 +82,11 @@ Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换
 Plug 'majutsushi/tagbar' "显示tag 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
-Plug 'mhinz/vim-grepper' "文件内容搜索
 Plug 'junegunn/seoul256.vim'
 call plug#end()
 
-
-"颜色主题
-"colorscheme gruvbox
-"colorscheme molokai
-colorscheme hybrid
-"colorscheme space-vim-dark
-"let g:seoul256_background = 234
-"let g:seoul256_srgb = 1
-"colorscheme seoul256
-set background=dark
-"let g:cpp_no_function_highlight = 1
-"let g:cpp_simple_highlight = 1
-
-"----------------------------------coc.nvim配置--------------------------------------------
+"Plugin settings {{{2
+"coc.nvim配置 {{{3
 " caller
 nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
 " callee
@@ -72,6 +97,9 @@ set hidden
 " " Some servers have issues with backup files, see #649
 set nobackup
 set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
@@ -106,7 +134,8 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol under cursor on CursorHold
+" Highlight symbol under cursor on CursorHold, put it after colorscheme
+" settings to override.
 hi default CocHighlightText  guibg=#474e52
 "hi default link CocHighlightRead  CocHighlightText
 "hi default link CocHighlightWrite  CocHighlightText
@@ -153,7 +182,7 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-"NERDTree 配置"
+"NERDTree 配置 {{{3
 autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 autocmd VimEnter * wincmd p
@@ -178,7 +207,7 @@ let g:NERDTreeMapJumpNextSibling=""
 
 nmap <leader>ne :NERDTreeToggle<cr> 
 
-"vim-signify 配置
+"vim-signify 配置 {{{3
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
 let g:signify_realtime = 0 "实时
@@ -194,40 +223,11 @@ let g:lightline = {
       \   'cocstatus': 'coc#status'
       \ },
       \ }
-"golang
+"golang {{{3
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
-"测试"
-set showbreak=↪
-set breakindent
-
-"tab快捷键
-nn <M-down> :lnext<cr>zvzz
-nn <M-up> :lprevious<cr>zvzz
-nn <M-1> :tabnext 1<cr>
-nn <M-2> :tabnext 2<cr>
-nn <M-3> :tabnext 3<cr>
-nn <M-4> :tabnext 4<cr>
-nn <M-5> :tabnext 5<cr>
-"for macos
-nn ¡ :tabnext 1<cr>
-nn ™ :tabnext 2<cr>
-nn £ :tabnext 3<cr>
-nn ¢ :tabnext 4<cr>
-nn ∞ :tabnext 5<cr>
-
-"快捷键保存
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <Esc>:update<CR>
-
-"快捷键清除搜索高亮
-nnoremap H :noh<Enter>
-
-"tagbar设置
-let g:tagbar_width = 30
-
+"vim-tmux-navigator设置 {{{3
 if exists(':tnoremap')
  tnoremap <silent> <c-h> <c-w>:TmuxNavigateLeft<cr>
  tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
@@ -235,5 +235,12 @@ if exists(':tnoremap')
  tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
  tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
 endif
+
+"fzf设置 {{{3
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+nmap <silent> <leader><C-F> :FZF<CR>
+
+"tagbar设置 {{{3
+let g:tagbar_width = 30
 
 
