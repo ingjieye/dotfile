@@ -140,6 +140,7 @@ hi default CocHighlightText  guibg=#474e52
 "hi default link CocHighlightRead  CocHighlightText
 "hi default link CocHighlightWrite  CocHighlightText
 autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -155,6 +156,16 @@ nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" crossreference
+" bases
+nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+" bases of up to 3 levels
+nn <silent> xB :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
+" derived
+nn <silent> xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
+" derived of up to 3 levels
+nn <silent> xD :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true,'levels':3})<cr>
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
@@ -238,7 +249,7 @@ endif
 
 "fzf设置 {{{3
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-nmap <silent> <leader><C-F> :FZF<CR>
+nmap <silent> <C-F> :FZF<CR>
 
 "tagbar设置 {{{3
 let g:tagbar_width = 30
