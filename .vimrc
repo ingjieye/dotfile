@@ -5,6 +5,9 @@ set cmdheight=2
 
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+set backspace=indent,eol,start
 set t_Co=&term
 set termguicolors "开启真彩色
 set fdm=marker
@@ -72,7 +75,7 @@ colorscheme hybrid
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
-Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
+"Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 "Plug 'bfrg/vim-cpp-modern' "c++高亮
 Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
@@ -83,6 +86,13 @@ Plug 'majutsushi/tagbar' "显示tag
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
 Plug 'junegunn/seoul256.vim'
+Plug 'r0mai/vim-djinni' "djinni support
+Plug 'udalov/kotlin-vim' "kotlin support
+Plug 'm-pilia/vim-ccls' " supports some additional methods provided by ccls
+Plug 'mtdl9/vim-log-highlighting' "log hilight
+Plug 'rhysd/git-messenger.vim' "show git blame on current line
+"Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'} "nerdtree alternatives
+Plug 'tpope/vim-fugitive' 
 call plug#end()
 
 "Plugin settings {{{2
@@ -160,12 +170,9 @@ nmap <silent> gr <Plug>(coc-references)
 " crossreference
 " bases
 nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
-" bases of up to 3 levels
-nn <silent> xB :call CocLocations('ccls','$ccls/inheritance',{'levels':3})<cr>
-" derived
 nn <silent> xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
-" derived of up to 3 levels
-nn <silent> xD :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true,'levels':3})<cr>
+" caller
+nn <silent> xc :call CocLocations('ccls','$ccls/call')<cr>
 
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
@@ -217,6 +224,12 @@ let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突
 let g:NERDTreeMapJumpNextSibling=""
 
 nmap <leader>ne :NERDTreeToggle<cr> 
+nmap <leader>nf :NERDTreeFind<cr> 
+
+"CHADTree 配置 {{{3
+"autocmd vimenter * CHADopen
+"lua vim.api.nvim_set_var("chadtree_settings", { width = 35 })
+"let g:chadtree_settings = {"use_icons": 0 }
 
 "vim-signify 配置 {{{3
 let g:signify_sign_show_text = 0
