@@ -1,7 +1,11 @@
 .vim/
 build/
 .ccls-cache/*
+.cmake/*
+.vscode/*
+.ccls
 */.ccls-cache/*
 *.*.swp
 compile_commands.json
+build-target-device.gradle
 core

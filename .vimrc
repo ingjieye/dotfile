@@ -75,7 +75,7 @@ colorscheme hybrid
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
-"Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
+Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 "Plug 'bfrg/vim-cpp-modern' "c++高亮
 Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
@@ -87,7 +87,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
 Plug 'junegunn/seoul256.vim'
 Plug 'r0mai/vim-djinni' "djinni support
-Plug 'udalov/kotlin-vim' "kotlin support
+"Plug 'udalov/kotlin-vim' "kotlin support
 Plug 'm-pilia/vim-ccls' " supports some additional methods provided by ccls
 Plug 'mtdl9/vim-log-highlighting' "log hilight
 Plug 'rhysd/git-messenger.vim' "show git blame on current line
@@ -261,7 +261,11 @@ if exists(':tnoremap')
 endif
 
 "fzf设置 {{{3
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%'), <bang>0)
+let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
 nmap <silent> <C-F> :FZF<CR>
 
 "tagbar设置 {{{3

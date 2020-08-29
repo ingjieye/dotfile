@@ -5,11 +5,6 @@ SAVEHIST=10000000
 setopt HIST_IGNORE_DUPS
 bindkey -e
 
-#source ~/.zsh/antigen.zsh
-#antigen bundle zsh-users/zsh-syntax-highlighting
-#antigen bundle zsh-users/zsh-autosuggestions
-#antigen apply
-
 zstyle :compinstall filename '/home/yeyj/.zshrc'
 PROMPT=$'%F{blue}%F{CYAN}%B%F{cyan}%n %F{white}@ %F{magenta}%m %F{white}>>= %F{green}%~ %1(j,%F{red}:%j,)%b\n%F{blue}%B%(?..[%?] )%{%F{red}%}%# %F{white}%b'
 
@@ -43,6 +38,7 @@ bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 
 # Exports {{{1
+export LC_ALL=en_US.UTF-8
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -67,8 +63,11 @@ alias ..='cd ..'
 alias ....='cd ../..'
 alias socks5="http_proxy=http://127.0.0.1:8118 https_proxy=http://127.0.0.1:8118 all_proxy=http://127.0.0.1:8118 HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
-alias wget='socks5 wget'
-#alias vim=nvim
+# git alias
+alias gs='git status'
+alias gc='git checkout'
+#alias wget='socks5 wget'
+alias vim=nvim
 #alias m='make'
 #alias cm=cmake
 #alias cmake=_cmakeSave
@@ -111,3 +110,38 @@ case "$OSTYPE" in
     dragonfly*|freebsd*|netbsd*|openbsd*)
     ;;
 esac
+# Plug-in {{{1
+source ~/.zsh/antigen.zsh
+antigen bundle Aloxaf/fzf-tab
+antigen bundle 'wfxr/forgit'
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen apply
+# Plug-in settings {{{2
+#fzf-tab {{{3
+# disable sort when completing options of any command
+zstyle ':completion:complete:*:options' sort false
+
+# use input as query string when completing zlua
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+
+# (experimental, may change in the future)
+# some boilerplate code to define the variable `extract` which will be used later
+# please remember to copy them
+local extract="
+# trim input(what you select)
+local in=\${\${\"\$(<{f})\"%\$'\0'*}#*\$'\0'}
+# get ctxt for current completion(some thing before or after the current word)
+local -A ctxt=(\"\${(@ps:\2:)CTXT}\")
+# real path
+local realpath=\${ctxt[IPREFIX]}\${ctxt[hpre]}\$in
+realpath=\${(Qe)~realpath}
+"
+
+# give a preview of commandline arguments when completing `kill`
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
+zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
+
+# give a preview of directory by exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always $realpath'
