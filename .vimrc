@@ -73,7 +73,7 @@ colorscheme hybrid
 "let g:cpp_simple_highlight = 1
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
