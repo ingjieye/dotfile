@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/local/bin/ccls -init='{"index":{"blacklist":[".cmake"]}}' "$@"

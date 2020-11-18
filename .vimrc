@@ -65,6 +65,7 @@ set background=dark
 "colorscheme gruvbox
 "colorscheme molokai
 colorscheme hybrid
+"colorscheme embark
 "colorscheme space-vim-dark
 "let g:seoul256_background = 234
 "let g:seoul256_srgb = 1
@@ -73,11 +74,12 @@ colorscheme hybrid
 "let g:cpp_simple_highlight = 1
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 "Plug 'bfrg/vim-cpp-modern' "c++高亮
+"Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
@@ -146,7 +148,9 @@ endfunction
 
 " Highlight symbol under cursor on CursorHold, put it after colorscheme
 " settings to override.
-hi default CocHighlightText  guibg=#474e52
+hi default CocHighlightText guibg=#474e52
+hi default CocMenuSel guibg=#282a2e
+"hi CocCurrentLine guibg=#000000 guifg=#ffffff
 "hi default link CocHighlightRead  CocHighlightText
 "hi default link CocHighlightWrite  CocHighlightText
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -205,7 +209,7 @@ autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 autocmd VimEnter * wincmd p
 
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "M",
     \ "Staged"    : "✚",
     \ "Untracked" : "U",
@@ -272,3 +276,9 @@ nmap <silent> <C-F> :FZF<CR>
 let g:tagbar_width = 30
 
 
+"git-messenger {{{3
+let g:git_messenger_date_format = "%Y-%m-%d %X"
+
+"let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+"let g:cpp_class_decl_highlight = 1

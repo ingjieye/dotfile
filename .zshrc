@@ -42,7 +42,7 @@ export LC_ALL=en_US.UTF-8
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
 
     # manpages colored
 export LESS_TERMCAP_mb=$'\e[1;32m'
@@ -68,6 +68,7 @@ alias gs='git status'
 alias gc='git checkout'
 #alias wget='socks5 wget'
 alias vim=nvim
+alias ll='ls -lh'
 #alias m='make'
 #alias cm=cmake
 #alias cmake=_cmakeSave
