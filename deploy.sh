@@ -2,12 +2,14 @@
 set -e
 
 # tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 
-# vim plugin manager
+ #vim plugin manager
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
-    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 # soft link each file to their relative directory
@@ -17,19 +19,20 @@ for f in $files; do
     ln -sf $PWD/$f ~/`dirname $f`
 done
 
+echo -e "OS type: \c"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-        # ...
+	echo "linux-gnu"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # Mac OSX
+	echo "drawin"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 elif [[ "$OSTYPE" == "cygwin" ]]; then
-        # POSIX compatibility layer and Linux environment emulation for Windows
+    echo "cygin"
 elif [[ "$OSTYPE" == "msys" ]]; then
-        # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+    echo "msys"
 elif [[ "$OSTYPE" == "win32" ]]; then
-        # I'm not sure this can happen.
+    echo "win32"
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
-        # ...
+    echo "freebsd"
 else
-        # Unknown.
+    echo "unknow: $OSTYPE"
 fi
