@@ -93,8 +93,8 @@ Plug 'r0mai/vim-djinni' "djinni support
 Plug 'm-pilia/vim-ccls' " supports some additional methods provided by ccls
 Plug 'mtdl9/vim-log-highlighting' "log hilight
 Plug 'rhysd/git-messenger.vim' "show git blame on current line
-"Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': ':UpdateRemotePlugins'} "nerdtree alternatives
 Plug 'tpope/vim-fugitive' 
+Plug 'rust-lang/rust.vim'
 call plug#end()
 
 "Plugin settings {{{2

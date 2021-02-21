@@ -185,3 +185,4 @@ function brew() {
 }
 
 export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+source "$HOME/.cargo/env"

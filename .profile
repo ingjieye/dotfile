@@ -19,4 +19,4 @@ fi
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-export PATH="$HOME/.cargo/bin:$PATH"
+source "$HOME/.cargo/env"

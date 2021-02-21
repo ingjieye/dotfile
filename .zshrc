@@ -66,6 +66,7 @@ alias zh=LC_ALL=zh_CN.UTF-8
 # git alias
 alias gs='git status'
 alias gc='git checkout'
+alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
 #alias wget='socks5 wget'
 alias vim=nvim
 alias ll='ls -lh'
