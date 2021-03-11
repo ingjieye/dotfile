@@ -163,7 +163,8 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gr <Plug>(coc-references-used)
+"nmap <silent> gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<cr>
 
 " crossreference
 " bases
