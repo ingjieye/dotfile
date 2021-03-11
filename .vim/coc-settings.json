@@ -5,7 +5,5 @@
         "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
         "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"]
     }
-  }, 
-  "coc.preferences.formatOnSaveFiletypes": {
-  }
+  } 
 }

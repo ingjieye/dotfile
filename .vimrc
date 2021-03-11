@@ -70,17 +70,13 @@ colorscheme hybrid
 "let g:seoul256_background = 234
 "let g:seoul256_srgb = 1
 "colorscheme seoul256
-"let g:cpp_no_function_highlight = 1
-"let g:cpp_simple_highlight = 1
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
-"Plug 'bfrg/vim-cpp-modern' "c++高亮
-"Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
+Plug 'mhinz/vim-signify', {'commit': 'd80e507'} "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
@@ -89,12 +85,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
 Plug 'junegunn/seoul256.vim'
 Plug 'r0mai/vim-djinni' "djinni support
-"Plug 'udalov/kotlin-vim' "kotlin support
 Plug 'm-pilia/vim-ccls' " supports some additional methods provided by ccls
 Plug 'mtdl9/vim-log-highlighting' "log hilight
 Plug 'rhysd/git-messenger.vim' "show git blame on current line
-Plug 'tpope/vim-fugitive' 
-Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-fugitive' "Gblame
 call plug#end()
 
 "Plugin settings {{{2
@@ -238,6 +232,7 @@ nmap <leader>nf :NERDTreeFind<cr>
 "vim-signify 配置 {{{3
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
+let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
 
 " Add diagnostic info for https://github.com/itchyny/lightline.vim
@@ -278,7 +273,3 @@ let g:tagbar_width = 30
 
 "git-messenger {{{3
 let g:git_messenger_date_format = "%Y-%m-%d %X"
-
-"let g:cpp_class_scope_highlight = 1
-"let g:cpp_member_variable_highlight = 1
-"let g:cpp_class_decl_highlight = 1
