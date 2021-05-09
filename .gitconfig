@@ -1,11 +1,26 @@
 [user]
-	email = ingjieye@gmail.com
-	name = ingjieye
-[http "https://github.com"]
-    proxy = http://192.168.10.23:8118
+	email = bernard.ye@ringcentral.com
+	name = Bernard Ye
+[http]
+    proxy = http://192.168.1.204:8118
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/bernard/.gitignore_global
+	editor = vim
 [push]
-	default = simple
+	default = current
 [icdiff]
 	options = --highlight --line-numbers
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[alias]
+    find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+    show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+[log]
+	date = iso
+[pull]
+	ff = only
