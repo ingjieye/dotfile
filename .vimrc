@@ -1,5 +1,6 @@
 "Options {{{1
 syntax enable
+syntax on
 set cmdheight=2
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -15,13 +16,14 @@ set shiftwidth=4        "同上"
 set expandtab
 set hlsearch " 高亮搜索
 set incsearch " 实时搜索 
+set ignorecase " 忽略大小写
 set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a "永远使用鼠标
-"分割线变为空格
+" 分割线变为空格
 set fillchars=vert:\ 
 let mapleader="," "leader键变为逗号
-"signcolumn
+" signcolumn设置
 autocmd BufRead,BufNewFile * setlocal signcolumn=yes
 autocmd FileType tagbar,nerdtree setlocal signcolumn=no
 set wildmenu 
@@ -31,6 +33,15 @@ set scrolloff=3 "显示光标上下文
 "packadd termdebug
 set showbreak=↪
 set breakindent
+
+" 延迟绘制（提升性能）
+set lazyredraw
+
+" quickfix 隐藏行号
+augroup VimInitStyle
+	au!
+	au FileType qf setlocal nonumber
+augroup END
 
 "Colorschemes {{{1
 set background=dark
@@ -42,6 +53,8 @@ colorscheme hybrid
 "let g:seoul256_background = 234
 "let g:seoul256_srgb = 1
 "colorscheme seoul256
+
+
 "Custom key maps{{{1
 "- / = 调整窗口高度
 nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
@@ -275,6 +288,9 @@ command! -bang -nargs=* Rg
   \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%'), <bang>0)
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
 nmap <silent> <C-F> :FZF<CR>
+if has("nvim")
+    autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
+endif
 
 "tagbar设置 {{{3
 let g:tagbar_width = 30

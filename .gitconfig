@@ -2,7 +2,7 @@
 	email = bernard.ye@ringcentral.com
 	name = Bernard Ye
 [http]
-    proxy = http://192.168.1.204:8118
+    ;proxy = http://192.168.1.204:8118
 [core]
 	excludesfile = /Users/bernard/.gitignore_global
 	editor = vim
