@@ -35,7 +35,7 @@ set showbreak=↪
 set breakindent
 
 " 延迟绘制（提升性能）
-set lazyredraw
+"set lazyredraw
 
 " quickfix 隐藏行号
 augroup VimInitStyle
@@ -57,8 +57,11 @@ colorscheme hybrid
 
 "Custom key maps{{{1
 "- / = 调整窗口高度
+"Shift + (- / =) 调整窗口宽度
 nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
+nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
+nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
 "双击Esc推出终端输入模式
 tnoremap <Esc><Esc> <C-\><C-n>
 "忘记打sudo，打w!!可写
@@ -88,6 +91,7 @@ nnoremap H :noh<Enter>
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
@@ -167,7 +171,14 @@ hi default CocMenuSel guibg=#282a2e
 "hi default link CocHighlightRead  CocHighlightText
 "hi default link CocHighlightWrite  CocHighlightText
 autocmd CursorHold * silent call CocActionAsync('highlight')
-autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
+"autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
