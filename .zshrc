@@ -62,7 +62,6 @@ export PATH="$HOME/dev/source_code/depot_tools:$PATH"
 #export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Aliases {{{1
-alias go='http_proxy=http://192.168.10.23:8118 https_proxy=http://192.168.10.23:8118 go'
 alias ..='cd ..'
 alias ....='cd ../..'
 alias socks5="http_proxy=http://192.168.1.204:8118 https_proxy=$http_proxy all_proxy=$http_proxy HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
@@ -72,7 +71,7 @@ alias gs='git status'
 alias gc='git checkout'
 alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
 #alias wget='socks5 wget'
-alias vim=nvim
+if command -v nvim &> /dev/null; then alias vim=nvim; fi
 alias ll='ls -lh'
 #alias m='make'
 #alias cm=cmake
