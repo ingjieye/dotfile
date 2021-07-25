@@ -43,18 +43,6 @@ augroup VimInitStyle
 	au FileType qf setlocal nonumber
 augroup END
 
-"Colorschemes {{{1
-set background=dark
-"colorscheme gruvbox
-"colorscheme molokai
-colorscheme hybrid
-"colorscheme embark
-"colorscheme space-vim-dark
-"let g:seoul256_background = 234
-"let g:seoul256_srgb = 1
-"colorscheme seoul256
-
-
 "Custom key maps{{{1
 "- / = 调整窗口高度
 "Shift + (- / =) 调整窗口宽度
@@ -94,7 +82,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
-Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
+"Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
+Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
 Plug 'mhinz/vim-signify', {'commit': 'd80e507'} "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
@@ -112,6 +101,9 @@ Plug 'tpope/vim-fugitive' "Gblame
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'arcticicestudio/nord-vim' "Nord colorscheme
+Plug 'ayu-theme/ayu-vim' "ayu colorscheme
+Plug 'rakr/vim-two-firewatch' "colorscheme
 call plug#end()
 
 "Plugin settings {{{2
@@ -257,6 +249,10 @@ nmap <leader>nf :NERDTreeFind<cr>
 
 "octol/vim-cpp-enhanced-highlight {{{3
 "let g:cpp_member_variable_highlight = 1
+"Plug 'bfrg/vim-cpp-modern' "c++高亮 {{{3
+let g:cpp_attributes_highlight = 1
+let g:cpp_member_highlight = 1
+let g:cpp_simple_highlight = 1
 "CHADTree 配置 {{{3
 "autocmd vimenter * CHADopen
 "lua vim.api.nvim_set_var("chadtree_settings", { width = 35 })
@@ -319,3 +315,25 @@ let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_rootmarks = ['.root']
 let g:asynctasks_term_focus = 0
+"Colorschemes {{{1
+set background=dark
+"colorscheme gruvbox
+"colorscheme molokai
+colorscheme hybrid
+"colorscheme embark
+"colorscheme solarized
+"colorscheme space-vim-dark
+
+"let g:seoul256_background = 234
+"let g:seoul256_srgb = 1
+"let g:solarized_termcolors=256
+"colorscheme seoul256
+
+"colorscheme nord
+"
+"let ayucolor="dark"   " for dark version of theme
+"let ayucolor="mirage" " for mirage version of theme
+"colorscheme ayu
+
+"let g:two_firewatch_italics=1
+"colorscheme two-firewatch

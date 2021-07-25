@@ -59,6 +59,8 @@ export EDITOR=vim
 export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="$HOME/.local/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/dev/source_code/webrtc/depot_tools:$PATH"
 export PATH="$HOME/dev/source_code/depot_tools:$PATH"
+export PATH="~/Library/Python/3.8/bin:$PATH"
+export PATH="~/.cargo/bin:$PATH"
 #export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Aliases {{{1
