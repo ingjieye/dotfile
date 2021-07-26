@@ -6,8 +6,8 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://githu
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
-set backspace=indent,eol,start
 set t_Co=&term
+set backspace=indent,eol,start
 set termguicolors "开启真彩色
 set fdm=marker
 set cindent     "设置C样式的缩进格式"
@@ -106,8 +106,32 @@ Plug 'ayu-theme/ayu-vim' "ayu colorscheme
 Plug 'rakr/vim-two-firewatch' "colorscheme
 call plug#end()
 
-"Plugin settings {{{2
-"coc.nvim配置 {{{3
+"Colorschemes {{{1
+set background=dark
+"colorscheme gruvbox
+"colorscheme molokai
+colorscheme hybrid
+"colorscheme embark
+"colorscheme solarized
+"colorscheme space-vim-dark
+
+"let g:seoul256_background = 234
+"let g:seoul256_srgb = 1
+"let g:solarized_termcolors=256
+"colorscheme seoul256
+
+"colorscheme nord
+"
+"let ayucolor="dark"   " for dark version of theme
+"let ayucolor="mirage" " for mirage version of theme
+"colorscheme ayu
+
+"let g:two_firewatch_italics=1
+"colorscheme two-firewatch
+
+"colorscheme apprentice
+"Plugin settings {{{1
+"coc.nvim配置 {{{2
 " caller
 nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
 " callee
@@ -221,7 +245,7 @@ nmap <leader>ac  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-"NERDTree 配置 {{{3
+"NERDTree 配置 {{{2
 "autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 autocmd VimEnter * wincmd p
@@ -247,13 +271,13 @@ let g:NERDTreeMapJumpNextSibling=""
 nmap <leader>ne :NERDTreeToggle<cr> 
 nmap <leader>nf :NERDTreeFind<cr> 
 
-"octol/vim-cpp-enhanced-highlight {{{3
+"octol/vim-cpp-enhanced-highlight {{{2
 "let g:cpp_member_variable_highlight = 1
-"Plug 'bfrg/vim-cpp-modern' "c++高亮 {{{3
+"Plug 'bfrg/vim-cpp-modern' "c++高亮 {{{2
 let g:cpp_attributes_highlight = 1
 let g:cpp_member_highlight = 1
 let g:cpp_simple_highlight = 1
-"CHADTree 配置 {{{3
+"CHADTree 配置 {{{2
 "autocmd vimenter * CHADopen
 "lua vim.api.nvim_set_var("chadtree_settings", { width = 35 })
 "let g:chadtree_settings = {"use_icons": 0 }
@@ -288,7 +312,7 @@ if exists(':tnoremap')
  tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
 endif
 
-"fzf设置 {{{3
+"fzf设置 {{{2
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
@@ -299,41 +323,18 @@ if has("nvim")
     autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 endif
 
-"tagbar设置 {{{3
+"tagbar设置 {{{2
 let g:tagbar_width = 30
 
-
-"git-messenger {{{3
+"git-messenger {{{2
 let g:git_messenger_date_format = "%Y-%m-%d %X"
-"vim-ccls {{{3
+"vim-ccls {{{2
 let g:ccls_size = 10
 let g:ccls_position = 'botright'
 let g:ccls_orientation = 'horizontal'
 nn <silent> xc :CclsCallHierarchy<cr>
-"asynctasks {{{3
+"asynctasks {{{2
 let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_rootmarks = ['.root']
 let g:asynctasks_term_focus = 0
-"Colorschemes {{{1
-set background=dark
-"colorscheme gruvbox
-"colorscheme molokai
-colorscheme hybrid
-"colorscheme embark
-"colorscheme solarized
-"colorscheme space-vim-dark
-
-"let g:seoul256_background = 234
-"let g:seoul256_srgb = 1
-"let g:solarized_termcolors=256
-"colorscheme seoul256
-
-"colorscheme nord
-"
-"let ayucolor="dark"   " for dark version of theme
-"let ayucolor="mirage" " for mirage version of theme
-"colorscheme ayu
-
-"let g:two_firewatch_italics=1
-"colorscheme two-firewatch

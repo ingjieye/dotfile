@@ -11,3 +11,4 @@ build-target-device.gradle
 core
 .root
 .tasks
+gradle.properties

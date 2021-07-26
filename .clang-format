@@ -2,6 +2,6 @@
 BasedOnStyle: Google
 BreakBeforeBraces: Linux
 IndentWidth: '4'
-ColumnLimit: 120
+ColumnLimit: 140
 
 ...
