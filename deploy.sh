@@ -37,6 +37,7 @@ install_essentials_osx() {
     brew update
     brew instal fzf nvim node tmux
     brew install oath-toolkit #Google 2 factor authentication
+    brew install coreutils #realpath tool
 }
 
 echo -e "System type: \c"

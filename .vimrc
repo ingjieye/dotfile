@@ -101,9 +101,13 @@ Plug 'tpope/vim-fugitive' "Gblame
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'arcticicestudio/nord-vim' "Nord colorscheme
+Plug 'arcticicestudio/nord-vim' "colorscheme
 Plug 'ayu-theme/ayu-vim' "ayu colorscheme
 Plug 'rakr/vim-two-firewatch' "colorscheme
+Plug 'rakr/vim-one' "colorscheme
+Plug 'kaicataldo/material.vim', { 'branch': 'main' } "colorscheme
+Plug 'hzchirs/vim-material' "colorscheme
+Plug 'sjl/badwolf' "colorscheme
 call plug#end()
 
 "Colorschemes {{{1
@@ -111,9 +115,15 @@ set background=dark
 "colorscheme gruvbox
 "colorscheme molokai
 colorscheme hybrid
-"colorscheme embark
 "colorscheme solarized
 "colorscheme space-vim-dark
+"colorscheme apprentice
+"colorscheme one
+"colorscheme vim-material
+"colorscheme badwolf
+
+"let g:material_theme_style = 'lighter-community'
+"colorscheme material
 
 "let g:seoul256_background = 234
 "let g:seoul256_srgb = 1
@@ -121,7 +131,7 @@ colorscheme hybrid
 "colorscheme seoul256
 
 "colorscheme nord
-"
+
 "let ayucolor="dark"   " for dark version of theme
 "let ayucolor="mirage" " for mirage version of theme
 "colorscheme ayu
@@ -129,7 +139,6 @@ colorscheme hybrid
 "let g:two_firewatch_italics=1
 "colorscheme two-firewatch
 
-"colorscheme apprentice
 "Plugin settings {{{1
 "coc.nvim配置 {{{2
 " caller
