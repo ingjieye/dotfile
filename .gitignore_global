@@ -12,3 +12,4 @@ core
 .root
 .tasks
 gradle.properties
+.DS_Store

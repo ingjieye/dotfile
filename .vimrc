@@ -101,6 +101,10 @@ Plug 'tpope/vim-fugitive' "Gblame
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'godlygeek/tabular' "markdown highlighting
+Plug 'plasticboy/vim-markdown'
+
 Plug 'arcticicestudio/nord-vim' "colorscheme
 Plug 'ayu-theme/ayu-vim' "ayu colorscheme
 Plug 'rakr/vim-two-firewatch' "colorscheme
