@@ -108,13 +108,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'godlygeek/tabular' "markdown highlighting
 Plug 'plasticboy/vim-markdown'
 
-Plug 'arcticicestudio/nord-vim' "colorscheme
-Plug 'ayu-theme/ayu-vim' "ayu colorscheme
-Plug 'rakr/vim-two-firewatch' "colorscheme
-Plug 'rakr/vim-one' "colorscheme
-Plug 'kaicataldo/material.vim', { 'branch': 'main' } "colorscheme
-Plug 'hzchirs/vim-material' "colorscheme
-Plug 'sjl/badwolf' "colorscheme
 call plug#end()
 
 "Colorschemes {{{1
