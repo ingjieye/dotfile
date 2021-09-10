@@ -75,6 +75,9 @@ inoremap <silent> <C-S>         <Esc>:update<CR>
 "快捷键清除搜索高亮
 nnoremap H :noh<Enter>
 
+"AsyncTask shortcuts
+noremap <silent><f7> :AsyncTask assemble<cr>
+
 
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
