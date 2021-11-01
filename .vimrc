@@ -77,6 +77,7 @@ nnoremap H :noh<Enter>
 
 "AsyncTask shortcuts
 noremap <silent><f7> :AsyncTask assemble<cr>
+noremap <silent><f6> :AsyncTask buildCore<cr>
 
 
 "Plugins {{{1
@@ -291,7 +292,7 @@ let g:cpp_simple_highlight = 1
 "lua vim.api.nvim_set_var("chadtree_settings", { width = 35 })
 "let g:chadtree_settings = {"use_icons": 0 }
 
-"vim-signify 配置 {{{3
+"vim-signify {{{2
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
 let g:signify_sign_delete_first_line = '-'
@@ -305,14 +306,28 @@ let g:lightline = {
       \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'cocstatus': 'coc#status'
+      \   'cocstatus': 'coc#status',
+      \   'filename': 'LightlineFilename',
       \ },
       \ }
+
+"lightline {{{2
+" show relative file path for lightline.
+" require vim-fugitive
+" https://github.com/itchyny/lightline.vim/issues/293
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
 "golang {{{3
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
-"vim-tmux-navigator设置 {{{3
+"vim-tmux-navigator设置 {{{2
 if exists(':tnoremap')
  tnoremap <silent> <c-h> <c-w>:TmuxNavigateLeft<cr>
  tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
@@ -347,3 +362,6 @@ let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_rootmarks = ['.root']
 let g:asynctasks_term_focus = 0
+
+"vim-markdown {{{2
+let g:vim_markdown_folding_disabled = 1
