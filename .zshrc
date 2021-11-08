@@ -78,6 +78,14 @@ alias ll='ls -lh'
 #alias m='make'
 #alias cm=cmake
 #alias cmake=_cmakeSave
+function _adb_export_and_connect() {
+    export ANDROID_SERIAL=$1
+    adb connect $ANDROID_SERIAL
+}
+alias x30='_adb_export_and_connect x30'
+alias tc8='_adb_export_and_connect tc8'
+alias tablet='_adb_export_and_connect tablet'
+alias cu360='_adb_export_and_connect cu360'
 
 # OS specific settings {{{1
 case "$OSTYPE" in
