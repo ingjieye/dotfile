@@ -108,6 +108,7 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'godlygeek/tabular' "markdown highlighting
 Plug 'plasticboy/vim-markdown'
+Plug 'liuchengxu/vista.vim' "show LSP synbols in side bar
 
 call plug#end()
 
@@ -298,20 +299,23 @@ let g:signify_sign_show_count = 0
 let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
 
-" Add diagnostic info for https://github.com/itchyny/lightline.vim
+"lightline {{{2
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+autocmd User CocStatusChange call vista#RunForNearestMethodOrFunction()
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'cocstatus', 'readonly', 'filename', 'modified', 'method'] ]
       \ },
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
       \   'filename': 'LightlineFilename',
+      \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
-
-"lightline {{{2
 " show relative file path for lightline.
 " require vim-fugitive
 " https://github.com/itchyny/lightline.vim/issues/293
@@ -362,6 +366,13 @@ let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_rootmarks = ['.root']
 let g:asynctasks_term_focus = 0
+let g:asynctasks_rtp_config = "asynctasks.ini"
 
 "vim-markdown {{{2
 let g:vim_markdown_folding_disabled = 1
+
+"liuchengxu/vista.vim {{{2
+let g:vista_echo_cursor = 0
+let g:vista_default_executive = 'coc'
+let g:vista#renderer#enable_icon = 1
+let g:vista_cursor_delay = 0
