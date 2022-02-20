@@ -4,5 +4,7 @@ BreakBeforeBraces: Linux
 IndentWidth: '4'
 ColumnLimit: 140
 AccessModifierOffset: 0
+NamespaceIndentation: All
+AllowShortFunctionsOnASingleLine: Empty
 
 ...

@@ -13,3 +13,4 @@ core
 .tasks
 gradle.properties
 .DS_Store
+Podfile.lock

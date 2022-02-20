@@ -6,6 +6,7 @@
 [core]
 	excludesfile = /Users/bernard/.gitignore_global
 	editor = vim
+    ;pager = /usr/local/opt/git/share/git-core/contrib/diff-highlight/diff-highlight | less -r
 [push]
 	default = current
 [icdiff]
@@ -24,3 +25,18 @@
 	date = iso-local
 [pull]
 	ff = only
+
+[color]
+  ui = true
+  diff = auto
+  status = auto
+  grep = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  old = red bold
+  new = green bold
+  frag = magenta bold

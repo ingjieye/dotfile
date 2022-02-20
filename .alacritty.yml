@@ -1,0 +1,18 @@
+font:
+    normal:
+        family: CaskaydiaCove Nerd Font
+        style: Regular
+
+    size: 16
+
+      # Offset is the extra space around each character. `offset.y` can be thought of
+  # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
+    offset:
+      x: 0
+      y: 0
+
+  # Thin stroke font rendering (macOS only)
+    use_thin_strokes: true
+
+key_bindings:
+    - { key: Semicolon, mods: Control, chars: "\x07" }

@@ -308,7 +308,7 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified', 'method'] ]
+      \             ['readonly', 'filename', 'modified', 'method', 'cocstatus'] ]
       \ },
       \ 'component_function': {
       \   'cocstatus': 'coc#status',

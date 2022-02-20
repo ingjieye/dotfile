@@ -86,6 +86,7 @@ alias x30='_adb_export_and_connect x30'
 alias tc8='_adb_export_and_connect tc8'
 alias tablet='_adb_export_and_connect tablet'
 alias cu360='_adb_export_and_connect cu360'
+alias s7='_adb_export_and_connect s7'
 
 # OS specific settings {{{1
 case "$OSTYPE" in
