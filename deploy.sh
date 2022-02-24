@@ -41,6 +41,7 @@ install_essentials_osx() {
     brew install coreutils #realpath tool
     brew install tldr #tldr
     brew install rg #ripgrep
+    brew install git-delta #syntax hilighting pager
 }
 
 echo -e "System type: \c"
