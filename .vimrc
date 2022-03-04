@@ -79,6 +79,9 @@ nnoremap H :noh<Enter>
 noremap <silent><f7> :AsyncTask assemble<cr>
 noremap <silent><f6> :AsyncTask buildCore<cr>
 
+nmap <silent> <C-N> :cnext<CR>
+nmap <silent> <C-P> :cprev<CR>
+
 
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
@@ -108,7 +111,9 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'godlygeek/tabular' "markdown highlighting
 Plug 'plasticboy/vim-markdown'
-Plug 'liuchengxu/vista.vim' "show LSP synbols in side bar
+Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
+Plug 'vim-syntastic/syntastic' "swift support
+Plug 'keith/swift.vim' "swift support
 
 call plug#end()
 
