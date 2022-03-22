@@ -114,6 +114,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
 Plug 'vim-syntastic/syntastic' "swift support
 Plug 'keith/swift.vim' "swift support
+Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
@@ -278,6 +279,7 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ 'Ignored'   : '☒',
     \ "Unknown"   : "?"
     \ }
+let NERDTreeShowHidden=1
 
 let g:NERDTreeWinSize=25
 
