@@ -75,3 +75,5 @@
 [user]
 	email = bernard.ye@ringcentral.com
 	name = Bernard Ye
+[http]
+	proxy = http://127.0.0.1:8118
