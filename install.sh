@@ -26,7 +26,8 @@ install_essentials_osx() {
     brew install cmake conan ccache
 
     sudo gem install cocoapods
-    sudo spctl --master-disable
+    sudo spctl --master-disable #alow unsigned application to run
+    sudo pwpolicy -clearaccountpolicies #disable password length limit
 }
 
 echo -e "System type: \c"

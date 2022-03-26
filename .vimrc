@@ -114,7 +114,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
 Plug 'vim-syntastic/syntastic' "swift support
 Plug 'keith/swift.vim' "swift support
-Plug 'easymotion/vim-easymotion'
+"Plug 'easymotion/vim-easymotion'
+Plug 'phaazon/hop.nvim'
 
 call plug#end()
 
@@ -383,3 +384,6 @@ let g:vista_echo_cursor = 0
 let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 1
 let g:vista_cursor_delay = 0
+"phaazon/hop {{{2
+lua require'hop'.setup()
+nnoremap s :HopChar2<CR>
