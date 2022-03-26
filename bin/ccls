@@ -1,0 +1,2 @@
+#!/bin/zsh
+exec "$HOME/dev/source_code/ccls/Release/ccls" --init='{"index": {"initialBlacklist": ["\/jni\/"]}}' "$@"

@@ -85,8 +85,8 @@ nmap <silent> <C-P> :cprev<CR>
 
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'scrooloose/nerdtree' "树形目录
 Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
