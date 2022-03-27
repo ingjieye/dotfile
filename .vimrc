@@ -114,8 +114,9 @@ Plug 'plasticboy/vim-markdown'
 Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
 Plug 'vim-syntastic/syntastic' "swift support
 Plug 'keith/swift.vim' "swift support
-"Plug 'easymotion/vim-easymotion'
-Plug 'phaazon/hop.nvim'
+Plug 'phaazon/hop.nvim' "vim-easymotion alternative
+Plug 'kshenoy/vim-signature' "bookmark
+Plug 'vimrc/vim_current_word' "highlighting current word
 
 call plug#end()
 
@@ -387,3 +388,15 @@ let g:vista_cursor_delay = 0
 "phaazon/hop {{{2
 lua require'hop'.setup()
 nnoremap s :HopChar2<CR>
+"kshenoy/vim-signature{{{2
+highlight bookmark_color ctermbg=137 ctermfg=235 guibg=grey guifg=RoyalBlue3 
+highlight SignatureMarkText guifg=red
+highlight SignatureMarkLine guibg=royalblue4 ctermbg=27
+highlight SignatureMarkerText guifg=green
+highlight SignatureMarkerLine guibg=red4 ctermbg=22
+
+"dominikduda/vim_current_word {{{2
+let g:vim_current_word#highlight_delay = 200
+hi CurrentWord guibg=#474e52
+hi CurrentWordTwins guibg=#474e52
+let g:vim_current_word#included_filetypes = ['log']
