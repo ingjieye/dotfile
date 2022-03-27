@@ -44,6 +44,20 @@ augroup VimInitStyle
 augroup END
 
 "Custom key maps{{{1
+"
+"Overview of which map command works in which mode.  More details below.
+     "COMMANDS                    MODES ~
+":map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
+":nmap  :nnoremap :nunmap    Normal
+":vmap  :vnoremap :vunmap    Visual and Select
+":smap  :snoremap :sunmap    Select
+":xmap  :xnoremap :xunmap    Visual
+":omap  :onoremap :ounmap    Operator-pending
+":map!  :noremap! :unmap!    Insert and Command-line
+":imap  :inoremap :iunmap    Insert
+":lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
+":cmap  :cnoremap :cunmap    Command-line
+
 "- / = 调整窗口高度
 "Shift + (- / =) 调整窗口宽度
 nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
@@ -79,8 +93,8 @@ nnoremap H :noh<Enter>
 noremap <silent><f7> :AsyncTask assemble<cr>
 noremap <silent><f6> :AsyncTask buildCore<cr>
 
-nmap <silent> <C-N> :cnext<CR>
-nmap <silent> <C-P> :cprev<CR>
+nmap <silent> <C-N> :cnext<CR>zz
+nmap <silent> <C-P> :cprev<CR>zz
 
 
 "Plugins {{{1
@@ -360,6 +374,7 @@ if has("nvim")
     autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
 endif
 
+"autocmd BufAdd NERD_tree_*,*.cpp,*.c,*.h,*.hpp,term* :let b:vim_current_word_disabled_in_this_buffer = 1
 "tagbar设置 {{{2
 let g:tagbar_width = 30
 
@@ -389,11 +404,40 @@ let g:vista_cursor_delay = 0
 lua require'hop'.setup()
 nnoremap s :HopChar2<CR>
 "kshenoy/vim-signature{{{2
+"out of the box, the followings mappings are defined
+"mx           Toggle mark 'x' and display it in the leftmost column
+"dmx          Remove mark 'x' where x is a-zA-Z
+
+"m,           Place the next available mark
+"m.           If no mark on line, place the next available mark. Otherwise, remove (first) existing mark.
+"m-           Delete all marks from the current line
+"m<Space>     Delete all marks from the current buffer
+"]`           Jump to next mark
+"[`           Jump to prev mark
+"]'           Jump to start of next line containing a mark
+"['           Jump to start of prev line containing a mark
+"`]           Jump by alphabetical order to next mark
+"`[           Jump by alphabetical order to prev mark
+"']           Jump by alphabetical order to start of next line having a mark
+"'[           Jump by alphabetical order to start of prev line having a mark
+"m/           Open location list and display marks from current buffer
+
+"m[0-9]       Toggle the corresponding marker !@#$%^&*()
+"m<S-[0-9]>   Remove all markers of the same type
+"]-           Jump to next line having a marker of the same type
+"[-           Jump to prev line having a marker of the same type
+"]=           Jump to next line having a marker of any type
+"[=           Jump to prev line having a marker of any type
+"m?           Open location list and display markers from current buffer
+"m<BS>        Remove all markers
 highlight bookmark_color ctermbg=137 ctermfg=235 guibg=grey guifg=RoyalBlue3 
 highlight SignatureMarkText guifg=red
 highlight SignatureMarkLine guibg=royalblue4 ctermbg=27
 highlight SignatureMarkerText guifg=green
 highlight SignatureMarkerLine guibg=red4 ctermbg=22
+autocmd FileType log nmap <silent> <C-N> ]`zz
+autocmd FileType log nmap <silent> <C-P> [`zz
+autocmd FileType log nmap <silent> <C-M> m.
 
 "dominikduda/vim_current_word {{{2
 let g:vim_current_word#highlight_delay = 200
