@@ -72,8 +72,13 @@
   old = red
   new = green
   frag = magenta
+
 [user]
-	email = bernard.ye@ringcentral.com
-	name = Bernard Ye
+    name = ingjieye
+    email = ingjieye@gmail.com
+
+[includeIf "gitdir:~/dev/rc/"]
+    path = ~/.gitconfig_work
+
 [http]
     proxy = http://127.0.0.1:7890

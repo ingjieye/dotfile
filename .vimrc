@@ -71,11 +71,11 @@ cnoremap w!! %!sudo tee > /dev/null %
 "切换tab快捷键
 nn <M-down> :lnext<cr>zvzz
 nn <M-up> :lprevious<cr>zvzz
-nn <M-1> :tabnext 1<cr>
-nn <M-2> :tabnext 2<cr>
-nn <M-3> :tabnext 3<cr>
-nn <M-4> :tabnext 4<cr>
-nn <M-5> :tabnext 5<cr>
+nn <silent> <M-1> :tabnext 1<cr>
+nn <silent> <M-2> :tabnext 2<cr>
+nn <silent> <M-3> :tabnext 3<cr>
+nn <silent> <M-4> :tabnext 4<cr>
+nn <silent> <M-5> :tabnext 5<cr>
 "for macos
 nn ¡ :tabnext 1<cr>
 nn ™ :tabnext 2<cr>
@@ -431,8 +431,9 @@ nnoremap s :HopChar2<CR>
 "m?           Open location list and display markers from current buffer
 "m<BS>        Remove all markers
 highlight bookmark_color ctermbg=137 ctermfg=235 guibg=grey guifg=RoyalBlue3 
-highlight SignatureMarkText guifg=red
-highlight SignatureMarkLine guibg=royalblue4 ctermbg=27
+highlight SignatureMarkText guifg=red ctermfg=27
+"SlateBlue4: css color name https://www.color-hex.com/color-names.html
+highlight SignatureMarkLine guibg=SlateBlue4 ctermbg=27
 highlight SignatureMarkerText guifg=green
 highlight SignatureMarkerLine guibg=red4 ctermbg=22
 autocmd FileType log nmap <silent> <C-N> ]`zz
