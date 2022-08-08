@@ -101,8 +101,8 @@ nmap <silent> <C-P> :cprev<CR>zz
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'scrooloose/nerdtree' "树形目录
-Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
+"Plug 'scrooloose/nerdtree' "树形目录
+"Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
@@ -110,18 +110,18 @@ Plug 'mhinz/vim-signify', {'commit': 'd80e507'} "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
-Plug 'majutsushi/tagbar' "显示tag 
+"Plug 'majutsushi/tagbar' "显示tag 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "模糊搜索
 Plug 'junegunn/fzf.vim' "模糊搜索
-Plug 'junegunn/seoul256.vim'
+"Plug 'junegunn/seoul256.vim'
 Plug 'r0mai/vim-djinni' "djinni support
 Plug 'm-pilia/vim-ccls' " supports some additional methods provided by ccls
 Plug 'mtdl9/vim-log-highlighting' "log hilight
 Plug 'rhysd/git-messenger.vim' "show git blame on current line
 Plug 'tpope/vim-fugitive' "Gblame
 Plug 'antoinemadec/FixCursorHold.nvim'
-Plug 'skywind3000/asynctasks.vim'
-Plug 'skywind3000/asyncrun.vim'
+"Plug 'skywind3000/asynctasks.vim'
+"Plug 'skywind3000/asyncrun.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'godlygeek/tabular' "markdown highlighting
 Plug 'plasticboy/vim-markdown'
@@ -129,22 +129,25 @@ Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
 Plug 'vim-syntastic/syntastic' "swift support
 Plug 'keith/swift.vim' "swift support
 Plug 'phaazon/hop.nvim' "vim-easymotion alternative
-Plug 'kshenoy/vim-signature' "bookmark
-Plug 'vimrc/vim_current_word' "highlighting current word
-
+"Plug 'kshenoy/vim-signature' "bookmark
+Plug 'ingjieye/vim_current_word' "highlighting current word
+Plug 'nathom/filetype.nvim' "speedup filetype detection
 call plug#end()
 
 "Colorschemes {{{1
 set background=dark
 "colorscheme gruvbox
 "colorscheme molokai
-colorscheme hybrid
 "colorscheme solarized
 "colorscheme space-vim-dark
 "colorscheme apprentice
 "colorscheme one
 "colorscheme vim-material
 "colorscheme badwolf
+
+"let g:hybrid_custom_term_colors = 1
+"let g:hybrid_reduced_contrast = 1
+colorscheme hybrid
 
 "let g:material_theme_style = 'lighter-community'
 "colorscheme material
@@ -439,6 +442,7 @@ highlight SignatureMarkerLine guibg=red4 ctermbg=22
 autocmd FileType log nmap <silent> <C-N> ]`zz
 autocmd FileType log nmap <silent> <C-P> [`zz
 autocmd FileType log nmap <silent> <C-M> m.
+nmap <silent> ma m.
 
 "dominikduda/vim_current_word {{{2
 let g:vim_current_word#highlight_delay = 200

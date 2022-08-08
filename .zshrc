@@ -47,7 +47,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then BREW_TYPE="linuxbrew"; else BREW_TYPE="h
 #export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/${BREW_TYPE}-core.git"
 export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.aliyun.com/homebrew/homebrew-bottles"
 
-    # manpages colored
+# manpages colored
 export LESS_TERMCAP_mb=$'\e[1;32m'
 export LESS_TERMCAP_md=$'\e[1;32m'
 export LESS_TERMCAP_me=$'\e[0m'
@@ -55,6 +55,7 @@ export LESS_TERMCAP_se=$'\e[0m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 export LESS_TERMCAP_so=$'\E[30;43m'
+
 export EDITOR=vim
 export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/dev/source_code/webrtc/depot_tools:$PATH"
@@ -64,20 +65,25 @@ export PATH="~/.cargo/bin:$PATH"
 #export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 
 # Aliases {{{1
+# --- General ---
 alias ..='cd ..'
 alias ....='cd ../..'
 alias socks5="http_proxy=http://192.168.1.204:8118 https_proxy=$http_proxy all_proxy=$http_proxy HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
-# git alias
+if command -v nvim &> /dev/null; then 
+    alias vim=nvim; 
+    export EDITOR=nvim
+fi
+alias ll='ls -alh'
+
+# --- Git ---
 alias gs='git status'
 alias gc='git checkout'
 alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
-#alias wget='socks5 wget'
-if command -v nvim &> /dev/null; then alias vim=nvim; fi
-alias ll='ls -lh'
-#alias m='make'
-#alias cm=cmake
-#alias cmake=_cmakeSave
+alias gd='git diff'
+alias ga='git add'
+
+# --- Adb ---
 function _adb_export_and_connect() {
     export ANDROID_SERIAL=$1
     adb connect $ANDROID_SERIAL
@@ -92,7 +98,7 @@ alias s7='_adb_export_and_connect s7'
 case "$OSTYPE" in
     darwin*)
         alias ls='ls -G '
-
+        alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
     ;;
     linux*)
         function brew_enable() {
@@ -129,7 +135,7 @@ esac
 # Plug-in {{{1
 source ~/.zsh/antigen.zsh
 antigen bundle Aloxaf/fzf-tab
-antigen bundle 'wfxr/forgit'
+#antigen bundle 'wfxr/forgit'
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions

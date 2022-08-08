@@ -19,6 +19,6 @@ fi
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-source "$HOME/.cargo/env"
+#source "$HOME/.cargo/env"
 #ADDED BY 010 EDITOR
 export PATH="$PATH:/Applications/010 Editor.app/Contents/CmdLine"
