@@ -93,8 +93,10 @@ nnoremap H :noh<Enter>
 noremap <silent><f7> :AsyncTask assemble<cr>
 noremap <silent><f6> :AsyncTask buildCore<cr>
 
-nmap <silent> <C-N> :cnext<CR>zz
-nmap <silent> <C-P> :cprev<CR>zz
+"nmap <silent> <C-N> :cnext<CR>zz
+"nmap <silent> <C-P> :cprev<CR>zz
+nmap <silent> <C-N> <Plug>(coc-diagnostic-next)
+nmap <silent> <C-P> <Plug>(coc-diagnostic-prev)
 
 
 "Plugins {{{1
@@ -132,6 +134,8 @@ Plug 'phaazon/hop.nvim' "vim-easymotion alternative
 "Plug 'kshenoy/vim-signature' "bookmark
 Plug 'ingjieye/vim_current_word' "highlighting current word
 Plug 'nathom/filetype.nvim' "speedup filetype detection
+Plug 'kyazdani42/nvim-web-devicons' "filetree icon
+Plug 'kyazdani42/nvim-tree.lua' "filetree
 call plug#end()
 
 "Colorschemes {{{1
@@ -449,3 +453,7 @@ let g:vim_current_word#highlight_delay = 200
 hi CurrentWord guibg=#474e52
 hi CurrentWordTwins guibg=#474e52
 let g:vim_current_word#included_filetypes = ['log']
+"kyazdani42/nvim-tree.lua {{{2
+lua require("nvim-tree").setup()
+nmap <leader>ne :NvimTreeToggle<cr> 
+nmap <leader>nf :NvimTreeFindFile<cr> 
