@@ -28,6 +28,7 @@ if [[ -z "$TMUX" ]] ; then
     tmux attach-session|| tmux new-session
 fi
 
+# FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Enable Ctrl-x-e to edit command line
@@ -62,7 +63,7 @@ export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.b
 export PATH="$HOME/dev/source_code/depot_tools:$PATH"
 export PATH="~/Library/Python/3.8/bin:$PATH"
 export PATH="~/.cargo/bin:$PATH"
-#export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-file ~/.fd-ignore'
 
 # Aliases {{{1
 # --- General ---

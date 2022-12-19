@@ -22,6 +22,7 @@ install_essentials_osx() {
     brew install coreutils #realpath tool
     brew install tldr #tldr
     brew install rg #ripgrep
+    brew install fd #https://github.com/chinanf-boy/fd-zh
     brew install git-delta #syntax hilighting pager
     brew install cmake conan ccache
 

@@ -1,0 +1,3 @@
+.git/
+.ccls-cache/
+**/Pods/Headers/
