@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 set -e
 install_brew() {
     if command -v brew &> /dev/null
@@ -31,9 +31,26 @@ install_essentials_osx() {
     sudo pwpolicy -clearaccountpolicies #disable password length limit
 }
 
+install_essentials_linux() {
+    if [ -n "$(uname -a | grep Ubuntu)" ]; then
+        echo 'Installing essentials for Ubuntu...'
+        apt install software-properties-common
+
+        #nodejs(dependency of coc.nvim)
+        curl -sL install-node.vercel.app/lts | bash
+
+        #neovim ppa
+        add-apt-repository ppa:neovim-ppa/unstable
+
+        apt install -y neovim
+        apt install -y ripgrep
+    fi
+}
+
 echo -e "System type: \c"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	echo "linux-gnu"
+    install_essentials_linux
 elif [[ "$OSTYPE" == "darwin"* ]]; then
 	echo "drawin"
     install_brew

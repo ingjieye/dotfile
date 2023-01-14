@@ -24,7 +24,7 @@ set -o ignoreeof #防止ctrl+d kill 当前 shell
 IGNOREEOF=100000000
 
 #if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-if [[ -z "$TMUX" ]] ; then
+if [[ -z "$TMUX" ]] && [[ -z tmux ]] ; then
     tmux attach-session|| tmux new-session
 fi
 
@@ -125,7 +125,7 @@ case "$OSTYPE" in
         # ls colors
         if [[ "$TERM" = *256color* && -f $HOME/.lscolor256 ]]; then
           eval $(dircolors -b ~/.lscolor256)
-        else if [[ -f $HOME/.lscolor ]];
+        elif [[ -f $HOME/.lscolor ]]; then
           eval $(dircolors -b ~/.lscolor)
         fi
         alias ls='ls --color=auto'

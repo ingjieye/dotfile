@@ -172,118 +172,126 @@ colorscheme hybrid
 
 "Plugin settings {{{1
 "coc.nvim配置 {{{2
-" caller
-nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
-" callee
-nn <silent> gC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
-" if hidden is not set, TextEdit might fail.
-set hidden
-"
-" " Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
+if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
+    " caller
+    nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
+    " callee
+    nn <silent> gC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
+    " if hidden is not set, TextEdit might fail.
+    set hidden
+    "
+    " " Some servers have issues with backup files, see #649
+    set nobackup
+    set nowritebackup
 
-" Give more space for displaying messages.
-set cmdheight=2
+    " Give more space for displaying messages.
+    set cmdheight=2
 
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
+    " don't give |ins-completion-menu| messages.
+    set shortmess+=c
 
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=200
+    " Smaller updatetime for CursorHold & CursorHoldI
+    set updatetime=200
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    " Use tab for trigger completion with characters ahead and navigate
+    inoremap <silent><expr> <TAB>
+          \ coc#pum#visible() ? coc#pum#next(1) :
+          \ CheckBackspace() ? "\<Tab>" :
+          \ coc#refresh()
+    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+    function! CheckBackspace() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+    " Make <CR> to accept selected completion item or notify coc.nvim to format
+    " <C-g>u breaks current undo, please make your own choice
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use <s-space> to trigger completion.
-inoremap <silent><expr> <S-Space> coc#refresh()
+    " Use <c-space> to trigger completion
+    if has('nvim')
+      inoremap <silent><expr> <c-space> coc#refresh()
+    else
+      inoremap <silent><expr> <c-@> coc#refresh()
+    endif
 
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+    " Use K to show documentation in preview window
+    nnoremap <silent> K :call ShowDocumentation()<CR>
+    function! ShowDocumentation()
+      if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+      else
+        call feedkeys('K', 'in')
+      endif
+    endfunction
 
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+    " Highlight symbol under cursor on CursorHold, put it after colorscheme
+    " settings to override.
+    hi default CocHighlightText guibg=#474e52
+    hi default CocMenuSel guibg=#282a2e
+    "hi CocCurrentLine guibg=#000000 guifg=#ffffff
+    "hi default link CocHighlightRead  CocHighlightText
+    "hi default link CocHighlightWrite  CocHighlightText
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+    "autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
+    augroup mygroup
+      autocmd!
+      " Setup formatexpr specified filetype(s).
+      autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+      " Update signature help on jump placeholder.
+      autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    augroup end
 
-" Highlight symbol under cursor on CursorHold, put it after colorscheme
-" settings to override.
-hi default CocHighlightText guibg=#474e52
-hi default CocMenuSel guibg=#282a2e
-"hi CocCurrentLine guibg=#000000 guifg=#ffffff
-"hi default link CocHighlightRead  CocHighlightText
-"hi default link CocHighlightWrite  CocHighlightText
-autocmd CursorHold * silent call CocActionAsync('highlight')
-"autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+    " Remap for rename current word
+    nmap <leader>rn <Plug>(coc-rename)
 
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+    " Remap for format selected region
+    "noremap <leader>f  :Neoformat<cr> 
+    xmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
 
-" Remap for format selected region
-"noremap <leader>f  :Neoformat<cr> 
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+    " Remap keys for gotos
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references-used)
+    "nmap <silent> gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<cr>
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references-used)
-"nmap <silent> gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<cr>
+    " crossreference
+    " bases
+    nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+    nn <silent> xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
+    " caller
+    "nn <silent> xc :call CocLocations('ccls','$ccls/call')<cr> (see vim-ccls)
 
-" crossreference
-" bases
-nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
-nn <silent> xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
-" caller
-"nn <silent> xc :call CocLocations('ccls','$ccls/call')<cr> (see vim-ccls)
+    " Use `:Fold` to fold current buffer
+    command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+    " Using CocList
+    " Show all diagnostics
+    nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+    " Manage extensions
+    nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+    " Show commands
+    nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+    " Find symbol of current document
+    nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+    " Search workspace symbols
+    nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+    " Do default action for next item.
+    nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+    " Do default action for previous item.
+    nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+    " Resume latest coc list
+    nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
+    " Remap for do codeAction of current line
+    nmap <leader>ac  <Plug>(coc-codeaction)
+    " Fix autofix problem of current line
+    nmap <leader>qf  <Plug>(coc-fix-current)
+endif
 
 "NERDTree 配置 {{{2
 "autocmd vimenter * NERDTree
@@ -414,8 +422,10 @@ let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 1
 let g:vista_cursor_delay = 0
 "phaazon/hop {{{2
-lua require'hop'.setup()
-nnoremap s :HopChar2<CR>
+if !empty(glob($HOME."/.vim/plugged/hop.vim"))
+    lua require'hop'.setup()
+    nnoremap s :HopChar2<CR>
+endif
 "kshenoy/vim-signature{{{2
 "out of the box, the followings mappings are defined
 "mx           Toggle mark 'x' and display it in the leftmost column
@@ -460,6 +470,8 @@ hi CurrentWord guibg=#474e52
 hi CurrentWordTwins guibg=#474e52
 let g:vim_current_word#included_filetypes = ['log']
 "kyazdani42/nvim-tree.lua {{{2
-lua require("nvim-tree").setup()
-nmap <leader>ne :NvimTreeToggle<cr> 
-nmap <leader>nf :NvimTreeFindFile<cr> 
+if !empty(glob($HOME."/.vim/plugged/nvim-tree.lua"))
+    lua require("nvim-tree").setup()
+    nmap <leader>ne :NvimTreeToggle<cr> 
+    nmap <leader>nf :NvimTreeFindFile<cr> 
+endif
