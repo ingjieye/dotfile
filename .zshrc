@@ -24,7 +24,7 @@ set -o ignoreeof #防止ctrl+d kill 当前 shell
 IGNOREEOF=100000000
 
 #if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-if [[ -z "$TMUX" ]] && [[ -z tmux ]] ; then
+if [[ -z "$TMUX" ]] && command -v tmux > /dev/null ; then
     tmux attach-session|| tmux new-session
 fi
 
