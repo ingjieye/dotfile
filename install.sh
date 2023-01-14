@@ -44,6 +44,7 @@ install_essentials_linux() {
 
         apt install -y neovim
         apt install -y ripgrep
+        apt install -y fd-find
     fi
 }
 
