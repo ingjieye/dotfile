@@ -480,4 +480,8 @@ if !empty(glob($HOME."/.vim/plugged/nvim-tree.lua"))
 endif
 
 "weirongxu/plantuml-previewer.vim {{{2
-let g:plantuml_previewer#plantuml_jar_path = "/Users/yeyj/Downloads/plantuml-1.2023.1.jar"
+au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
+    \  matchlist(system('cat `which plantuml` | grep plantuml.jar'), '\v.*\s[''"]?(\S+plantuml\.jar).*'),
+    \  1,
+    \  0
+    \)
