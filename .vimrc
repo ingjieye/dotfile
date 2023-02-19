@@ -133,9 +133,12 @@ Plug 'keith/swift.vim' "swift support
 Plug 'phaazon/hop.nvim' "vim-easymotion alternative
 "Plug 'kshenoy/vim-signature' "bookmark
 Plug 'ingjieye/vim_current_word' "highlighting current word
-Plug 'nathom/filetype.nvim' "speedup filetype detection
 Plug 'kyazdani42/nvim-web-devicons' "filetree icon
 Plug 'kyazdani42/nvim-tree.lua' "filetree
+Plug 'aklt/plantuml-syntax' "dependency for weirongxu/plantuml-previewer.vim
+Plug 'tyru/open-browser.vim' "dependency for weirongxu/plantuml-previewer.vim
+Plug 'weirongxu/plantuml-previewer.vim' "preview plantUML
+"Plug 'nathom/filetype.nvim' "speedup filetype detection -> disable due to conflict with plantuml-syntax
 call plug#end()
 
 "Colorschemes {{{1
@@ -475,3 +478,6 @@ if !empty(glob($HOME."/.vim/plugged/nvim-tree.lua"))
     nmap <leader>ne :NvimTreeToggle<cr> 
     nmap <leader>nf :NvimTreeFindFile<cr> 
 endif
+
+"weirongxu/plantuml-previewer.vim {{{2
+let g:plantuml_previewer#plantuml_jar_path = "/Users/yeyj/Downloads/plantuml-1.2023.1.jar"

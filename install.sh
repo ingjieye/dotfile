@@ -25,6 +25,7 @@ install_essentials_osx() {
     brew install fd #https://github.com/chinanf-boy/fd-zh
     brew install git-delta #syntax hilighting pager
     brew install cmake conan ccache
+    brew install plantuml #weirongxu/plantuml-previewer
 
     sudo gem install cocoapods
     sudo spctl --master-disable #alow unsigned application to run
