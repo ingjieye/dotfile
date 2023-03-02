@@ -425,7 +425,7 @@ let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 1
 let g:vista_cursor_delay = 0
 "phaazon/hop {{{2
-if !empty(glob($HOME."/.vim/plugged/hop.vim"))
+if !empty(glob($HOME."/.vim/plugged/hop.nvim"))
     lua require'hop'.setup()
     nnoremap s :HopChar2<CR>
 endif
