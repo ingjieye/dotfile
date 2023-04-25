@@ -65,7 +65,7 @@ nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
 nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
 nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
 "双击Esc推出终端输入模式
-tnoremap <Esc><Esc> <C-\><C-n>
+"tnoremap <Esc><Esc> <C-\><C-n>
 "忘记打sudo，打w!!可写
 cnoremap w!! %!sudo tee > /dev/null %
 "切换tab快捷键
