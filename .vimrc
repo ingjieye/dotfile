@@ -375,6 +375,11 @@ let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
 
 "lightline {{{2
+if !empty(glob($HOME."/.vim/plugged/lightline.vim"))
+
+set noshowmode " -- INSERT -- is unnecessary anymore because the mode information is displayed in the statusline.
+autocmd User CocStatusChange redrawstatus "Fix status line can't auto update
+
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
@@ -402,6 +407,7 @@ function! LightlineFilename()
   endif
   return expand('%')
 endfunction
+endif
 "golang {{{3
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
