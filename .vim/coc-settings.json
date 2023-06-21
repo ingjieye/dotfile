@@ -34,5 +34,7 @@
 		"typeParameter": "\uf728",
 		"default": "\uf29c"
 	},
-    "suggest.noselect": true
+    "suggest.noselect": true,
+    "signature.target": "echo",
+    "snippets.ultisnips.pythonPrompt": false
 }

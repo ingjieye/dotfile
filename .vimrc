@@ -174,24 +174,20 @@ colorscheme hybrid
 "colorscheme two-firewatch
 
 "Plugin settings {{{1
-"coc.nvim配置 {{{2
+"coc.nvim {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " caller
     nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
     " callee
     nn <silent> gC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
-    " if hidden is not set, TextEdit might fail.
-    set hidden
-    "
-    " " Some servers have issues with backup files, see #649
+
+    " coc extensions
+    let g:coc_global_extensions = ['coc-snippets', 'coc-pyright']
+    
+"----------------------- Refer from configuration in coc.nvim README.md -------------------------------- {{{3
+    "Some servers have issues with backup files, see #649
     set nobackup
     set nowritebackup
-
-    " Give more space for displaying messages.
-    set cmdheight=2
-
-    " don't give |ins-completion-menu| messages.
-    set shortmess+=c
 
     " Smaller updatetime for CursorHold & CursorHoldI
     set updatetime=200
@@ -294,8 +290,46 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     nmap <leader>ac  <Plug>(coc-codeaction)
     " Fix autofix problem of current line
     nmap <leader>qf  <Plug>(coc-fix-current)
-endif
 
+"----------------------- Refer from configuration in coc-snippets README.md -------------------------------- {{{3
+    " Use <C-l> for trigger snippet expand.
+    imap <C-l> <Plug>(coc-snippets-expand)
+
+    " Use <C-j> for select text for visual placeholder of snippet.
+    vmap <C-j> <Plug>(coc-snippets-select)
+
+    " Use <C-j> for jump to next placeholder, it's default of coc.nvim
+    let g:coc_snippet_next = '<c-j>'
+
+    " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+    let g:coc_snippet_prev = '<c-k>'
+
+    " Use <C-j> for both expand and jump (make expand higher priority.)
+    imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+    " Use <leader>x for convert visual selected code to snippet
+    xmap <leader>x  <Plug>(coc-convert-snippet)
+
+    inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#next()\<CR>" :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+
+    inoremap <silent><expr> <S-Tab>
+      \ coc#pum#visible() ? coc#pum#prev(1) :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#prev()\<CR>" :
+      \ CheckBackspace() ? "\<S-Tab>" :
+      \ coc#refresh()
+
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+    let g:coc_snippet_next = '<Tab>'
+    let g:coc_snippet_prev = '<S-Tab>'
+
+    let g:coc_snippet_next = '<tab>'
+endif
 "NERDTree 配置 {{{2
 "autocmd vimenter * NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
