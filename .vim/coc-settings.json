@@ -3,7 +3,19 @@
     "ccls": {
         "command": "ccls",
         "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-        "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"]
+        "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+        "initializationOptions": {
+            "index": {
+                "initialBlacklist":[
+                    ".cmake",
+                    "/jni/"
+                ],
+                "threads": 2
+            },
+            "diagnostics": {
+                "onChange": 1
+            }
+        }
     }
   },
   "suggest.completionItemKindLabels": {
