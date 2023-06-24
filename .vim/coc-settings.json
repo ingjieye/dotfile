@@ -14,10 +14,20 @@
             },
             "diagnostics": {
                 "onChange": 1
+            },
+            "completion": {
+                "caseSensitivity": 1,
+                "filterAndSort": false,
+                "maxNum": 1000
             }
         }
     }
   },
+  "suggest.floatConfig": {
+      "border": false
+  },
+  "suggest.labelMaxLength": 100,
+  "suggest.filterGraceful": false,
   "suggest.completionItemKindLabels": {
 		"keyword": "\uf1de",
 		"variable": "\ue79b",
