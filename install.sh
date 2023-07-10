@@ -26,6 +26,8 @@ install_essentials_osx() {
     brew install git-delta #syntax hilighting pager
     brew install cmake conan ccache
     brew install plantuml #weirongxu/plantuml-previewer
+    brew install golang
+    go install golang.org/x/tools/gopls@latest #go LSP
 
     sudo gem install cocoapods
     sudo spctl --master-disable #alow unsigned application to run
