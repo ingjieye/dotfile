@@ -139,6 +139,8 @@ Plug 'aklt/plantuml-syntax' "dependency for weirongxu/plantuml-previewer.vim
 Plug 'tyru/open-browser.vim' "dependency for weirongxu/plantuml-previewer.vim
 Plug 'weirongxu/plantuml-previewer.vim' "preview plantUML
 "Plug 'nathom/filetype.nvim' "speedup filetype detection -> disable due to conflict with plantuml-syntax
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax hilighting
+Plug 'nvim-treesitter/playground' "TSHighlightCapturesUnderCursor
 call plug#end()
 
 "Colorschemes {{{1
@@ -261,7 +263,7 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " crossreference
     " bases
     nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
-    nn <silent> xd :call CocLocations('ccls','$ccls/inheritance',{'derived':v:true})<cr>
+    nn <silent> xd <Plug>(coc-implementation)
     " caller
     "nn <silent> xc :call CocLocations('ccls','$ccls/call')<cr> (see vim-ccls)
 
@@ -426,6 +428,11 @@ command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%'), <bang>0)
+
+command! -bang -nargs=* Rgi
+  \ call fzf#vim#grep(
+  \   'rg --no-ignore --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%'), <bang>0)
 "command! -bang -nargs=* Ag
 "\ call fzf#vim#ag(<q-args>,
 "\                 <bang>0 ? fzf#vim#with_preview('up:60%')
@@ -525,3 +532,43 @@ au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
     \  1,
     \  0
     \)
+
+"nvim-treesitter/nvim-treesitter {{{2
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = {"lua", "vim", "vimdoc", "query", "go", "bash"},
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = true,
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    disable = { "c", "cpp"},
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    -- disable = function(lang, buf)
+    --    local max_filesize = 500 * 1024 -- 100 KB
+    --    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+    --    if ok and stats and stats.size > max_filesize then
+    --        return true
+    --    end
+    -- end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+nmap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
