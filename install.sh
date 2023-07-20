@@ -21,6 +21,7 @@ install_essentials_osx() {
     brew install oath-toolkit #Google 2 factor authentication
     brew install coreutils #realpath tool
     brew install tldr #tldr
+    brew install rbenv #ruby version manager
     brew install rg #ripgrep
     brew install fd #https://github.com/chinanf-boy/fd-zh
     brew install git-delta #syntax hilighting pager
