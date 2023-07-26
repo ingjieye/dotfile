@@ -521,7 +521,13 @@ hi CurrentWordTwins guibg=#474e52
 let g:vim_current_word#included_filetypes = ['log']
 "kyazdani42/nvim-tree.lua {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-tree.lua"))
-    lua require("nvim-tree").setup()
+lua << EOF
+require'nvim-tree'.setup {
+    git = {
+        ignore = false,
+    },
+}
+EOF
     nmap <leader>ne :NvimTreeToggle<cr> 
     nmap <leader>nf :NvimTreeFindFile<cr> 
 endif
