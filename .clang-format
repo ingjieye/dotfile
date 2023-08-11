@@ -2,7 +2,7 @@
 BasedOnStyle: Google
 BreakBeforeBraces: Linux
 IndentWidth: '4'
-ColumnLimit: 140
+ColumnLimit: 90
 AccessModifierOffset: 0
 NamespaceIndentation: All
 AllowShortFunctionsOnASingleLine: Empty

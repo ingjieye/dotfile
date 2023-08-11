@@ -1,12 +1,15 @@
-//scroll bar mimic win11 style
-user_pref("ui.useOverlayScrollbars", 1);
-user_pref("widget.non-native-theme.scrollbar.style", 5);
-user_pref("widget.non-native-theme.win11.scrollbar.force-overlay-style", true);
+user_pref("widget.non-native-theme.scrollbar.style", 1);
 
 //scroll speed
-user_pref("mousewheel.default.delta_multiplier_x", 400);
-user_pref("mousewheel.default.delta_multiplier_y", 400);
-user_pref("mousewheel.default.delta_multiplier_z", 400);
+user_pref("mousewheel.default.delta_multiplier_x", 100);
+user_pref("mousewheel.default.delta_multiplier_y", 100);
+user_pref("mousewheel.default.delta_multiplier_z", 100);
 
-//warning when opening about:config
+//disable warning when opening about:config
 user_pref("browser.aboutConfig.showWarning", false);
+
+//try to fix PR_END_OF_FILE_ERROR by disable ipv6 
+user_pref("network.dns.disableIPv6", true);
+
+//use native full screen on macOS
+user_pref("full-screen-api.macos-native-full-screen", true);

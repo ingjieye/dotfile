@@ -172,6 +172,7 @@ zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps -
 # give a preview of directory by exa when completing cd
 zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always $realpath'
 
+# }}}
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="/Users/yeyj/.rbenv/shims:${PATH}"
 export RBENV_SHELL=zsh
