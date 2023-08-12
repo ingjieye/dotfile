@@ -13,3 +13,5 @@ user_pref("network.dns.disableIPv6", true);
 
 //use native full screen on macOS
 user_pref("full-screen-api.macos-native-full-screen", true);
+
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
