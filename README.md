@@ -1,3 +1,9 @@
+# Dotfile
+
+## Deploying
+```
+./deploy.sh
+```
 
 ## Vim
-1. 
+### Key bindings

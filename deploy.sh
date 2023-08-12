@@ -4,7 +4,7 @@ set -e
 SAVEIFS=$IFS   # Save current IFS (Internal Field Separator)
 IFS=$'\n'      # Change IFS to newline char
 
-skipPattern="deploy.sh|install.sh"
+skipPattern="deploy.sh|install.sh|README.md"
 hardlinkPattern="Library/Application Support/Firefox/"
 hardlinkPattern="$hardlinkPattern|Library/Fonts/"
 
