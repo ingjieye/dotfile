@@ -14,4 +14,8 @@ user_pref("network.dns.disableIPv6", true);
 //use native full screen on macOS
 user_pref("full-screen-api.macos-native-full-screen", true);
 
+//always load userChrome.css
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
+//always show bookmark bar
+user_pref("browser.toolbars.bookmarks.visibility", "always");
