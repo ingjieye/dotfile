@@ -540,6 +540,7 @@ au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
     \)
 
 "nvim-treesitter/nvim-treesitter {{{2
+if !empty(glob($HOME."/.vim/plugged/nvim-treesitter"))
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
@@ -578,3 +579,4 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 nmap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
+endif
