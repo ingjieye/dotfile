@@ -6,8 +6,9 @@ IFS=$'\n'      # Change IFS to newline char
 
 skipPattern="deploy.sh|install.sh"
 hardlinkPattern="Library/Application Support/Firefox/"
+hardlinkPattern="$hardlinkPattern|Library/Fonts/"
 
-# soft link each file to their relative directory
+# soft link each file except skipPattern and hardlinkPattern to their relative directory
 files=( $(git ls-files |grep -vE "$skipPattern|$hardlinkPattern") )
 for f in "${files[@]}"; do
     echo "soft linking ~/$f"
@@ -15,8 +16,8 @@ for f in "${files[@]}"; do
     ln -sf $PWD/$f ~/`dirname $f`
 done
 
-# hard link each file to their relative directory
-files=( $(git ls-files |grep $hardlinkPattern) )
+# hard link each hardlinkPattern file to their relative directory
+files=( $(git ls-files |grep -E $hardlinkPattern) )
 for f in "${files[@]}"; do
     echo "hard linking ~/$f"
     mkdir -p ~/`dirname $f`
