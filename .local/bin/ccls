@@ -1,3 +1,0 @@
-#!/bin/sh
-exec /Users/bernard/dev/source_code/ccls/Release/ccls "$@"
-#exec /Users/bernard/dev/source_code/ccls/Release/ccls -init='{"clang":{"extraArgs":["-isystem", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include", "-isysroot/Users/bernard/dev/Android/sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include"]}}' "$@"
