@@ -1,4 +1,4 @@
-"Options {{{1
+"----------------- Options -----------------{{{1
 syntax enable
 syntax on
 set cmdheight=2
@@ -43,7 +43,7 @@ augroup VimInitStyle
 	au FileType qf setlocal nonumber
 augroup END
 
-"Plugins {{{1
+"----------------- Plugins ----------------- {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
@@ -87,7 +87,7 @@ Plug 'mfussenegger/nvim-dap' "lldb support in nvim
 Plug 'rcarriga/nvim-dap-ui' "lldb support in nvim
 call plug#end()
 
-"Colorschemes {{{1
+"----------------- Colorschemes ----------------- {{{1
 set background=dark
 "colorscheme gruvbox
 "colorscheme molokai
@@ -119,8 +119,8 @@ colorscheme hybrid
 "let g:two_firewatch_italics=1
 "colorscheme two-firewatch
 
-"Plugin settings {{{1
-"coc.nvim {{{2
+"----------------- Plugin settings ----------------- {{{1
+"----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " coc extensions
     let g:coc_global_extensions = ['coc-snippets', 'coc-pyright']
@@ -166,24 +166,24 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
 
 
 endif
-"octol/vim-cpp-enhanced-highlight {{{2
+"----------------- octol/vim-cpp-enhanced-highlight ----------------- {{{2
 "let g:cpp_member_variable_highlight = 1
-"Plug 'bfrg/vim-cpp-modern' "c++高亮 {{{2
+"----------------- bfrg/vim-cpp-modern ----------------- {{{2
 let g:cpp_attributes_highlight = 1
 let g:cpp_member_highlight = 1
 let g:cpp_simple_highlight = 1
-"CHADTree 配置 {{{2
+"----------------- CHADTree --------------- {{{2
 "autocmd vimenter * CHADopen
 "lua vim.api.nvim_set_var("chadtree_settings", { width = 35 })
 "let g:chadtree_settings = {"use_icons": 0 }
 
-"vim-signify {{{2
+"----------------- vim-signify --------------- {{{2
 let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
 let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
 
-"lightline {{{2
+"----------------- lightline --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/lightline.vim"))
 
 set noshowmode " -- INSERT -- is unnecessary anymore because the mode information is displayed in the statusline.
@@ -221,10 +221,10 @@ endif
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
-"vim-tmux-navigator设置 {{{2
+"----------------- vim-tmux-navigator设置 --------------- {{{2
 
 
-"fzf设置 {{{2
+"----------------- fzf设置 --------------- {{{2
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
@@ -242,35 +242,35 @@ command! -bang -nargs=* Rgi
 
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
 
-"tagbar设置 {{{2
+"----------------- tagbar设置 --------------- {{{2
 let g:tagbar_width = 30
 
-"git-messenger {{{2
+"----------------- git-messenger --------------- {{{2
 let g:git_messenger_date_format = "%Y-%m-%d %X"
-"vim-ccls {{{2
+"----------------- vim-ccls --------------- {{{2
 let g:ccls_size = 10
 let g:ccls_position = 'botright'
 let g:ccls_orientation = 'horizontal'
-"asynctasks {{{2
+"----------------- asynctasks --------------- {{{2
 let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
 let g:asyncrun_rootmarks = ['.root']
 let g:asynctasks_term_focus = 0
 let g:asynctasks_rtp_config = "asynctasks.ini"
 
-"vim-markdown {{{2
+"----------------- vim-markdown --------------- {{{2
 let g:vim_markdown_folding_disabled = 1
 
-"liuchengxu/vista.vim {{{2
+"----------------- liuchengxu/vista.vim --------------- {{{2
 let g:vista_echo_cursor = 0
 let g:vista_default_executive = 'coc'
 let g:vista#renderer#enable_icon = 1
 let g:vista_cursor_delay = 0
-"phaazon/hop {{{2
+"----------------- phaazon/hop --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/hop.nvim"))
     lua require'hop'.setup()
 endif
-"kshenoy/vim-signature{{{2
+"----------------- kshenoy/vim-signature--------------- {{{2
 "out of the box, the followings mappings are defined
 "mx           Toggle mark 'x' and display it in the leftmost column
 "dmx          Remove mark 'x' where x is a-zA-Z
@@ -304,12 +304,12 @@ highlight SignatureMarkLine guibg=SlateBlue4 ctermbg=27
 highlight SignatureMarkerText guifg=green
 highlight SignatureMarkerLine guibg=red4 ctermbg=22
 
-"dominikduda/vim_current_word {{{2
+"----------------- dominikduda/vim_current_word --------------- {{{2
 let g:vim_current_word#highlight_delay = 200
 hi CurrentWord guibg=#474e52
 hi CurrentWordTwins guibg=#474e52
 let g:vim_current_word#included_filetypes = ['log']
-"kyazdani42/nvim-tree.lua {{{2
+"----------------- kyazdani42/nvim-tree.lua --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-tree.lua"))
 lua << EOF
 require'nvim-tree'.setup {
@@ -320,14 +320,14 @@ require'nvim-tree'.setup {
 EOF
 endif
 
-"weirongxu/plantuml-previewer.vim {{{2
+"----------------- weirongxu/plantuml-previewer.vim --------------- {{{2
 au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
     \  matchlist(system('cat `which plantuml` | grep plantuml.jar'), '\v.*\s[''"]?(\S+plantuml\.jar).*'),
     \  1,
     \  0
     \)
 
-"nvim-treesitter/nvim-treesitter {{{2
+"----------------- nvim-treesitter/nvim-treesitter --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-treesitter"))
 lua << EOF
 require'nvim-treesitter.configs'.setup {
@@ -368,7 +368,7 @@ require'nvim-treesitter.configs'.setup {
 EOF
 endif
 
-"mfussenegger/nvim-dap {{{2
+"----------------- mfussenegger/nvim-dap --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-dap"))
 lua << EOF
 
@@ -395,7 +395,7 @@ dap.configurations.cpp = {
 
 EOF
 endif
-"rcarriga/nvim-dap-ui {{{2
+"----------------- rcarriga/nvim-dap-ui --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-dap-ui"))
 lua << EOF
 
@@ -403,7 +403,7 @@ require("dapui").setup()
 
 EOF
 endif
-"Keybindings{{{1
+"----------------- Keybindings -----------------{{{1
 " ----------------- Reference ----------------- {{{2
 "COMMANDS                    MODES ~
 ":map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
