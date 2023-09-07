@@ -43,62 +43,6 @@ augroup VimInitStyle
 	au FileType qf setlocal nonumber
 augroup END
 
-"Custom key maps{{{1
-"
-"1. Overview of which map command works in which mode.  More details below.
-     "COMMANDS                    MODES ~
-":map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
-":nmap  :nnoremap :nunmap    Normal
-":vmap  :vnoremap :vunmap    Visual and Select
-":smap  :snoremap :sunmap    Select
-":xmap  :xnoremap :xunmap    Visual
-":omap  :onoremap :ounmap    Operator-pending
-":map!  :noremap! :unmap!    Insert and Command-line
-":imap  :inoremap :iunmap    Insert
-":lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
-":cmap  :cnoremap :cunmap    Command-line
-"
-"2. Prefixs
-" <S-X>: Shift + X
-" <M-X>: Alt(Meta) + X
-" <C-X>: Ctrl + X
-" <Leader>: Leader key, set in mapleader, currently ','
-
-"- / = 调整窗口高度
-"Shift + (- / =) 调整窗口宽度
-nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
-nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
-nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
-"忘记打sudo，打w!!可写
-cnoremap w!! %!sudo tee > /dev/null %
-"tab switching
-nn <silent> <M-1> :tabnext 1<cr>
-nn <silent> <M-2> :tabnext 2<cr>
-nn <silent> <M-3> :tabnext 3<cr>
-nn <silent> <M-4> :tabnext 4<cr>
-nn <silent> <M-5> :tabnext 5<cr>
-"for macos
-"nn ¡ :tabnext 1<cr>
-"nn ™ :tabnext 2<cr>
-"nn £ :tabnext 3<cr>
-"nn ¢ :tabnext 4<cr>
-"nn ∞ :tabnext 5<cr>
-"Ctrl-s 保存
-noremap <silent> <C-S>          :update<CR>
-vnoremap <silent> <C-S>         <C-C>:update<CR>
-inoremap <silent> <C-S>         <Esc>:update<CR>
-"快捷键清除搜索高亮
-nnoremap H :noh<Enter>
-
-"AsyncTask shortcuts
-noremap <silent><f7> :AsyncTask assemble<cr>
-noremap <silent><f6> :AsyncTask buildCore<cr>
-
-nmap <silent> <C-P> <Plug>(coc-diagnostic-prev)
-nmap <silent> <C-N> <Plug>(coc-diagnostic-next)
-
-
 "Plugins {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -183,7 +127,6 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " coc extensions
     let g:coc_global_extensions = ['coc-snippets', 'coc-pyright']
     
-"----------------------- Refer from configuration in coc.nvim README.md -------------------------------- {{{3
     "Some servers have issues with backup files, see #649
     set nobackup
     set nowritebackup
@@ -191,31 +134,11 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " Smaller updatetime for CursorHold & CursorHoldI
     set updatetime=200
 
-    " Use tab for trigger completion with characters ahead and navigate
-    inoremap <silent><expr> <TAB>
-          \ coc#pum#visible() ? coc#pum#next(1) :
-          \ CheckBackspace() ? "\<Tab>" :
-          \ coc#refresh()
-    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
     function! CheckBackspace() abort
       let col = col('.') - 1
       return !col || getline('.')[col - 1]  =~# '\s'
     endfunction
 
-    " Make <CR> to accept selected completion item or notify coc.nvim to format
-    " <C-g>u breaks current undo, please make your own choice
-    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-    " Use <c-space> to trigger completion
-    if has('nvim')
-      inoremap <silent><expr> <c-space> coc#refresh()
-    else
-      inoremap <silent><expr> <c-@> coc#refresh()
-    endif
-
-    " Use K to show documentation in preview window
-    nnoremap <silent> K :call ShowDocumentation()<CR>
     function! ShowDocumentation()
       if CocAction('hasProvider', 'hover')
         call CocActionAsync('doHover')
@@ -228,11 +151,7 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " settings to override.
     hi default CocHighlightText guibg=#474e52
     hi default CocMenuSel guibg=#282a2e
-    "hi CocCurrentLine guibg=#000000 guifg=#ffffff
-    "hi default link CocHighlightRead  CocHighlightText
-    "hi default link CocHighlightWrite  CocHighlightText
     autocmd CursorHold * silent call CocActionAsync('highlight')
-    "autocmd CursorHoldI * sil call CocActionAsync('showSignatureHelp')
     augroup mygroup
       autocmd!
       " Setup formatexpr specified filetype(s).
@@ -241,119 +160,39 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
       autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
     augroup end
 
-    " Remap for rename current word
-    nmap <leader>rn <Plug>(coc-rename)
-
-    " Remap for format selected region
-    xmap <leader>f  <Plug>(coc-format-selected)
-    nmap <leader>f  <Plug>(coc-format-selected)
-
-    " Remap keys for gotos
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> <leader>gd <C-w>s<Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references-used)
-    "nmap <silent> gr :call LanguageClient#textDocument_references({'includeDeclaration': v:false})<cr>
-
-    " crossreference
-    " bases
-    nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
-    nn <silent> xd <Plug>(coc-implementation)
-    " caller
-    "use vim-ccls instead, checkout vim-ccls's configuration below
-
     " Use `:Fold` to fold current buffer
     command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-    " Using CocList
-    " Show all diagnostics
-    nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-    " Manage extensions
-    nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-    " Show commands
-    nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-    " Find symbol of current document
-    nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-    " Search workspace symbols
-    nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-    " Do default action for next item.
-    nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-    " Do default action for previous item.
-    nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-    " Resume latest coc list
-    nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-    " Remap for do codeAction of current line
-    nmap <leader>ac  <Plug>(coc-codeaction)
-    " Fix autofix problem of current line
-    nmap <leader>qf  <Plug>(coc-fix-current)
-
-"----------------------- Refer from configuration in coc-snippets README.md -------------------------------- {{{3
-    " Use <C-l> for trigger snippet expand.
-    imap <C-l> <Plug>(coc-snippets-expand)
-
-    " Use <C-j> for select text for visual placeholder of snippet.
-    vmap <C-j> <Plug>(coc-snippets-select)
-
-    " Use <C-j> for jump to next placeholder, it's default of coc.nvim
-    let g:coc_snippet_next = '<c-j>'
-
-    " Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-    let g:coc_snippet_prev = '<c-k>'
-
-    " Use <C-j> for both expand and jump (make expand higher priority.)
-    imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-    " Use <leader>x for convert visual selected code to snippet
-    xmap <leader>x  <Plug>(coc-convert-snippet)
-
-    inoremap <silent><expr> <Tab>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#next()\<CR>" :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-
-    inoremap <silent><expr> <S-Tab>
-      \ coc#pum#visible() ? coc#pum#prev(1) :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#prev()\<CR>" :
-      \ CheckBackspace() ? "\<S-Tab>" :
-      \ coc#refresh()
-
-    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                                  \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
     let g:coc_snippet_next = '<Tab>'
     let g:coc_snippet_prev = '<S-Tab>'
 
-    let g:coc_snippet_next = '<tab>'
+
 endif
 "NERDTree 配置 {{{2
 "autocmd vimenter * NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-autocmd VimEnter * wincmd p
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd VimEnter * wincmd p
 
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-    \ "Modified"  : "M",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "U",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "!",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
-let NERDTreeShowHidden=1
+"let g:NERDTreeGitStatusIndicatorMapCustom = {
+    "\ "Modified"  : "M",
+    "\ "Staged"    : "✚",
+    "\ "Untracked" : "U",
+    "\ "Renamed"   : "➜",
+    "\ "Unmerged"  : "═",
+    "\ "Deleted"   : "✖",
+    "\ "Dirty"     : "!",
+    "\ "Clean"     : "✔︎",
+    "\ 'Ignored'   : '☒',
+    "\ "Unknown"   : "?"
+    "\ }
+"let NERDTreeShowHidden=1
 
-let g:NERDTreeWinSize=25
+"let g:NERDTreeWinSize=25
 
-let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
-let g:NERDTreeMapJumpNextSibling=""
-
-nmap <leader>ne :NERDTreeToggle<cr> 
-nmap <leader>nf :NERDTreeFind<cr> 
+"let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
+"let g:NERDTreeMapJumpNextSibling=""
+"nmap <leader>ne :NERDTreeToggle<cr> 
+"nmap <leader>nf :NERDTreeFind<cr> 
 
 "octol/vim-cpp-enhanced-highlight {{{2
 "let g:cpp_member_variable_highlight = 1
@@ -411,12 +250,7 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
 "vim-tmux-navigator设置 {{{2
-if exists(':tnoremap')
- tnoremap <silent> <c-h> <c-w>:TmuxNavigateLeft<cr>
- tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
- tnoremap <silent> <c-k> <c-w>:TmuxNavigateUp<cr>
- tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
-endif
+
 
 "fzf设置 {{{2
 command! -bang -nargs=* Rg
@@ -435,12 +269,7 @@ command! -bang -nargs=* Rgi
 "\                 <bang>0)
 
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
-nmap <silent> <C-F> :FZF<CR>
-if has("nvim")
-    autocmd! FileType fzf tnoremap <buffer> <esc> <c-c>
-endif
 
-"autocmd BufAdd NERD_tree_*,*.cpp,*.c,*.h,*.hpp,term* :let b:vim_current_word_disabled_in_this_buffer = 1
 "tagbar设置 {{{2
 let g:tagbar_width = 30
 
@@ -450,7 +279,6 @@ let g:git_messenger_date_format = "%Y-%m-%d %X"
 let g:ccls_size = 10
 let g:ccls_position = 'botright'
 let g:ccls_orientation = 'horizontal'
-nn <silent> xc :CclsCallHierarchy<cr>
 "asynctasks {{{2
 let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
@@ -469,7 +297,6 @@ let g:vista_cursor_delay = 0
 "phaazon/hop {{{2
 if !empty(glob($HOME."/.vim/plugged/hop.nvim"))
     lua require'hop'.setup()
-    nnoremap s :HopChar2<CR>
 endif
 "kshenoy/vim-signature{{{2
 "out of the box, the followings mappings are defined
@@ -504,10 +331,6 @@ highlight SignatureMarkText guifg=red ctermfg=27
 highlight SignatureMarkLine guibg=SlateBlue4 ctermbg=27
 highlight SignatureMarkerText guifg=green
 highlight SignatureMarkerLine guibg=red4 ctermbg=22
-autocmd FileType log nmap <silent> <C-N> ]`zz
-autocmd FileType log nmap <silent> <C-P> [`zz
-autocmd FileType log nmap <silent> <C-M> m.
-nmap <silent> ma m.
 
 "dominikduda/vim_current_word {{{2
 let g:vim_current_word#highlight_delay = 200
@@ -523,8 +346,6 @@ require'nvim-tree'.setup {
     },
 }
 EOF
-    nmap <leader>ne :NvimTreeToggle<cr> 
-    nmap <leader>nf :NvimTreeFindFile<cr> 
 endif
 
 "weirongxu/plantuml-previewer.vim {{{2
@@ -573,7 +394,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
-nmap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 endif
 
 "mfussenegger/nvim-dap {{{2
@@ -611,3 +431,96 @@ require("dapui").setup()
 
 EOF
 endif
+"Keybindings{{{1
+" ----------------- Reference ----------------- {{{2
+"COMMANDS                    MODES ~
+":map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
+":nmap  :nnoremap :nunmap    Normal
+":vmap  :vnoremap :vunmap    Visual and Select
+":smap  :snoremap :sunmap    Select
+":xmap  :xnoremap :xunmap    Visual
+":omap  :onoremap :ounmap    Operator-pending
+":map!  :noremap! :unmap!    Insert and Command-line
+":imap  :inoremap :iunmap    Insert
+":lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
+":cmap  :cnoremap :cunmap    Command-line
+"
+" Prefixs
+" <S-X>: Shift + X
+" <M-X>: Alt(Meta) + X
+" <C-X>: Ctrl + X
+" <Leader>: Leader key, set in mapleader, currently ','
+
+" ----------------- No Prefix ----------------- {{{2
+nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
+nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
+nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
+nnoremap <silent> H :noh<Enter>
+nnoremap <silent> s :HopChar2<CR>
+nnoremap <silent> K :call ShowDocumentation()<CR>
+nnoremap <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+nnoremap <silent> xc :CclsCallHierarchy<cr>
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references-used)
+nnoremap <silent> xd <Plug>(coc-implementation)
+inoremap <silent><expr> <Tab>
+  \ coc#pum#visible() ? coc#pum#next(1) :
+  \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#next()\<CR>" :
+  \ CheckBackspace() ? "\<Tab>" :
+  \ coc#refresh()
+inoremap <silent><expr> <S-Tab>
+  \ coc#pum#visible() ? coc#pum#prev(1) :
+  \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#prev()\<CR>" :
+  \ CheckBackspace() ? "\<S-Tab>" :
+  \ coc#refresh()
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" ----------------- Alt(meta/option) ----------------- {{{2
+nnoremap <silent> <M-1> :tabnext 1<cr>
+nnoremap <silent> <M-2> :tabnext 2<cr>
+nnoremap <silent> <M-3> :tabnext 3<cr>
+nnoremap <silent> <M-4> :tabnext 4<cr>
+nnoremap <silent> <M-5> :tabnext 5<cr>
+
+" ----------------- Ctrl ----------------- {{{2
+noremap  <silent> <C-S> :update<CR>
+vnoremap <silent> <C-S> <C-C>:update<CR>
+inoremap <silent> <C-S> <Esc>:update<CR>
+nnoremap <silent> <C-P> <Plug>(coc-diagnostic-prev)
+nnoremap <silent> <C-N> <Plug>(coc-diagnostic-next)
+nnoremap <silent> <C-F> :FZF<CR>
+
+if has('nvim')
+  inoremap <silent><expr> <C-space> coc#refresh()
+else
+  inoremap <silent><expr> <C-@> coc#refresh()
+endif
+
+autocmd FileType log noremap <silent> <C-N> ]`zz
+autocmd FileType log noremap <silent> <C-P> [`zz
+autocmd FileType log noremap <silent> <C-M> m.
+
+" ----------------- Leader ----------------- {{{2
+nnoremap <leader>rn <Plug>(coc-rename)
+nnoremap <leader>f  <Plug>(coc-format-selected)
+xnoremap <leader>f  <Plug>(coc-format-selected)
+nnoremap <leader>ac <Plug>(coc-codeaction)
+nnoremap <leader>qf <Plug>(coc-fix-current)
+nnoremap <leader>ne :NvimTreeToggle<cr> 
+nnoremap <leader>nf :NvimTreeFindFile<cr> 
+nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
+nnoremap <silent><leader>gd <C-w>s<Plug>(coc-definition)
+
+" ----------------- Space ----------------- {{{2
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
