@@ -19,3 +19,6 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 //always show bookmark bar
 user_pref("browser.toolbars.bookmarks.visibility", "always");
+
+//open bookmarks in new tab
+user_pref("browser.tabs.loadBookmarksInTabs", true);
