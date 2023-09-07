@@ -35,6 +35,8 @@ install_essentials_osx() {
     sudo gem install cocoapods
     sudo spctl --master-disable #alow unsigned application to run
     sudo pwpolicy -clearaccountpolicies #disable password length limit
+
+    brew install jesseduffield/lazygit/lazygit #lazygit, a git tui, see https://github.com/jesseduffield/lazygit
 }
 
 install_essentials_linux() {
