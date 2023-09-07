@@ -220,6 +220,18 @@ endif
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
+"----------------- scrooloose/nerdcommenter --------------- {{{2
+" Create default mappings
+let g:NERDCreateDefaultMappings = 0
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
 "----------------- fzf --------------- {{{2
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -482,6 +494,7 @@ nnoremap <leader>ne :NvimTreeToggle<cr>
 nnoremap <leader>nf :NvimTreeFindFile<cr> 
 nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 nnoremap <silent><leader>gd <C-w>s<Plug>(coc-definition)
+nnoremap <leader>cc <Plug>NERDCommenterToggle
 
 " ----------------- Space ----------------- {{{2
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
