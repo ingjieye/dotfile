@@ -21,7 +21,7 @@ set cursorline "高亮光标所在行
 set number "显示行号
 set mouse=a "永远使用鼠标
 " 分割线变为空格
-set fillchars=vert:\ 
+"set fillchars=vert:\ 
 let mapleader="," "leader键变为逗号
 " signcolumn设置
 autocmd BufRead,BufNewFile * setlocal signcolumn=yes
@@ -30,7 +30,6 @@ set wildmenu
 "set showmatch   "显示匹配的括号"
 set scrolloff=3 "显示光标上下文
 
-"packadd termdebug
 set showbreak=↪
 set breakindent
 
@@ -221,10 +220,7 @@ endif
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 
-"----------------- vim-tmux-navigator设置 --------------- {{{2
-
-
-"----------------- fzf设置 --------------- {{{2
+"----------------- fzf --------------- {{{2
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
@@ -242,7 +238,7 @@ command! -bang -nargs=* Rgi
 
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
 
-"----------------- tagbar设置 --------------- {{{2
+"----------------- tagbar --------------- {{{2
 let g:tagbar_width = 30
 
 "----------------- git-messenger --------------- {{{2
