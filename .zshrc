@@ -25,8 +25,8 @@ export EDITOR=vim
 export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/dev/source_code/webrtc/depot_tools:$PATH"
 export PATH="$HOME/dev/source_code/depot_tools:$PATH"
-export PATH="~/Library/Python/3.8/bin:$PATH"
-export PATH="~/.cargo/bin:$PATH"
+export PATH="$HOME/Library/Python/3.8/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-file ~/.fd-ignore'
 
 # zsh settings {{{1
