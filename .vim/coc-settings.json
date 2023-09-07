@@ -8,7 +8,8 @@
             "index": {
                 "initialBlacklist":[
                     ".cmake",
-                    "/jni/"
+                    "/jni/",
+                    "/DerivedData/"
                 ]
             },
             "diagnostics": {
@@ -18,6 +19,16 @@
                 "caseSensitivity": 1,
                 "filterAndSort": false,
                 "maxNum": 1000
+            },
+            "cache": {
+                "retainInMemory": 0
+            },
+            "clang": {
+                "excludeArgs": [
+                    "-xc++",
+                    "-gmodules",
+                    "-fmodules*"
+                ]
             }
         }
     },
@@ -28,7 +39,16 @@
         "initializationOptions": {
             "usePlaceholders": true
         }
+    },
+    "python": {
+        "pythonPath": "/usr/bin/python3"
     }
+  },
+  "pyright.inlayHints.functionReturnTypes": false,
+  "pyright.inlayHints.variableTypes": false,
+  "python.analysis.diagnosticSeverityOverrides": {
+      "reportUnknownArgumentType": "none",
+      "reportGeneralTypeIssues": "none"
   },
   "suggest.floatConfig": {
       "border": false
