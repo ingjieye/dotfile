@@ -87,6 +87,7 @@ alias gc='git checkout'
 alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
 alias gd='git diff'
 alias ga='git add'
+alias gl='git log'
 
 # --- Adb ---
 function _adb_export_and_connect() {
