@@ -47,8 +47,6 @@ augroup END
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-"Plug 'scrooloose/nerdtree' "树形目录
-"Plug 'Xuyuanp/nerdtree-git-plugin' "netdtree 显示git状态
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
@@ -168,32 +166,6 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
 
 
 endif
-"NERDTree 配置 {{{2
-"autocmd vimenter * NERDTree
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"autocmd VimEnter * wincmd p
-
-"let g:NERDTreeGitStatusIndicatorMapCustom = {
-    "\ "Modified"  : "M",
-    "\ "Staged"    : "✚",
-    "\ "Untracked" : "U",
-    "\ "Renamed"   : "➜",
-    "\ "Unmerged"  : "═",
-    "\ "Deleted"   : "✖",
-    "\ "Dirty"     : "!",
-    "\ "Clean"     : "✔︎",
-    "\ 'Ignored'   : '☒',
-    "\ "Unknown"   : "?"
-    "\ }
-"let NERDTreeShowHidden=1
-
-"let g:NERDTreeWinSize=25
-
-"let g:NERDTreeMapJumpPrevSibling="" "防止与vim-tmux-navigator 的按键冲突导光标在nerdtree中时无法移动到tmux窗口
-"let g:NERDTreeMapJumpNextSibling=""
-"nmap <leader>ne :NERDTreeToggle<cr> 
-"nmap <leader>nf :NERDTreeFind<cr> 
-
 "octol/vim-cpp-enhanced-highlight {{{2
 "let g:cpp_member_variable_highlight = 1
 "Plug 'bfrg/vim-cpp-modern' "c++高亮 {{{2
