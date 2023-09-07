@@ -175,26 +175,26 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 
 # }}}
 #rbenv {{{3
-export PATH="/Users/yeyj/.rbenv/shims:${PATH}"
-export RBENV_SHELL=zsh
-source '/usr/local/Cellar/rbenv/1.2.0/libexec/../completions/rbenv.zsh'
-command rbenv rehash 2>/dev/null
-rbenv() {
-  local command
-  command="${1:-}"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
+#export PATH="/Users/yeyj/.rbenv/shims:${PATH}"
+#export RBENV_SHELL=zsh
+#source '/usr/local/Cellar/rbenv/1.2.0/libexec/../completions/rbenv.zsh'
+#command rbenv rehash 2>/dev/null
+#rbenv() {
+  #local command
+  #command="${1:-}"
+  #if [ "$#" -gt 0 ]; then
+    #shift
+  #fi
 
-  case "$command" in
-  rehash|shell)
-    eval "$(rbenv "sh-$command" "$@")";;
-  *)
-    command rbenv "$command" "$@";;
-  esac
-}
+  #case "$command" in
+  #rehash|shell)
+    #eval "$(rbenv "sh-$command" "$@")";;
+  #*)
+    #command rbenv "$command" "$@";;
+  #esac
+#}
 
 #nvm {{{4
 #export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+#[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+#[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
