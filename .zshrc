@@ -100,6 +100,13 @@ alias tablet='_adb_export_and_connect tablet'
 alias cu360='_adb_export_and_connect cu360'
 alias s7='_adb_export_and_connect s7'
 
+
+function depot_tools_enable()
+{
+    export PATH="$HOME/dev/source_code/depot_tools:$PATH"
+    export PATH="$HOME/dev/source_code/depot_tools/python-bin:$PATH"
+}
+
 # OS specific settings {{{1
 case "$OSTYPE" in
     darwin*)
