@@ -45,7 +45,7 @@ augroup END
 
 "Custom key maps{{{1
 "
-"Overview of which map command works in which mode.  More details below.
+"1. Overview of which map command works in which mode.  More details below.
      "COMMANDS                    MODES ~
 ":map   :noremap  :unmap     Normal, Visual, Select, Operator-pending
 ":nmap  :nnoremap :nunmap    Normal
@@ -57,6 +57,12 @@ augroup END
 ":imap  :inoremap :iunmap    Insert
 ":lmap  :lnoremap :lunmap    Insert, Command-line, Lang-Arg
 ":cmap  :cnoremap :cunmap    Command-line
+"
+"2. Prefixs
+" <S-X>: Shift + X
+" <M-X>: Alt(Meta) + X
+" <C-X>: Ctrl + X
+" <Leader>: Leader key, set in mapleader, currently ','
 
 "- / = 调整窗口高度
 "Shift + (- / =) 调整窗口宽度
@@ -64,13 +70,9 @@ nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
 nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
 nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
-"双击Esc推出终端输入模式
-"tnoremap <Esc><Esc> <C-\><C-n>
 "忘记打sudo，打w!!可写
 cnoremap w!! %!sudo tee > /dev/null %
-"切换tab快捷键
-nn <M-down> :lnext<cr>zvzz
-nn <M-up> :lprevious<cr>zvzz
+"tab switching
 nn <silent> <M-1> :tabnext 1<cr>
 nn <silent> <M-2> :tabnext 2<cr>
 nn <silent> <M-3> :tabnext 3<cr>
@@ -93,10 +95,8 @@ nnoremap H :noh<Enter>
 noremap <silent><f7> :AsyncTask assemble<cr>
 noremap <silent><f6> :AsyncTask buildCore<cr>
 
-"nmap <silent> <C-N> :cnext<CR>zz
-"nmap <silent> <C-P> :cprev<CR>zz
-nmap <silent> <C-N> <Plug>(coc-diagnostic-next)
 nmap <silent> <C-P> <Plug>(coc-diagnostic-prev)
+nmap <silent> <C-N> <Plug>(coc-diagnostic-next)
 
 
 "Plugins {{{1
@@ -141,6 +141,8 @@ Plug 'weirongxu/plantuml-previewer.vim' "preview plantUML
 "Plug 'nathom/filetype.nvim' "speedup filetype detection -> disable due to conflict with plantuml-syntax
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax hilighting
 Plug 'nvim-treesitter/playground' "TSHighlightCapturesUnderCursor
+Plug 'mfussenegger/nvim-dap' "lldb support in nvim
+Plug 'rcarriga/nvim-dap-ui' "lldb support in nvim
 call plug#end()
 
 "Colorschemes {{{1
@@ -178,11 +180,6 @@ colorscheme hybrid
 "Plugin settings {{{1
 "coc.nvim {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
-    " caller
-    nn <silent> gc :call CocLocations('ccls','$ccls/call')<cr>
-    " callee
-    nn <silent> gC :call CocLocations('ccls','$ccls/call',{'callee':v:true})<cr>
-
     " coc extensions
     let g:coc_global_extensions = ['coc-snippets', 'coc-pyright']
     
@@ -248,7 +245,6 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     nmap <leader>rn <Plug>(coc-rename)
 
     " Remap for format selected region
-    "noremap <leader>f  :Neoformat<cr> 
     xmap <leader>f  <Plug>(coc-format-selected)
     nmap <leader>f  <Plug>(coc-format-selected)
 
@@ -265,7 +261,7 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     nn <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
     nn <silent> xd <Plug>(coc-implementation)
     " caller
-    "nn <silent> xc :call CocLocations('ccls','$ccls/call')<cr> (see vim-ccls)
+    "use vim-ccls instead, checkout vim-ccls's configuration below
 
     " Use `:Fold` to fold current buffer
     command! -nargs=? Fold :call     CocAction('fold', <f-args>)
@@ -420,7 +416,6 @@ if exists(':tnoremap')
  tnoremap <silent> <c-j> <c-w>:TmuxNavigateDown<cr>
  tnoremap <silent> <c-k> <c-w>:TmuxNavigateUp<cr>
  tnoremap <silent> <c-l> <c-w>:TmuxNavigateRight<cr>
- tnoremap <silent> <c-\> <c-w>:TmuxNavigatePrevious<cr>
 endif
 
 "fzf设置 {{{2
@@ -579,4 +574,40 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 nmap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
+endif
+
+"mfussenegger/nvim-dap {{{2
+if !empty(glob($HOME."/.vim/plugged/nvim-dap"))
+lua << EOF
+
+local dap = require('dap')
+dap.adapters.lldb = {
+  type = 'executable',
+  command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
+  name = 'lldb'
+}
+
+dap.configurations.cpp = {
+  {
+    name = 'Launch',
+    type = 'lldb',
+    request = 'launch',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {},
+  },
+}
+
+EOF
+endif
+"rcarriga/nvim-dap-ui {{{2
+if !empty(glob($HOME."/.vim/plugged/nvim-dap-ui"))
+lua << EOF
+
+require("dapui").setup()
+
+EOF
 endif
