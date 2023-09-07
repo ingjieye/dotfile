@@ -77,11 +77,11 @@ nn <silent> <M-3> :tabnext 3<cr>
 nn <silent> <M-4> :tabnext 4<cr>
 nn <silent> <M-5> :tabnext 5<cr>
 "for macos
-nn ¡ :tabnext 1<cr>
-nn ™ :tabnext 2<cr>
-nn £ :tabnext 3<cr>
-nn ¢ :tabnext 4<cr>
-nn ∞ :tabnext 5<cr>
+"nn ¡ :tabnext 1<cr>
+"nn ™ :tabnext 2<cr>
+"nn £ :tabnext 3<cr>
+"nn ¢ :tabnext 4<cr>
+"nn ∞ :tabnext 5<cr>
 "Ctrl-s 保存
 noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
