@@ -18,6 +18,8 @@ install_essentials_osx() {
     echo 'Installing essentials for osx...'
     brew update
     brew instal fzf nvim node tmux p7zip
+    ~/.tmux/plugins/tpm/bin/install_plugins #install tmux plugins
+
     brew install oath-toolkit #Google 2 factor authentication
     brew install coreutils #realpath tool
     brew install tldr #tldr
@@ -25,7 +27,7 @@ install_essentials_osx() {
     brew install rg #ripgrep
     brew install fd #https://github.com/chinanf-boy/fd-zh
     brew install git-delta #syntax hilighting pager
-    brew install cmake conan ccache
+    brew install cmake conan@1 ccache ninja
     brew install plantuml #weirongxu/plantuml-previewer
     brew install golang
     go install golang.org/x/tools/gopls@latest #go LSP
