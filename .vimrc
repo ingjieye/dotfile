@@ -255,10 +255,10 @@ let g:tagbar_width = 30
 
 "----------------- git-messenger --------------- {{{2
 let g:git_messenger_date_format = "%Y-%m-%d %X"
-"----------------- vim-ccls --------------- {{{2
-let g:ccls_size = 10
+"----------------- m-pilia/vim-ccls --------------- {{{2
+" let g:ccls_size = 10
 let g:ccls_position = 'botright'
-let g:ccls_orientation = 'horizontal'
+" let g:ccls_orientation = 'horizontal'
 "----------------- asynctasks --------------- {{{2
 let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
@@ -401,13 +401,29 @@ dap.configurations.cpp = {
   },
 }
 
+vim.fn.sign_define("DapBreakpoint", { text = "🔴" })
+vim.fn.sign_define("DapStopped", { text = "👉" })
+
 EOF
 endif
 "----------------- rcarriga/nvim-dap-ui --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/nvim-dap-ui"))
 lua << EOF
 
-require("dapui").setup()
+require("dapui").setup({
+    icons = { expanded = "▾", collapsed = "▸", current_frame = "▸"}
+})
+
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
 
 EOF
 endif
@@ -430,6 +446,8 @@ endif
 " <M-X>: Alt(Meta) + X
 " <C-X>: Ctrl + X
 " <Leader>: Leader key, set in mapleader, currently ','
+"
+" Use :Maps to show all Keybindings (supported by FZF)
 
 " ----------------- No Prefix ----------------- {{{2
 nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
@@ -495,6 +513,16 @@ nnoremap <leader>nf :NvimTreeFindFile<cr>
 nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 nnoremap <silent><leader>gd <C-w>s<Plug>(coc-definition)
 nnoremap <leader>cc <Plug>NERDCommenterToggle
+vnoremap <leader>cc <Plug>NERDCommenterToggle
+
+nnoremap <leader>dh :lua require'dap'.step_out()<CR>
+nnoremap <leader>dl :lua require'dap'.step_into()<CR>
+nnoremap <leader>dj :lua require'dap'.step_over()<CR>
+nnoremap <leader>dc :lua require'dap'.continue()<CR>
+nnoremap <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <leader>d_ :lua require'dap'.run_last()<CR>
+nnoremap <leader>ds :lua require'dap'.terminate()<CR>
+nnoremap <leader>du :lua require'dapui'.toggle()<CR>
 
 " ----------------- Space ----------------- {{{2
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
