@@ -488,8 +488,9 @@ nnoremap <silent> <M-5> :tabnext 5<cr>
 noremap  <silent> <C-S> :update<CR>
 vnoremap <silent> <C-S> <C-C>:update<CR>
 inoremap <silent> <C-S> <Esc>:update<CR>
-nnoremap <silent> <C-P> <Plug>(coc-diagnostic-prev)
-nnoremap <silent> <C-N> <Plug>(coc-diagnostic-next)
+"Map <C-P> and <C-N> to Jump between coc diagnostics and quickfix, if no quickfix, then jump between coc diagnostics
+nnoremap <expr> <C-P> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-prev)' : ':cp<CR>')
+nnoremap <expr> <C-N> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-next)' : ':cn<CR>')
 nnoremap <silent> <C-F> :FZF<CR>
 
 if has('nvim')
