@@ -80,5 +80,5 @@
 [includeIf "gitdir:~/dev/rc/"]
     path = ~/.gitconfig_work
 
-[http]
-    proxy = http://127.0.0.1:7890
+;[http]
+    ;proxy = http://127.0.0.1:7890

@@ -69,7 +69,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'godlygeek/tabular' "markdown highlighting
 Plug 'plasticboy/vim-markdown'
 Plug 'liuchengxu/vista.vim' "show LSP symbols in side bar (and also status bar)
-Plug 'vim-syntastic/syntastic' "swift support
 Plug 'keith/swift.vim' "swift support
 Plug 'phaazon/hop.nvim' "vim-easymotion alternative
 "Plug 'kshenoy/vim-signature' "bookmark
@@ -84,6 +83,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax hilighting
 Plug 'nvim-treesitter/playground' "TSHighlightCapturesUnderCursor
 Plug 'mfussenegger/nvim-dap' "lldb support in nvim
 Plug 'rcarriga/nvim-dap-ui' "lldb support in nvim
+Plug 'github/copilot.vim' "github copilot
+Plug 'nvim-lua/plenary.nvim' "dependency for telescope
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
@@ -122,7 +124,7 @@ colorscheme hybrid
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " coc extensions
-    let g:coc_global_extensions = ['coc-snippets', 'coc-pyright']
+    let g:coc_global_extensions = ['coc-snippets', 'coc-pyright', 'coc-tsserver']
     
     "Some servers have issues with backup files, see #649
     set nobackup
@@ -191,7 +193,7 @@ autocmd User CocStatusChange redrawstatus "Fix status line can't auto update
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
-autocmd User CocStatusChange call vista#RunForNearestMethodOrFunction()
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -248,7 +250,9 @@ command! -bang -nargs=* Rgi
 "\                         : fzf#vim#with_preview('right:50%:hidden', '?'),
 "\                 <bang>0)
 
+" let g:fzf_layout = { 'window': { 'width': 0.4, 'height': 1, 'xoffset': 0, 'border': 'right' } }
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
+" let g:fzf_layout = { 'left': '~40%' }
 
 "----------------- tagbar --------------- {{{2
 let g:tagbar_width = 30
@@ -256,9 +260,9 @@ let g:tagbar_width = 30
 "----------------- git-messenger --------------- {{{2
 let g:git_messenger_date_format = "%Y-%m-%d %X"
 "----------------- m-pilia/vim-ccls --------------- {{{2
-" let g:ccls_size = 10
+let g:ccls_size = 10
 let g:ccls_position = 'botright'
-" let g:ccls_orientation = 'horizontal'
+let g:ccls_orientation = 'horizontal'
 "----------------- asynctasks --------------- {{{2
 let g:asyncrun_open = 6
 let g:asynctasks_term_pos = 'tab'
@@ -512,18 +516,18 @@ nnoremap <leader>qf <Plug>(coc-fix-current)
 nnoremap <leader>ne :NvimTreeToggle<cr> 
 nnoremap <leader>nf :NvimTreeFindFile<cr> 
 nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
-nnoremap <silent><leader>gd <C-w>s<Plug>(coc-definition)
+nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'tabe')<CR>
 nnoremap <leader>cc <Plug>NERDCommenterToggle
 vnoremap <leader>cc <Plug>NERDCommenterToggle
 
-nnoremap <leader>dh :lua require'dap'.step_out()<CR>
-nnoremap <leader>dl :lua require'dap'.step_into()<CR>
-nnoremap <leader>dj :lua require'dap'.step_over()<CR>
-nnoremap <leader>dc :lua require'dap'.continue()<CR>
-nnoremap <leader>db :lua require'dap'.toggle_breakpoint()<CR>
-nnoremap <leader>d_ :lua require'dap'.run_last()<CR>
-nnoremap <leader>ds :lua require'dap'.terminate()<CR>
-nnoremap <leader>du :lua require'dapui'.toggle()<CR>
+nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
+nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
+nnoremap <silent><leader>dj :lua require'dap'.step_over()<CR>
+nnoremap <silent><leader>dc :lua require'dap'.continue()<CR>
+nnoremap <silent><leader>db :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent><leader>d_ :lua require'dap'.run_last()<CR>
+nnoremap <silent><leader>ds :lua require'dap'.terminate()<CR>
+nnoremap <silent><leader>du :lua require'dapui'.toggle()<CR>
 
 " ----------------- Space ----------------- {{{2
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>

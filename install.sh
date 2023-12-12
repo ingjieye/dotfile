@@ -48,7 +48,7 @@ install_essentials_linux() {
         curl -sL install-node.vercel.app/lts | bash
 
         #neovim ppa
-        add-apt-repository ppa:neovim-ppa/unstable
+        add-apt-repository ppa:neovim-ppa/stable
 
         apt install -y neovim
         apt install -y ripgrep

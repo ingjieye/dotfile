@@ -206,3 +206,31 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 #export NVM_DIR="$HOME/.nvm"
 #[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# Functions {{{1
+retry_command() {
+    local max_attempts=3
+    local delay_seconds=5
+    local attempt=1
+
+    while [ $attempt -le $max_attempts ]; do
+        echo "Attempt $attempt of $max_attempts"
+        "$@"
+        exit_code=$?
+
+        if [ $exit_code -eq 0 ]; then
+            echo "Command succeeded"
+            return 0
+        else
+            echo "Command failed with exit code $exit_code"
+            if [ $attempt -lt $max_attempts ]; then
+                echo "Retrying in $delay_seconds seconds..."
+                sleep $delay_seconds
+            else
+                echo "Maximum retry attempts reached, exiting."
+                return $exit_code
+            fi
+        fi
+
+        ((attempt++))
+    done
+}
