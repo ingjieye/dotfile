@@ -1,10 +1,12 @@
 ﻿---
-BasedOnStyle: Google
+BasedOnStyle: Chromium
 BreakBeforeBraces: Linux
 IndentWidth: '4'
-ColumnLimit: 140
+ColumnLimit: 100
 AccessModifierOffset: 0
 NamespaceIndentation: All
 AllowShortFunctionsOnASingleLine: Empty
+
+BreakInheritanceList: AfterColon
 
 ...
