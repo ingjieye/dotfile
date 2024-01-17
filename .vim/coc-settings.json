@@ -27,7 +27,8 @@
                 "excludeArgs": [
                     "-xc++",
                     "-gmodules",
-                    "-fmodules*"
+                    "-fmodules*",
+                    "-Wunused-variable"
                 ]
             }
         }
