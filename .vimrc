@@ -42,6 +42,65 @@ augroup VimInitStyle
 	au FileType qf setlocal nonumber
 augroup END
 
+" Make quickfix looks better {{{2
+" https://github.com/kevinhwang91/nvim-bqf#format-new-quickfix
+lua << EOF
+local fn = vim.fn
+
+function _G.qftf(info)
+    local items
+    local ret = {}
+    -- The name of item in list is based on the directory of quickfix window.
+    -- Change the directory for quickfix window make the name of item shorter.
+    -- It's a good opportunity to change current directory in quickfixtextfunc :)
+    --
+    -- local alterBufnr = fn.bufname('#') -- alternative buffer is the buffer before enter qf window
+    -- local root = getRootByAlterBufnr(alterBufnr)
+    -- vim.cmd(('noa lcd %s'):format(fn.fnameescape(root)))
+    --
+    if info.quickfix == 1 then
+        items = fn.getqflist({id = info.id, items = 0}).items
+    else
+        items = fn.getloclist(info.winid, {id = info.id, items = 0}).items
+    end
+    local limit = 31
+    local fnameFmt1, fnameFmt2 = '%-' .. limit .. 's', '…%.' .. (limit - 1) .. 's'
+    local validFmt = '%s │%5d:%-3d│%s %s'
+    for i = info.start_idx, info.end_idx do
+        local e = items[i]
+        local fname = ''
+        local str
+        if e.valid == 1 then
+            if e.bufnr > 0 then
+                fname = fn.bufname(e.bufnr)
+                if fname == '' then
+                    fname = '[No Name]'
+                else
+                    fname = fname:gsub('^' .. vim.env.HOME, '~')
+                end
+                -- char in fname may occur more than 1 width, ignore this issue in order to keep performance
+                if #fname <= limit then
+                    fname = fnameFmt1:format(fname)
+                else
+                    fname = fnameFmt2:format(fname:sub(1 - limit))
+                end
+            end
+            local lnum = e.lnum > 99999 and -1 or e.lnum
+            local col = e.col > 999 and -1 or e.col
+            local qtype = e.type == '' and '' or ' ' .. e.type:sub(1, 1):upper()
+            str = validFmt:format(fname, lnum, col, qtype, e.text)
+        else
+            str = e.text
+        end
+        table.insert(ret, str)
+    end
+    return ret
+end
+
+vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
+
+EOF
+
 "----------------- Plugins ----------------- {{{1
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -86,6 +145,7 @@ Plug 'rcarriga/nvim-dap-ui' "lldb support in nvim
 Plug 'github/copilot.vim' "github copilot
 Plug 'nvim-lua/plenary.nvim' "dependency for telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
+Plug 'kevinhwang91/nvim-bqf' "better quickfix window
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
@@ -120,7 +180,7 @@ colorscheme hybrid
 "let g:two_firewatch_italics=1
 "colorscheme two-firewatch
 
-"----------------- Plugin settings ----------------- {{{1
+"----------------- Plugin Options ----------------- {{{1
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " coc extensions
@@ -410,26 +470,51 @@ vim.fn.sign_define("DapStopped", { text = "👉" })
 
 EOF
 endif
-"----------------- rcarriga/nvim-dap-ui --------------- {{{2
-if !empty(glob($HOME."/.vim/plugged/nvim-dap-ui"))
+"----------------- kevinhwang91/nvim-bqf --------------- {{{2
+if !empty(glob($HOME."/.vim/plugged/nvim-bqf"))
 lua << EOF
+require('bqf').setup({
+    auto_enable = true,
+    auto_resize_height = true, -- highly recommended enable
+    preview = {
+        winblend = 0,
+        win_height = 12,
+        win_vheight = 12,
+        delay_syntax = 80,
+        border = {'┏', '━', '┓', '┃', '┛', '━', '┗', '┃'},
+        show_title = false,
+        should_preview_cb = function(bufnr, qwinid)
+            local ret = true
+            local bufname = vim.api.nvim_buf_get_name(bufnr)
+            local fsize = vim.fn.getfsize(bufname)
+            if fsize > 100 * 1024 then
+                -- skip file size greater than 100k
+                ret = false
+            elseif bufname:match('^fugitive://') then
+                -- skip fugitive buffer
+                ret = false
+            end
+            return ret
+        end
+    },
 
-require("dapui").setup({
-    icons = { expanded = "▾", collapsed = "▸", current_frame = "▸"}
+    func_map = {
+        open = 'o',
+        openc = '<CR>',
+    },
 })
-
-local dap, dapui = require("dap"), require("dapui")
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
-
 EOF
+
+hi default link BqfPreviewFloat Normal
+hi default link BqfPreviewBorder FloatBorder
+hi default link BqfPreviewTitle Title
+hi default link BqfPreviewThumb PmenuThumb
+hi default link BqfPreviewSbar PmenuSbar
+hi default link BqfPreviewCursor Cursor
+hi default link BqfPreviewCursorLine CursorLine
+hi default link BqfPreviewRange IncSearch
+hi default link BqfPreviewBufLabel BqfPreviewRange
+
 endif
 "----------------- Keybindings -----------------{{{1
 " ----------------- Reference ----------------- {{{2
@@ -509,16 +594,21 @@ autocmd FileType log noremap <silent> <C-M> m.
 
 " ----------------- Leader ----------------- {{{2
 nnoremap <leader>rn <Plug>(coc-rename)
-nnoremap <leader>f  <Plug>(coc-format-selected)
-xnoremap <leader>f  <Plug>(coc-format-selected)
-nnoremap <leader>ac <Plug>(coc-codeaction)
-nnoremap <leader>qf <Plug>(coc-fix-current)
-nnoremap <leader>ne :NvimTreeToggle<cr> 
-nnoremap <leader>nf :NvimTreeFindFile<cr> 
-nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
-nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'tabe')<CR>
+
+"<leader>c : code related action
+nnoremap <leader>cf  <Plug>(coc-format-selected)
+xnoremap <leader>cf  <Plug>(coc-format-selected)
 nnoremap <leader>cc <Plug>NERDCommenterToggle
 vnoremap <leader>cc <Plug>NERDCommenterToggle
+
+nnoremap <leader>ac <Plug>(coc-codeaction)
+nnoremap <leader>qf <Plug>(coc-fix-current)
+
+nnoremap <leader>ne :NvimTreeToggle<cr> 
+nnoremap <leader>nf :NvimTreeFindFile<cr> 
+
+nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
+nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'tabe')<CR>
 
 nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
 nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
@@ -528,6 +618,8 @@ nnoremap <silent><leader>db :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent><leader>d_ :lua require'dap'.run_last()<CR>
 nnoremap <silent><leader>ds :lua require'dap'.terminate()<CR>
 nnoremap <silent><leader>du :lua require'dapui'.toggle()<CR>
+
+nnoremap <silent><leader>f :Telescope<CR>
 
 " ----------------- Space ----------------- {{{2
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
