@@ -37,6 +37,9 @@ install_essentials_osx() {
     sudo pwpolicy -clearaccountpolicies #disable password length limit
 
     brew install jesseduffield/lazygit/lazygit #lazygit, a git tui, see https://github.com/jesseduffield/lazygit
+    
+    brew tap homebrew/cask-fonts
+    brew install --cask "font-caskaydia-cove-nerd-font" #install nerd font
 }
 
 install_essentials_linux() {
