@@ -593,6 +593,8 @@ inoremap <silent><expr> <S-Tab>
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
+" Map the 'q' key to call the CloseQuickfix function only when the quickfix window is open
+nnoremap <silent><expr> q getwinvar(winnr(), '&buftype') ==# 'quickfix' ? ':cclose<CR>' : 'q'
 " ----------------- Alt(meta/option) ----------------- {{{2
 nnoremap <silent> <M-1> :tabnext 1<cr>
 nnoremap <silent> <M-2> :tabnext 2<cr>
