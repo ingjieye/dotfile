@@ -614,8 +614,8 @@ noremap  <silent> <C-S> :update<CR>
 vnoremap <silent> <C-S> <C-C>:update<CR>
 inoremap <silent> <C-S> <Esc>:update<CR>
 "Map <C-P> and <C-N> to Jump between coc diagnostics and quickfix, if no quickfix, then jump between coc diagnostics
-nnoremap <expr> <C-P> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-prev)' : ':cp<CR>')
-nnoremap <expr> <C-N> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-next)' : ':cn<CR>')
+nnoremap <silent><expr> <C-P> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-prev)' : ':cp<CR>')
+nnoremap <silent><expr> <C-N> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-next)' : ':cn<CR>')
 nnoremap <silent> <C-F> :FZF<CR>
 
 if has('nvim')
@@ -635,7 +635,7 @@ imap <silent><expr> <C-K> copilot#Accept("\<CR>")
 nnoremap <leader>rn <Plug>(coc-rename)
 
 "<leader>c : code related action
-nnoremap <leader>cf  <Plug>(coc-format-selected)
+nnoremap <leader>cf  <Plug>(coc-format-selected)l
 xnoremap <leader>cf  <Plug>(coc-format-selected)
 nnoremap <leader>cc <Plug>NERDCommenterToggle
 vnoremap <leader>cc <Plug>NERDCommenterToggle
