@@ -1,2 +1,2 @@
 #!/bin/zsh
-exec "$HOME/dev/source_code/ccls/Debug/ccls" -log-file=/tmp/ccls.log -v=2 "$@"
+exec "$HOME/dev/source_code/ccls/Debug/ccls" -log-file=/tmp/ccls.log -v=1 "$@"
