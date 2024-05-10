@@ -1,3 +1,6 @@
 .git/
 .ccls-cache/
 **/Pods/Headers/
+.cache/*
+**/src/main/jni/*
+**/.cxx/Debug/*
