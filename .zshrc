@@ -183,24 +183,9 @@ zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=alw
 
 # }}}
 #rbenv {{{3
-#export PATH="/Users/yeyj/.rbenv/shims:${PATH}"
-#export RBENV_SHELL=zsh
-#source '/usr/local/Cellar/rbenv/1.2.0/libexec/../completions/rbenv.zsh'
-#command rbenv rehash 2>/dev/null
-#rbenv() {
-  #local command
-  #command="${1:-}"
-  #if [ "$#" -gt 0 ]; then
-    #shift
-  #fi
-
-  #case "$command" in
-  #rehash|shell)
-    #eval "$(rbenv "sh-$command" "$@")";;
-  #*)
-    #command rbenv "$command" "$@";;
-  #esac
-#}
+if command -v rbenv &> /dev/null; then 
+    eval "$(rbenv init - zsh)"
+fi
 
 #nvm {{{4
 #export NVM_DIR="$HOME/.nvm"
