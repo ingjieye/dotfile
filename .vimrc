@@ -244,6 +244,12 @@ let g:signify_sign_show_count = 0
 let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
 
+"----------------- liuchengxu/vista.vim --------------- {{{2
+let g:vista_echo_cursor = 0
+let g:vista_default_executive = 'coc'
+let g:vista#renderer#enable_icon = 1
+let g:vista_cursor_delay = 0
+let g:vista_sidebar_position = 'vertical topleft'
 "----------------- lightline --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/lightline.vim"))
 
@@ -333,11 +339,6 @@ let g:asynctasks_rtp_config = "asynctasks.ini"
 "----------------- vim-markdown --------------- {{{2
 let g:vim_markdown_folding_disabled = 1
 
-"----------------- liuchengxu/vista.vim --------------- {{{2
-let g:vista_echo_cursor = 0
-let g:vista_default_executive = 'coc'
-let g:vista#renderer#enable_icon = 1
-let g:vista_cursor_delay = 0
 "----------------- phaazon/hop --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/hop.nvim"))
     lua require'hop'.setup()
