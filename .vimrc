@@ -544,6 +544,12 @@ require('bqf').setup({
 })
 EOF
 endif
+"----------------- github/copilot.vim --------------- {{{2
+let g:copilot_no_tab_map = v:true
+let g:copilot_filetypes = {
+      \ '*': v:false,
+      \ }
+
 "----------------- Keybindings -----------------{{{1
 " ----------------- Reference ----------------- {{{2
 "COMMANDS                    MODES ~
