@@ -180,6 +180,8 @@ colorscheme hybrid
 "let g:two_firewatch_italics=1
 "colorscheme two-firewatch
 
+hi SignColumn guibg=NONE " make signcolumn transparent
+
 "----------------- Plugin Options ----------------- {{{1
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
