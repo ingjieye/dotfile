@@ -318,6 +318,22 @@ command! -bang -nargs=* Rgi
 "\                         : fzf#vim#with_preview('right:50%:hidden', '?'),
 "\                 <bang>0)
 
+function! s:build_quickfix_list(lines)
+  if len(a:lines) == 1
+    execute 'tabedit' a:lines[0]
+  else
+    call setqflist(map(copy(a:lines), '{ "filename": v:val, "lnum": 1 }'))
+    copen
+    cc
+  endif
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-t': function('s:build_quickfix_list'),
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+
 " let g:fzf_layout = { 'window': { 'width': 0.4, 'height': 1, 'xoffset': 0, 'border': 'right' } }
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
 " let g:fzf_layout = { 'left': '~40%' }
