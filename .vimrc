@@ -702,6 +702,7 @@ nnoremap <silent><leader>nf :NvimTreeFindFile<cr>
 
 nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
+nnoremap <silent><leader>gt :call CocAction('jumpDefinition', 'tabe')<CR>
 
 nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
 nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
