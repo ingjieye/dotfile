@@ -531,8 +531,8 @@ require('bqf').setup({
     },
 
     func_map = {
-        open = 'o', --  open the item under the cursor                             
-        openc = '<CR>', --  open the item, and close quickfix window                   
+        open = '<CR>', --  open the item under the cursor                             
+        openc = 'o', --  open the item, and close quickfix window                   
         drop = 'O', --  use `drop` to open the item, and close quickfix window     
         tabdrop = '', --  use `tab drop` to open the item, and close quickfix window 
         tab = 't', --  open the item in a new tab                                 
@@ -540,8 +540,8 @@ require('bqf').setup({
         tabc = '<C-t>', --  open the item in a new tab, and close quickfix window      
         split = '<C-x>', --  open the item in horizontal split                          
         vsplit = '<C-v>', --  open the item in vertical split                            
-        prevfile = '<C-p>', --  go to previous file under the cursor in quickfix window    
-        nextfile = '<C-n>', --  go to next file under the cursor in quickfix window        
+        prevfile = '', --  go to previous file under the cursor in quickfix window    
+        nextfile = '', --  go to next file under the cursor in quickfix window        
         prevhist = '<', --  cycle to previous quickfix list in quickfix window         
         nexthist = '>', --  cycle to next quickfix list in quickfix window             
         lastleave = '\'"', --  go to last selected item in quickfix window                
