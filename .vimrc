@@ -682,8 +682,7 @@ autocmd FileType log noremap <silent> <C-N> ]`zz
 autocmd FileType log noremap <silent> <C-P> [`zz
 autocmd FileType log noremap <silent> <C-M> m.
 
-imap <silent><expr> <C-L> copilot#Suggest()
-imap <silent><expr> <C-K> copilot#Accept("\<CR>")
+imap <silent><expr> <C-L> exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") : copilot#Suggest()
 
 " ----------------- Leader ----------------- {{{2
 nnoremap <leader>rn <Plug>(coc-rename)
