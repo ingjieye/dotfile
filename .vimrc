@@ -653,16 +653,16 @@ imap <silent><expr> <C-K> copilot#Accept("\<CR>")
 nnoremap <leader>rn <Plug>(coc-rename)
 
 "<leader>c : code related action
-nnoremap <leader>cf  <Plug>(coc-format-selected)l
-xnoremap <leader>cf  <Plug>(coc-format-selected)
-nnoremap <leader>cc <Plug>NERDCommenterToggle
-vnoremap <leader>cc <Plug>NERDCommenterToggle
+nnoremap <silent><leader>cf <Plug>(coc-format-selected)l
+xnoremap <silent><leader>cf <Plug>(coc-format-selected)
+nnoremap <silent><leader>cc <Plug>NERDCommenterToggle
+vnoremap <silent><leader>cc <Plug>NERDCommenterToggle
 
-nnoremap <leader>ac <Plug>(coc-codeaction)
-nnoremap <leader>qf <Plug>(coc-fix-current)
+nnoremap <silent><leader>ac <Plug>(coc-codeaction)
+nnoremap <silent><leader>qf <Plug>(coc-fix-current)
 
-nnoremap <leader>ne :NvimTreeToggle<cr> 
-nnoremap <leader>nf :NvimTreeFindFile<cr> 
+nnoremap <silent><leader>ne :NvimTreeToggle<cr> 
+nnoremap <silent><leader>nf :NvimTreeFindFile<cr> 
 
 nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'vsplit')<CR>
