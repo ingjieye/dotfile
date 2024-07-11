@@ -1,72 +1,63 @@
+[include]
+    path = ~/.config/git/themes.gitconfig
+
+[includeIf "gitdir:~/dev/rc/"]
+    path = ~/.config/git/work.gitconfig
+
 [core]
-	excludesfile = ~/.gitignore_global
+    excludesfile = ~/.config/git/.gitignore_global
 	editor = nvim
     pager = delta
+
 [interactive]
     diffFilter = delta --color-only
-[delta "calochortus-lyallii"]
-    # author: https://github.com/manojkarthick
-    commit-decoration-style = none
-    dark = true
-    file-added-label = [+]
-    file-copied-label = [C]
-    file-decoration-style = none
-    file-modified-label = [M]
-    file-removed-label = [-]
-    file-renamed-label = [R]
-    file-style = 232 bold 184
-    hunk-header-decoration-style = none
-    hunk-header-file-style = "#999999"
-    hunk-header-line-number-style = bold "#03a4ff"
-    hunk-header-style = file line-number syntax
-    line-numbers = true
-    line-numbers-left-style = black
-    line-numbers-minus-style = "#B10036"
-    line-numbers-plus-style = "#03a4ff"
-    line-numbers-right-style = black
-    line-numbers-zero-style = "#999999"
-    minus-emph-style = syntax bold "#780000"
-    minus-style = syntax "#400000"
-    plus-emph-style = syntax bold "#007800"
-    plus-style = syntax "#004000"
-    whitespace-error-style = "#280050" reverse
-    zero-style = syntax
-    syntax-theme = Nord
+
 [delta]
     navigate = true  # use n and N to move between diff sections
     line-numbers = true
     side-by-side = false
-    features = calochortus-lyallii
+    features = hoopoe
+
 [merge]
     conflictstyle = diff3
+
 [diff]
     colorMoved = default
+
 [push]
 	default = current
+
 [icdiff]
 	options = --highlight --line-numbers
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
+
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [alias]
     find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
     show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+
 [log]
 	date = iso-local
+
 [pull]
 	ff = only
+
 [color]
   ui = true
   diff = auto
   status = auto
   grep = auto
+
 [color "branch"]
   current = yellow reverse
   local = yellow
   remote = green
+
 [color "diff"]
   meta = yellow bold
   old = red
@@ -77,8 +68,3 @@
     name = ingjieye
     email = ingjieye@gmail.com
 
-[includeIf "gitdir:~/dev/rc/"]
-    path = ~/.gitconfig_work
-
-;[http]
-    ;proxy = http://127.0.0.1:7890
