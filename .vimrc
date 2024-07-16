@@ -586,6 +586,7 @@ let g:copilot_filetypes = {
       \ }
 
 "----------------- nvim-telescope/telescope.nvim --------------- {{{2
+if !empty(glob($HOME."/.vim/plugged/telescope.nvim"))
 lua << EOF
 local actions = require("telescope.actions")
 require('telescope').setup{
@@ -600,6 +601,7 @@ require('telescope').setup{
     preview = {
       treesitter = false,
     },
+    layout_strategy = 'vertical',
   },
   pickers = {
     find_files = {
@@ -619,6 +621,7 @@ require('telescope').setup{
   }
 }
 EOF
+endif
 
 "----------------- Keybindings -----------------{{{1
 " ----------------- Reference ----------------- {{{2
