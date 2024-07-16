@@ -149,10 +149,10 @@ Plug 'nvim-lua/plenary.nvim' "dependency for telescope
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' } "dependency for telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'kevinhwang91/nvim-bqf' "better quickfix window
+Plug 'ingjieye/papercolor-theme' "colorscheme
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
-set background=dark
 "colorscheme gruvbox
 "colorscheme molokai
 "colorscheme solarized
@@ -164,7 +164,23 @@ set background=dark
 
 "let g:hybrid_custom_term_colors = 1
 "let g:hybrid_reduced_contrast = 1
-colorscheme hybrid
+
+" set background=dark
+" colorscheme hybrid
+
+set background=light
+colorscheme PaperColor
+" colorscheme catppuccin-latte
+" colorscheme edge
+
+" Color picker: https://www.w3schools.com/colors/colors_picker.asp
+if &background ==# 'dark'
+  hi default CocHighlightText  guibg=#474e52
+else
+  hi default CocHighlightText  guibg=#bfbfbf
+endif
+
+" hi default CocMenuSel guibg=#282a2e
 
 "let g:material_theme_style = 'lighter-community'
 "colorscheme material
@@ -213,8 +229,6 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
 
     " Highlight symbol under cursor on CursorHold, put it after colorscheme
     " settings to override.
-    hi default CocHighlightText guibg=#474e52
-    hi default CocMenuSel guibg=#282a2e
     autocmd CursorHold * silent call CocActionAsync('highlight')
     augroup mygroup
       autocmd!
@@ -266,7 +280,7 @@ function! NearestMethodOrFunction() abort
 endfunction
 autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'PaperColor',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             ['readonly', 'filename', 'modified', 'method', 'cocstatus'] ]
@@ -514,7 +528,7 @@ require('bqf').setup({
     auto_enable = true,
     auto_resize_height = true, -- highly recommended enable
     preview = {
-        winblend = 7,
+        winblend = 5,
         win_height = 12,
         win_vheight = 12,
         delay_syntax = 0,
