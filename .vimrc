@@ -42,6 +42,8 @@ augroup VimInitStyle
 	au FileType qf setlocal nonumber
 augroup END
 
+set shada=!,'10000,<50,s10,h "keep 10000 lines of file history and 50 lines of command line history
+
 " Make quickfix looks better {{{2
 " https://github.com/kevinhwang91/nvim-bqf#format-new-quickfix
 lua << EOF
