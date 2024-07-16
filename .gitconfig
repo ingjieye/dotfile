@@ -1,9 +1,6 @@
 [include]
     path = ~/.config/git/themes.gitconfig
 
-[includeIf "gitdir:~/dev/rc/"]
-    path = ~/.config/git/work.gitconfig
-
 [core]
     excludesfile = ~/.config/git/.gitignore_global
 	editor = nvim
@@ -68,3 +65,5 @@
     name = ingjieye
     email = ingjieye@gmail.com
 
+[includeIf "gitdir:~/dev/rc/"]
+    path = ~/.config/git/work.gitconfig
