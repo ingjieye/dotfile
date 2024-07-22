@@ -731,7 +731,10 @@ nnoremap <silent><leader>d_ :lua require'dap'.run_last()<CR>
 nnoremap <silent><leader>ds :lua require'dap'.terminate()<CR>
 nnoremap <silent><leader>du :lua require'dapui'.toggle()<CR>
 
-nnoremap <silent><leader>f :Telescope<CR>
+"<leader>f : Telescope
+nnoremap <silent><leader>ff :Telescope<CR>
+nnoremap <silent><leader>fg :Telescope live_grep<CR>
+nnoremap <silent><leader>fb :Telescope buffers<CR>
 
 " ----------------- Space ----------------- {{{2
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
