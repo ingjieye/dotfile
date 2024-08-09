@@ -10,7 +10,8 @@
                     ".cmake",
                     "/jni/",
                     "/DerivedData/"
-                ]
+                ],
+                "threads": 6
             },
             "diagnostics": {
                 "onChange": 1
