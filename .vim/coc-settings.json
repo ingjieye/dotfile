@@ -14,7 +14,7 @@
                 "threads": 4
             },
             "diagnostics": {
-                "onChange": 1
+                "onChange": 0
             },
             "completion": {
                 "caseSensitivity": 1,
