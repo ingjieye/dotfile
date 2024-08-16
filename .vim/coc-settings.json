@@ -11,7 +11,7 @@
                     "/jni/",
                     "/DerivedData/"
                 ],
-                "threads": 6
+                "threads": 4
             },
             "diagnostics": {
                 "onChange": 1
