@@ -19,7 +19,7 @@
             "completion": {
                 "caseSensitivity": 1,
                 "filterAndSort": false,
-                "maxNum": 1000
+                "maxNum": 100
             },
             "cache": {
                 "retainInMemory": 0
