@@ -205,7 +205,7 @@ hi SignColumn guibg=NONE " make signcolumn transparent
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
     " coc extensions
-    let g:coc_global_extensions = ['coc-snippets', 'coc-pyright', 'coc-tsserver']
+    let g:coc_global_extensions = ['coc-snippets', 'coc-pyright', 'coc-tsserver', 'coc-nav']
     
     "Some servers have issues with backup files, see #649
     set nobackup
@@ -273,12 +273,18 @@ let g:vista_sidebar_position = 'vertical topleft'
 if !empty(glob($HOME."/.vim/plugged/lightline.vim"))
 
 set noshowmode " -- INSERT -- is unnecessary anymore because the mode information is displayed in the statusline.
-autocmd User CocStatusChange redrawstatus "Fix status line can't auto update
+autocmd User CocStatusChange redrawstatus "Update status line when CocStatusChange
+autocmd User CocNavChanged redrawstatus "Update status line when CocNavChanged
 
 function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
+  let nav = get(b:, 'coc_nav', '')
+  if (len(nav)) != 0
+      return nav[len(nav) - 1]['name']
+  else
+      return ''
+  endif
 endfunction
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
 let g:lightline = {
       \ 'colorscheme': 'PaperColor',
       \ 'active': {
