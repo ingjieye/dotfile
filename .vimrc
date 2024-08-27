@@ -154,71 +154,56 @@ Plug 'pappasam/papercolor-theme-slim'
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
-"colorscheme gruvbox
-"colorscheme molokai
-"colorscheme solarized
-"colorscheme space-vim-dark
-"colorscheme apprentice
-"colorscheme one
-"colorscheme vim-material
-"colorscheme badwolf
+" Color picker: https://www.w3schools.com/colors/colors_picker.asp
+function! HighlightsForPaperColorSlim() abort
+    if &background ==# 'light'
+        highlight! Function                         guifg=#005faf guibg=NONE    gui=bold
+        highlight! Constant                         guifg=#444444 guibg=NONE    gui=NONE
+        highlight! DiffAdd                          guifg=#444444 guibg=#48985D gui=NONE
+        highlight! DiffDelete                       guifg=#444444 guibg=#af0000 gui=NONE
+        highlight! Search                           guifg=#444444 guibg=#ffff5f gui=NONE
+        highlight! SpellBad                         guifg=#af0000 guibg=#ffafd7 gui=undercurl,italic
+        highlight! LineNr                           guifg=#b2b2b2 guibg=NONE    gui=NONE
+        highlight! DiagnosticUnderLineError         guifg=#af0000 guibg=NONE    gui=undercurl
+        highlight! DiagnosticUnderLineWarn          guifg=#af5f00 guibg=NONE    gui=undercurl
+        highlight! DiagnosticUnderLineInfo          guifg=#005faf guibg=NONE    gui=undercurl
+        highlight! DiagnosticUnderLineHint          guifg=#005f87 guibg=NONE    gui=undercurl
+        highlight! DiagnosticUnderLineOk            guifg=#008700 guibg=NONE    gui=undercurl
 
-"let g:hybrid_custom_term_colors = 1
-"let g:hybrid_reduced_contrast = 1
+        highlight! link @type                                  NormalNC
+        highlight! link @type.builtin                          @keyword
+        highlight! link @constant.builtin                      @keyword
+        highlight! link @operator                              NormalNC
+        highlight! link @variable                              NormalNC
+        highlight! link @punctuation                           NormalNC
 
-" set background=dark
-" colorscheme hybrid
+        highlight! link CocSymbolVariable                      NormalNC
+        highlight! link CocSymbolReference                     NormalNC
+    endif
+endfunction
+
+function! HighlightsForCoc() abort
+    if &background ==# 'dark'
+      hi default CocHighlightText  guibg=#474e52
+    else
+      hi default CocHighlightText  guibg=#bfbfbf
+    endif
+endfunction
+
+function! HighlightsForAll() abort
+    highlight! SignColumn guibg=NONE " make signcolumn transparent
+endfunction
+
+augroup MyColors
+    autocmd!
+    autocmd ColorScheme PaperColorSlim call HighlightsForPaperColorSlim()
+    autocmd ColorScheme *              call HighlightsForCoc()
+    autocmd ColorScheme *              call HighlightsForAll()
+augroup END
 
 set background=light
-"colorscheme PaperColor
 colorscheme PaperColorSlim
-if colors_name ==# 'PaperColorSlim'
-    highlight! Function                         guifg=#005faf guibg=NONE    gui=bold
-    highlight! DiffAdd                          guifg=#444444 guibg=#48985D gui=NONE
-    highlight! DiffDelete                       guifg=#444444 guibg=#af0000 gui=NONE
-    highlight! Search                           guifg=#444444 guibg=#ffff5f gui=NONE
-    highlight! SpellBad                         guifg=#af0000 guibg=#ffafd7    gui=undercurl,italic
-    highlight! DiagnosticUnderLineError         guifg=#af0000 guibg=NONE gui=undercurl
-    highlight! DiagnosticUnderLineWarn          guifg=#af5f00 guibg=NONE gui=undercurl
-    highlight! DiagnosticUnderLineInfo          guifg=#005faf guibg=NONE gui=undercurl
-    highlight! DiagnosticUnderLineHint          guifg=#005f87 guibg=NONE gui=undercurl
-    highlight! DiagnosticUnderLineOk            guifg=#008700 guibg=NONE gui=undercurl
 
-    highlight! link @type                                  NormalNC
-    highlight! link @variable                              NormalNC
-    highlight! link CocSymbolVariable                      NormalNC
-    highlight! link CocSymbolReference                     NormalNC
-endif
-" colorscheme catppuccin-latte
-" colorscheme edge
-
-" Color picker: https://www.w3schools.com/colors/colors_picker.asp
-if &background ==# 'dark'
-  hi default CocHighlightText  guibg=#474e52
-else
-  hi default CocHighlightText  guibg=#bfbfbf
-endif
-
-" hi default CocMenuSel guibg=#282a2e
-
-"let g:material_theme_style = 'lighter-community'
-"colorscheme material
-
-"let g:seoul256_background = 234
-"let g:seoul256_srgb = 1
-"let g:solarized_termcolors=256
-"colorscheme seoul256
-
-"colorscheme nord
-
-"let ayucolor="dark"   " for dark version of theme
-"let ayucolor="mirage" " for mirage version of theme
-"colorscheme ayu
-
-"let g:two_firewatch_italics=1
-"colorscheme two-firewatch
-
-hi SignColumn guibg=NONE " make signcolumn transparent
 "----------------- Plugin Options ----------------- {{{1
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
