@@ -172,8 +172,6 @@ call plug#end()
 set background=light
 "colorscheme PaperColor
 colorscheme PaperColorSlim
-"if colorscheme is PaperColorSlim 
-
 if colors_name ==# 'PaperColorSlim'
     highlight! Function                         guifg=#005faf guibg=NONE    gui=bold
     highlight! DiffAdd                          guifg=#444444 guibg=#48985D gui=NONE
@@ -188,6 +186,8 @@ if colors_name ==# 'PaperColorSlim'
 
     highlight! link @type                                  NormalNC
     highlight! link @variable                              NormalNC
+    highlight! link CocSymbolVariable                      NormalNC
+    highlight! link CocSymbolReference                     NormalNC
 endif
 " colorscheme catppuccin-latte
 " colorscheme edge
