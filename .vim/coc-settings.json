@@ -1,4 +1,7 @@
 {
+  "diagnostic.errorSign": "✘",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
   "languageserver": {
     "ccls": {
         "command": "ccls",

@@ -261,6 +261,7 @@ if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
 
     let g:coc_snippet_next = '<Tab>'
     let g:coc_snippet_prev = '<S-Tab>'
+    let g:coc_status_error_sign = '✘ '
 
 
 endif
