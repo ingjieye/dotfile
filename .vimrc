@@ -108,7 +108,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
-Plug 'bfrg/vim-cpp-modern' "c++高亮
+"Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
 Plug 'mhinz/vim-signify', {'commit': 'd80e507'} "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
@@ -150,6 +150,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' } "dependency fo
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'kevinhwang91/nvim-bqf' "better quickfix window
 Plug 'ingjieye/papercolor-theme' "colorscheme
+Plug 'pappasam/papercolor-theme-slim'
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
@@ -169,7 +170,25 @@ call plug#end()
 " colorscheme hybrid
 
 set background=light
-colorscheme PaperColor
+"colorscheme PaperColor
+colorscheme PaperColorSlim
+"if colorscheme is PaperColorSlim 
+
+if colors_name ==# 'PaperColorSlim'
+    highlight! Function                         guifg=#005faf guibg=NONE    gui=bold
+    highlight! DiffAdd                          guifg=#444444 guibg=#48985D gui=NONE
+    highlight! DiffDelete                       guifg=#444444 guibg=#af0000 gui=NONE
+    highlight! Search                           guifg=#444444 guibg=#ffff5f gui=NONE
+    highlight! SpellBad                         guifg=#af0000 guibg=#ffafd7    gui=undercurl,italic
+    highlight! DiagnosticUnderLineError         guifg=#af0000 guibg=NONE gui=undercurl
+    highlight! DiagnosticUnderLineWarn          guifg=#af5f00 guibg=NONE gui=undercurl
+    highlight! DiagnosticUnderLineInfo          guifg=#005faf guibg=NONE gui=undercurl
+    highlight! DiagnosticUnderLineHint          guifg=#005f87 guibg=NONE gui=undercurl
+    highlight! DiagnosticUnderLineOk            guifg=#008700 guibg=NONE gui=undercurl
+
+    highlight! link @type                                  NormalNC
+    highlight! link @variable                              NormalNC
+endif
 " colorscheme catppuccin-latte
 " colorscheme edge
 
@@ -200,7 +219,6 @@ endif
 "colorscheme two-firewatch
 
 hi SignColumn guibg=NONE " make signcolumn transparent
-
 "----------------- Plugin Options ----------------- {{{1
 "----------------- coc.nvim ----------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/coc.nvim"))
@@ -462,7 +480,7 @@ require'nvim-treesitter.configs'.setup {
     -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
     -- the name of the parser)
     -- list of language that will be disabled
-    disable = { "c", "cpp"},
+    -- disable = { "c", "cpp"},
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     -- disable = function(lang, buf)
     --    local max_filesize = 500 * 1024 -- 100 KB
