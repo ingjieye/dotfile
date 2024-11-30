@@ -24,8 +24,9 @@ set mouse=a "永远使用鼠标
 "set fillchars=vert:\ 
 let mapleader="," "leader键变为逗号
 " signcolumn设置
-autocmd BufRead,BufNewFile * setlocal signcolumn=yes
-autocmd FileType tagbar,nerdtree setlocal signcolumn=no
+" autocmd BufRead,BufNewFile * setlocal signcolumn=yes
+" autocmd FileType tagbar,nerdtree setlocal signcolumn=no
+set signcolumn=yes
 set wildmenu 
 "set showmatch   "显示匹配的括号"
 set scrolloff=3 "显示光标上下文
