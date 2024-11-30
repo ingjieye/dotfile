@@ -106,8 +106,8 @@ EOF
 
 "----------------- Plugins ----------------- {{{1
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 "Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
