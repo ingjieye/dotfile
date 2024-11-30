@@ -2,11 +2,11 @@
 syntax enable
 syntax on
 set cmdheight=2
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
-set t_Co=&term
+" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" "tmux + vim 开启真彩色 https://github.com/tmux/tmux/issues/1246
+" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let &t_SI = "\e[6 q"
+" let &t_EI = "\e[2 q"
+" set t_Co=&term
 set backspace=indent,eol,start
 set termguicolors "开启真彩色
 set fdm=marker
