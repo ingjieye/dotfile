@@ -143,16 +143,19 @@ Plug 'weirongxu/plantuml-previewer.vim' "preview plantUML
 "Plug 'nathom/filetype.nvim' "speedup filetype detection -> disable due to conflict with plantuml-syntax
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} "syntax hilighting
 Plug 'nvim-treesitter/playground' "TSHighlightCapturesUnderCursor
+Plug 'nvim-neotest/nvim-nio' "dependency for dap and neotest
 Plug 'mfussenegger/nvim-dap' "lldb support in nvim
 Plug 'rcarriga/nvim-dap-ui' "lldb support in nvim
 Plug 'github/copilot.vim' "github copilot
-Plug 'nvim-lua/plenary.nvim' "dependency for telescope
+Plug 'nvim-lua/plenary.nvim' "dependency for telescope and neotest
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' } "dependency for telescope
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'kevinhwang91/nvim-bqf' "better quickfix window
 Plug 'ingjieye/papercolor-theme' "colorscheme
 Plug 'pappasam/papercolor-theme-slim'
+Plug 'nvim-neotest/neotest'
 Plug 'windwp/nvim-autopairs'
+Plug 'alfaix/neotest-gtest'
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
@@ -181,6 +184,7 @@ function! HighlightsForPaperColorSlim() abort
 
         highlight! link CocSymbolVariable                      NormalNC
         highlight! link CocSymbolReference                     NormalNC
+        highlight! link NeotestPassed                          @tag
     endif
 endfunction
 
@@ -643,6 +647,19 @@ endif
 if !empty(glob($HOME."/.vim/plugged/copilot.vim"))
 lua << EOF
     require("nvim-autopairs").setup {}
+EOF
+endif
+
+"----------------- nvim-neotest/neotest --------------- {{{2
+if !empty(glob($HOME."/.vim/plugged/neotest"))
+lua << EOF
+    require("neotest").setup({
+      adapters = {
+        require("neotest-gtest").setup({
+            debug_adapter = "lldb",
+        })
+      }
+    })
 EOF
 endif
 
