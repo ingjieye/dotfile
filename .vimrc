@@ -167,7 +167,6 @@ function! HighlightsForPaperColorSlim() abort
         highlight! DiffAdd                          guifg=#444444 guibg=#48985D gui=NONE
         highlight! DiffDelete                       guifg=#444444 guibg=#af0000 gui=NONE
         highlight! Search                           guifg=#444444 guibg=#ffff5f gui=NONE
-        highlight! SpellBad                         guifg=#af0000 guibg=#ffafd7 gui=undercurl,italic
         highlight! LineNr                           guifg=#b2b2b2 guibg=NONE    gui=NONE
         highlight! DiagnosticUnderLineError         guifg=#af0000 guibg=NONE    gui=undercurl
         highlight! DiagnosticUnderLineWarn          guifg=#af5f00 guibg=NONE    gui=undercurl
@@ -184,6 +183,7 @@ function! HighlightsForPaperColorSlim() abort
 
         highlight! link CocSymbolVariable                      NormalNC
         highlight! link CocSymbolReference                     NormalNC
+
         highlight! link NeotestPassed                          @tag
     endif
 endfunction
@@ -370,6 +370,7 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+let $FZF_DEFAULT_OPTS = '--bind ctrl-o:select-all'
 
 " let g:fzf_layout = { 'window': { 'width': 0.4, 'height': 1, 'xoffset': 0, 'border': 'right' } }
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
@@ -500,7 +501,7 @@ endif
 if !empty(glob($HOME."/.vim/plugged/nvim-dap"))
 lua << EOF
 
-local dap = require('dap')
+local dap, dapui = require('dap'), require("dapui")
 dap.adapters.lldb = {
   type = 'executable',
   command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
@@ -520,6 +521,8 @@ dap.configurations.cpp = {
     args = {},
   },
 }
+
+dapui.setup()
 
 vim.fn.sign_define("DapBreakpoint", { text = "🔴" })
 vim.fn.sign_define("DapStopped", { text = "👉" })
@@ -549,7 +552,7 @@ require('bqf').setup({
     auto_resize_height = true, -- highly recommended enable
     preview = {
         winblend = 5,
-        win_height = 12,
+        win_height = 48,
         win_vheight = 12,
         delay_syntax = 0,
         border = 'double',
@@ -566,9 +569,12 @@ require('bqf').setup({
         end
     },
 
+    -- zf to toggle fzf, in fzf, enter regex to filter result, and then
+    -- C-a to select all, C-t to open new quickfix window using selected one
+
     func_map = {
-        open = '<CR>', --  open the item under the cursor                             
-        openc = 'o', --  open the item, and close quickfix window                   
+        open = 'o', --  open the item under the cursor                             
+        openc = '<CR>', --  open the item, and close quickfix window                   
         drop = 'O', --  use `drop` to open the item, and close quickfix window     
         tabdrop = '', --  use `tab drop` to open the item, and close quickfix window 
         tab = 't', --  open the item in a new tab                                 
@@ -600,11 +606,13 @@ require('bqf').setup({
 EOF
 endif
 "----------------- github/copilot.vim --------------- {{{2
+if !empty(glob($HOME."/.vim/plugged/copilot.vim"))
+let g:copilot_proxy = "http://127.0.0.1:7890"
 let g:copilot_no_tab_map = v:true
 let g:copilot_filetypes = {
       \ '*': v:false,
       \ }
-
+endif
 "----------------- nvim-telescope/telescope.nvim --------------- {{{2
 if !empty(glob($HOME."/.vim/plugged/telescope.nvim"))
 lua << EOF
@@ -631,6 +639,9 @@ require('telescope').setup{
     live_grep = {
       previewer = true,
     },
+    oldfiles = {
+      cwd_only = true,
+    }
   },
   extensions = {
     -- Your extension configuration goes here:
