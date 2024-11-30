@@ -152,6 +152,7 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'kevinhwang91/nvim-bqf' "better quickfix window
 Plug 'ingjieye/papercolor-theme' "colorscheme
 Plug 'pappasam/papercolor-theme-slim'
+Plug 'windwp/nvim-autopairs'
 call plug#end()
 
 "----------------- Colorschemes ----------------- {{{1
@@ -633,6 +634,13 @@ require('telescope').setup{
     -- please take a look at the readme of the extension you want to configure
   }
 }
+EOF
+endif
+
+"----------------- windwp/nvim-autopairs --------------- {{{2
+if !empty(glob($HOME."/.vim/plugged/copilot.vim"))
+lua << EOF
+    require("nvim-autopairs").setup {}
 EOF
 endif
 
