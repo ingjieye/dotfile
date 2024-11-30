@@ -736,6 +736,15 @@ vnoremap <silent><leader>cc <Plug>NERDCommenterToggle
 nnoremap <silent><leader>ac <Plug>(coc-codeaction)
 nnoremap <silent><leader>qf <Plug>(coc-fix-current)
 
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+nnoremap <silent><leader>qt :call ToggleQuickFix()<cr>
+
 nnoremap <silent><leader>ne :NvimTreeToggle<cr> 
 nnoremap <silent><leader>nf :NvimTreeFindFile<cr> 
 
