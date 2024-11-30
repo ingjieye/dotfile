@@ -282,12 +282,14 @@ autocmd User CocStatusChange redrawstatus "Update status line when CocStatusChan
 autocmd User CocNavChanged redrawstatus "Update status line when CocNavChanged
 
 function! NearestMethodOrFunction() abort
+  let ret = ''
   let nav = get(b:, 'coc_nav', '')
   if (len(nav)) != 0
-      return nav[len(nav) - 1]['name']
-  else
-      return ''
+    if (has_key(nav[len(nav) - 1], 'name'))
+        let ret = nav[len(nav) - 1]['name']
+    endif
   endif
+  return ret
 endfunction
 
 let g:lightline = {
