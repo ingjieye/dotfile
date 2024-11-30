@@ -111,7 +111,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lock
 "Plug 'octol/vim-cpp-enhanced-highlight' "c++高亮
 "Plug 'bfrg/vim-cpp-modern' "c++高亮
 "Plug 'jackguo380/vim-lsp-cxx-highlight' "C++ LSP高亮
-Plug 'mhinz/vim-signify', {'commit': 'd80e507'} "vim sign bar显示git 状态
+Plug 'mhinz/vim-signify' "vim sign bar显示git 状态
 Plug 'itchyny/lightline.vim' "vim 状态栏
 Plug 'scrooloose/nerdcommenter' "注释插件
 Plug 'christoomey/vim-tmux-navigator' " tmux 与 vim 集成，Ctrl + hjkl 切换窗口
@@ -264,10 +264,12 @@ let g:cpp_simple_highlight = 1
 "let g:chadtree_settings = {"use_icons": 0 }
 
 "----------------- vim-signify --------------- {{{2
-let g:signify_sign_show_text = 0
 let g:signify_sign_show_count = 0
-let g:signify_sign_delete_first_line = '-'
 let g:signify_realtime = 0 "实时
+let g:signify_sign_add               = ' '
+let g:signify_sign_change            = ' '
+let g:signify_sign_change_delete     = ' '
+let g:signify_sign_delete_first_line = ' '
 
 "----------------- liuchengxu/vista.vim --------------- {{{2
 let g:vista_echo_cursor = 0
@@ -675,12 +677,12 @@ nnoremap <silent> H :noh<Enter>
 nnoremap <silent> s :HopChar2<CR>
 nnoremap <silent> K :call ShowDocumentation()<CR>
 nnoremap <silent> xb :call CocLocations('ccls','$ccls/inheritance')<cr>
+nnoremap <silent> xd <Plug>(coc-implementation)
 nnoremap <silent> xc :CclsCallHierarchy<cr>
 nnoremap <silent> gd <Plug>(coc-definition)
 nnoremap <silent> gy <Plug>(coc-type-definition)
 nnoremap <silent> gi <Plug>(coc-implementation)
 nnoremap <silent> gr <Plug>(coc-references-used)
-nnoremap <silent> xd <Plug>(coc-implementation)
 inoremap <silent><expr> <Tab>
   \ coc#pum#visible() ? coc#pum#next(1) :
   \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#next()\<CR>" :
@@ -752,6 +754,7 @@ nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'vsplit')<CR>zz
 nnoremap <silent><leader>gt :call CocAction('jumpDefinition', 'tabe')<CR>
 
+"<leader>d : dap
 nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
 nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
 nnoremap <silent><leader>dj :lua require'dap'.step_over()<CR>
