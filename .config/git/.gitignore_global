@@ -9,7 +9,6 @@ build/
 *.*.swp
 compile_commands.json
 build-target-device.gradle
-core
 .root
 .tasks
 gradle.properties

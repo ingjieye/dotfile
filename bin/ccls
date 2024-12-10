@@ -1,2 +1,4 @@
 #!/bin/zsh
-exec "$HOME/dev/source_code/ccls/Release/ccls" "$@"
+# exec "$HOME/dev/source_code/ccls/Release/ccls@12" -log-file=/tmp/ccls.log -v=1 "$@"
+# exec "$HOME/dev/source_code/ccls-my/Release/ccls" -log-file=/tmp/ccls.log -v=1 "$@"
+exec "$HOME/dev/source_code/ccls-my/Release/ccls" "$@"
