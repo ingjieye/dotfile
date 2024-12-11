@@ -357,12 +357,15 @@ au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
 
 " ----------------- No Prefix ----------------- {{{2
 " nnoremap <silent> = :exe "resize " . (winheight(0) * 3/2) <cr>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
-nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
-nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
-nnoremap <silent> H :noh<Enter>
-nnoremap <silent> s :HopChar2<CR>
-nnoremap <silent> xc :CclsCallHierarchy<cr>
+" nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
+" nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
+" nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
+" nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3) <cr>
+" nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 4/3) <cr>
+" nnoremap <silent> _ :exe "vertical resize " . (winwidth(0) * 3/4) <cr>
+" nnoremap <silent> H :noh<Enter>
+" nnoremap <silent> s :HopChar2<CR>
+" nnoremap <silent> xc :CclsCallHierarchy<cr>
 " inoremap <silent><expr> <Tab>
 "   \ coc#pum#visible() ? coc#pum#next(1) :
 "   \ coc#expandableOrJumpable() ? "\<C-r>=coc#snippet#next()\<CR>" :
@@ -377,34 +380,31 @@ nnoremap <silent> xc :CclsCallHierarchy<cr>
                               " \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Map the 'q' key to call the CloseQuickfix function only when the quickfix window is open
-nnoremap <silent><expr> q getwinvar(winnr(), '&buftype') ==# 'quickfix' ? ':cclose<CR>' : 'q'
+" nnoremap <silent><expr> q getwinvar(winnr(), '&buftype') ==# 'quickfix' ? ':cclose<CR>' : 'q'
 " ----------------- Alt(meta/option) ----------------- {{{2
-nnoremap <silent> <M-1> :tabnext 1<cr>
-nnoremap <silent> <M-2> :tabnext 2<cr>
-nnoremap <silent> <M-3> :tabnext 3<cr>
-nnoremap <silent> <M-4> :tabnext 4<cr>
-nnoremap <silent> <M-5> :tabnext 5<cr>
+" nnoremap <silent> <M-1> :tabnext 1<cr>
+" nnoremap <silent> <M-2> :tabnext 2<cr>
+" nnoremap <silent> <M-3> :tabnext 3<cr>
+" nnoremap <silent> <M-4> :tabnext 4<cr>
+" nnoremap <silent> <M-5> :tabnext 5<cr>
 
 " ----------------- Ctrl ----------------- {{{2
-noremap  <silent> <C-S> :update<CR>
-vnoremap <silent> <C-S> <C-C>:update<CR>
-inoremap <silent> <C-S> <Esc>:update<CR>
+" noremap  <silent> <C-S> :update<CR>
+" vnoremap <silent> <C-S> <C-C>:update<CR>
+" inoremap <silent> <C-S> <Esc>:update<CR>
 "Map <C-P> and <C-N> to Jump between coc diagnostics and quickfix, if no quickfix, then jump between coc diagnostics
 " nnoremap <silent><expr> <C-P> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-prev)' : ':cp<CR>')
 " nnoremap <silent><expr> <C-N> (len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')) == 0 ? '<Plug>(coc-diagnostic-next)' : ':cn<CR>')
-nnoremap <silent> <C-F> :FZF<CR>
+" nnoremap <silent> <C-F> :FZF<CR>
 
-if has('nvim')
+" if has('nvim')
   " inoremap <silent><expr> <C-space> coc#refresh()
-else
+" else
   " inoremap <silent><expr> <C-@> coc#refresh()
-endif
+" endif
 
-autocmd FileType log noremap <silent> <C-N> ]`zz
-autocmd FileType log noremap <silent> <C-P> [`zz
-autocmd FileType log noremap <silent> <C-M> m.
 
-imap <silent><expr> <C-L> exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") : copilot#Suggest()
+" imap <silent><expr> <C-L> exists('b:_copilot.suggestions') ? copilot#Accept("\<CR>") : copilot#Suggest()
 
 " ----------------- Leader ----------------- {{{2
 " nnoremap <leader>rn <Plug>(coc-rename)
@@ -412,42 +412,33 @@ imap <silent><expr> <C-L> exists('b:_copilot.suggestions') ? copilot#Accept("\<C
 "<leader>c : code related action
 " nnoremap <silent><leader>cf <Plug>(coc-format-selected)l
 " xnoremap <silent><leader>cf <Plug>(coc-format-selected)
-nnoremap <silent><leader>cc <Plug>NERDCommenterToggle
-vnoremap <silent><leader>cc <Plug>NERDCommenterToggle
+" nnoremap <silent><leader>cc <Plug>NERDCommenterToggle
+" vnoremap <silent><leader>cc <Plug>NERDCommenterToggle
 
 " nnoremap <silent><leader>ac <Plug>(coc-codeaction)
 " nnoremap <silent><leader>qf <Plug>(coc-fix-current)
 
-function! ToggleQuickFix()
-    if empty(filter(getwininfo(), 'v:val.quickfix'))
-        copen
-    else
-        cclose
-    endif
-endfunction
-nnoremap <silent><leader>qt :call ToggleQuickFix()<cr>
+" nnoremap <silent><leader>ne :NvimTreeToggle<cr> 
+" nnoremap <silent><leader>nf :NvimTreeFindFile<cr> 
 
-nnoremap <silent><leader>ne :NvimTreeToggle<cr> 
-nnoremap <silent><leader>nf :NvimTreeFindFile<cr> 
-
-nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
+" nnoremap <silent><leader>cg :TSHighlightCapturesUnderCursor<CR>
 " nnoremap <silent><leader>gd :call CocAction('jumpDefinition', 'vsplit')<CR>zz
 " nnoremap <silent><leader>gt :call CocAction('jumpDefinition', 'tabe')<CR>
 
 "<leader>d : dap
-nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
-nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
-nnoremap <silent><leader>dj :lua require'dap'.step_over()<CR>
-nnoremap <silent><leader>dc :lua require'dap'.continue()<CR>
-nnoremap <silent><leader>db :lua require'dap'.toggle_breakpoint()<CR>
-nnoremap <silent><leader>d_ :lua require'dap'.run_last()<CR>
-nnoremap <silent><leader>ds :lua require'dap'.terminate()<CR>
-nnoremap <silent><leader>du :lua require'dapui'.toggle()<CR>
+"nnoremap <silent><leader>dk :lua require'dap'.step_out()<CR>
+"nnoremap <silent><leader>dl :lua require'dap'.step_into()<CR>
+"nnoremap <silent><leader>dj :lua require'dap'.step_over()<CR>
+"nnoremap <silent><leader>dc :lua require'dap'.continue()<CR>
+"nnoremap <silent><leader>db :lua require'dap'.toggle_breakpoint()<CR>
+"nnoremap <silent><leader>d_ :lua require'dap'.run_last()<CR>
+"nnoremap <silent><leader>ds :lua require'dap'.terminate()<CR>
+"nnoremap <silent><leader>du :lua require'dapui'.toggle()<CR>
 
 "<leader>f : Telescope
-nnoremap <silent><leader>ff :Telescope<CR>
-nnoremap <silent><leader>fg :Telescope live_grep<CR>
-nnoremap <silent><leader>fb :Telescope buffers<CR>
+" nnoremap <silent><leader>ff :Telescope<CR>
+" nnoremap <silent><leader>fg :Telescope live_grep<CR>
+" nnoremap <silent><leader>fb :Telescope buffers<CR>
 
 " ----------------- Space ----------------- {{{2
 " nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -459,4 +450,4 @@ nnoremap <silent><leader>fb :Telescope buffers<CR>
 " nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-map <silent> <space>cc :CopilotChatOpen<CR>
+" map <silent> <space>cc :CopilotChatOpen<CR>

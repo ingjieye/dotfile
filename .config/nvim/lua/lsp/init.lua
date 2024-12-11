@@ -1,8 +1,25 @@
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-    local map = require('utils').map
-    local nmap = require('utils').nmap
+
+    local function map(mode, lhs, rhs, opts)
+        local options = {noremap = true, silent = true}
+        if opts then
+            if type(opts) == 'string' then
+                opts = {desc = opts}
+            end
+            options = vim.tbl_extend('force', options, opts)
+        end
+        if type(opts) == 'string' then
+            vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, options)
+        else
+            vim.keymap.set(mode, lhs, rhs, {buffer=true})
+        end
+    end
+
+    local function nmap(lhs, rhs, opts)
+        map('n', lhs, rhs, opts)
+    end
 
     local function buf_set_option(name, value) vim.api.nvim_set_option_value(name, value, {scope='local'}) end
 
@@ -15,8 +32,26 @@ local on_attach = function(client, bufnr)
     nmap('<leader>gd', "<cmd>lua require('telescope.builtin').lsp_definitions({ jump_type='vsplit' })<cr>", 'Definitions')
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', 'Declarations')
 
+    local function custom_references()
+        local params = vim.lsp.util.make_position_params()
+        params.context = {
+            includeDeclaration = false,
+        }
+        vim.lsp.buf_request(0, 'textDocument/references', params, function(err, result, ctx, config)
+            if err or not result or vim.tbl_isempty(result) then
+                return
+            end
+            if #result == 1 then
+                vim.lsp.util.jump_to_location(result[1], client.offset_encoding)
+            else
+                vim.lsp.handlers['textDocument/references'](err, result, ctx, config)
+            end
+        end)
+    end
+
     -- Jump to references
-    nmap('gr', '<cmd>lua vim.lsp.buf.references()<CR>', 'References')
+    -- nmap('gr', '<cmd>lua vim.lsp.buf.references({ includeDeclaration = false })<CR>', 'References')
+    nmap('gr', custom_references, { desc = 'References' })
     nmap(',f', '<cmd>lua require("ccls.protocol").request("textDocument/references",{excludeRole=32})<cr>') -- not call
     nmap(',m', '<cmd>lua require("ccls.protocol").request("textDocument/references",{role=64})<cr>') -- macro
     nmap(',r', '<cmd>lua require("ccls.protocol").request("textDocument/references",{role=8})<cr>') -- read
@@ -52,8 +87,8 @@ local on_attach = function(client, bufnr)
     nmap('xC', '<cmd>CclsOutgoingCalls<cr>', 'callee')
     nmap('xD', '<cmd>CclsDerivedHierarchy<cr>')
     nmap('xM', '<cmd>CclsMemberHierarchy<cr>', 'member')
-    nmap('xb', '<cmd>CclsBase<cr>')
-    nmap('xc', '<cmd>CclsIncomingCalls<cr>', 'caller')
+    nmap('xb', '<cmd>CclsBaseHierarchy<cr>')
+    nmap('xc', '<cmd>CclsIncomingCallsHierarchy<cr>', 'caller')
     nmap('xd', '<cmd>CclsDerived<cr>')
     nmap('xi', '<cmd>lua vim.lsp.buf.implementation()<cr>', 'Implementation')
     nmap('xm', '<cmd>CclsMember<cr>', 'member')
@@ -66,9 +101,6 @@ local on_attach = function(client, bufnr)
     map('i', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 
     nmap('<space>ls', function() require'my.util'.switch_source_header(0) end, 'Switch source and header')
-    nmap('<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>')
-    nmap('<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<cr>')
-    nmap('<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>')
     nmap('[e', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
     nmap(']e', '<cmd>lua vim.diagnostic.goto_next()<cr>')
 
