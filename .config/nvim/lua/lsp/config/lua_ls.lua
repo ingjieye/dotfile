@@ -29,7 +29,11 @@ local options =
         })
     end,
     settings = {
-        Lua = {}
+        Lua = {
+            diagnostics = {
+                disable = { 'trailing-space', 'unused-local', 'unused-function' }
+            },
+        }
     }
 }
 return options

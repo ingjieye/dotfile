@@ -1,4 +1,6 @@
-local set_highlight = require('utils').set_highlight
+local function set_highlight(group, opts)
+    vim.api.nvim_set_hl(0, group, opts)
+end
 
 set_highlight('BqfPreviewFloat',      { link = 'Normal' })
 set_highlight('BqfPreviewBorder',     { link = 'FloatBorder' })

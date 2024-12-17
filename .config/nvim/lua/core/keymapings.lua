@@ -92,6 +92,16 @@ nmap("+", ":exe \"vertical resize \" . (winwidth(0) * 4/3)<CR>", "Increase windo
 nmap("_", ":exe \"vertical resize \" . (winwidth(0) * 3/4)<CR>", "Decrease window width")
 nmap("H", ":noh<CR>", "Clear search highlight")
 nmap("s", ":HopChar2<CR>", "Hop to character")
+-- Map 'q' to close quickfix window if it's open, otherwise act as normal 'q'
+nmap('q', function()
+    -- check if there's any quickfix window
+    for _, win in pairs(vim.fn.getwininfo()) do
+        if win.quickfix == 1 then
+            return ':cclose<cr>'
+        end
+    end
+    return 'q'
+end, { expr = true, silent = true, desc = "close quickfix window if open, otherwise normal 'q'" })
 
 -- Alt/Meta key mappings for tab navigation {{{1
 nmap("<M-1>", ":tabnext 1<CR>", "Go to tab 1")
@@ -107,4 +117,5 @@ map("i", "<C-S>", "<Esc>:update<CR>", "Save file")
 nmap("<C-F>", ":FZF<CR>", "Open FZF")
 
 -- Space key mappings {{{1
-map("n", "<space>cc", ":CopilotChatOpen<CR>", "Open Copilot Chat")
+vim.keymap.set("n", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
+vim.keymap.set("v", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })

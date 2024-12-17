@@ -1,4 +1,32 @@
--- Make quickfix looks better
+-- Basic Options
+vim.opt.cmdheight = 2
+vim.opt.backspace = "indent,eol,start"
+vim.opt.termguicolors = true -- 开启真彩色
+vim.opt.foldmethod = "marker"
+vim.opt.cindent = true -- 设置C样式的缩进格式
+vim.opt.tabstop = 4 -- 设置tab长度
+vim.opt.shiftwidth = 4 -- 同上
+vim.opt.expandtab = true
+vim.opt.hlsearch = true -- 高亮搜索
+vim.opt.incsearch = true -- 实时搜索
+vim.opt.ignorecase = true -- 忽略大小写
+vim.opt.cursorline = true -- 高亮光标所在行
+vim.opt.number = true -- 显示行号
+vim.opt.mouse = "a" -- 永远使用鼠标
+vim.opt.signcolumn = "yes"
+vim.opt.wildmenu = true
+vim.opt.scrolloff = 3 -- 显示光标上下文
+vim.opt.updatetime = 100 -- Smaller updatetime for CursorHold & CursorHoldI
+vim.opt.showbreak = "↪"
+vim.opt.breakindent = true
+vim.opt.showmode = false
+
+-- Leader key
+vim.g.mapleader = "," -- leader键变为逗号
+
+-- ShaDa settings (previously shada in Vim)
+vim.opt.shada = "!,'10000,<50,s10,h"
+
 local fn = vim.fn
 
 function _G.qftf(info)
