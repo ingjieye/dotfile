@@ -83,12 +83,12 @@ local on_attach = function(client, bufnr)
     nmap('<space>s', '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>', 'Workspace symbols') --show symbol for current workspace
 
     -- Cross reference
-    nmap('xB', '<cmd>CclsBaseHierarchy<cr>')
+    nmap('xB', '<cmd>CclsBaseHierarchy float<cr>')
     nmap('xC', '<cmd>CclsOutgoingCalls<cr>', 'callee')
-    nmap('xD', '<cmd>CclsDerivedHierarchy<cr>')
-    nmap('xM', '<cmd>CclsMemberHierarchy<cr>', 'member')
-    nmap('xb', '<cmd>CclsBaseHierarchy<cr>')
-    nmap('xc', '<cmd>CclsIncomingCallsHierarchy<cr>', 'caller')
+    nmap('xD', '<cmd>CclsDerivedHierarchy float<cr>')
+    nmap('xM', '<cmd>CclsMemberHierarchy float<cr>', 'member')
+    nmap('xb', '<cmd>CclsBaseHierarchy float<cr>')
+    nmap('xc', '<cmd>CclsIncomingCallsHierarchy float<cr>', 'caller')
     nmap('xd', '<cmd>CclsDerived<cr>')
     nmap('xi', '<cmd>lua vim.lsp.buf.implementation()<cr>', 'Implementation')
     nmap('xm', '<cmd>CclsMember<cr>', 'member')

@@ -1,11 +1,10 @@
 require("ccls").setup({
-    defaults = {
     win_config = {
         -- Sidebar configuration
         sidebar = {
             size = 50,
-            position = "topleft",
-            split = "vnew",
+            position = "botright",
+            split = "split",
             width = 50,
             height = 20,
         },
@@ -17,18 +16,7 @@ require("ccls").setup({
             height = 20,
             row = 0,
             col = 0,
-            border = "rounded",
+            border = "double",
         },
     },
-    filetypes = {"c", "cpp", "objc", "objcpp"},
-
-    -- Lsp is not setup by default to avoid overriding user's personal configurations.
-    -- Look ahead for instructions on using this plugin for ccls setup
-    lsp = {
-        codelens = {
-            enabled = false,
-            events = {"BufEnter", "BufWritePost"}
-        }
-    }
-}
 })
