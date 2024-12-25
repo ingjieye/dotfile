@@ -1,20 +1,3 @@
------- Lazy.lua {{{1
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
 ------ Basic Options {{{1
 vim.opt.cmdheight = 2
 vim.opt.backspace = "indent,eol,start"
@@ -97,6 +80,23 @@ function _G.qftf(info)
 end
 
 vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
+
+------ Lazy.lua {{{2
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
 
 ------ Plugin options {{{1
 ------ ('plugins.cmp') {{{2
@@ -329,8 +329,8 @@ require('bqf').setup({
         vsplit = '<C-v>', --  open the item in vertical split                            
         prevfile = '', --  go to previous file under the cursor in quickfix window    
         nextfile = '', --  go to next file under the cursor in quickfix window        
-        prevhist = '<', --  cycle to previous quickfix list in quickfix window         
-        nexthist = '>', --  cycle to next quickfix list in quickfix window             
+        prevhist = 'h', --  cycle to previous quickfix list in quickfix window         
+        nexthist = 'l', --  cycle to next quickfix list in quickfix window             
         lastleave = '\'"', --  go to last selected item in quickfix window                
         stoggleup = '<S-Tab>', --  toggle sign and move cursor up                             
         stoggledown = '<Tab>', --  toggle sign and move cursor down                           
@@ -940,7 +940,7 @@ local function ToggleQuickFix()
     end
 end
 
--- Leader key mappings {{{2
+-- Leader {{{2
 
 -- Harpoon mappings for quick file navigation
 local mark = require("harpoon.mark")
@@ -958,7 +958,10 @@ nmap("<leader>6", function() ui.nav_file(6) end, 'Harpoon 6')
 -- General utility mappings
 nmap("<leader>cc", "<Plug>NERDCommenterToggle", "Toggle comment")
 map("v", "<leader>cc", "<Plug>NERDCommenterToggle", "Toggle comment")
+
+-- quickfix mappings
 nmap("<leader>qt", function() ToggleQuickFix() end, "Toggle quickfix window")
+
 nmap("<leader>ne", ":NvimTreeToggle<CR>", "Toggle NvimTree") 
 nmap("<leader>nf", ":NvimTreeFindFile<CR>", "Find file in NvimTree")
 nmap("<leader>cg", ":TSHighlightCapturesUnderCursor<CR>", "Show treesitter captures")
@@ -996,19 +999,19 @@ nmap('q', function()
     return 'q'
 end, { expr = true, silent = true, desc = "close quickfix window if open, otherwise normal 'q'" })
 
--- Alt/Meta key mappings for tab navigation {{{2
+-- Alt/Meta {{{2
 nmap("<M-1>", ":tabnext 1<CR>", "Go to tab 1")
 nmap("<M-2>", ":tabnext 2<CR>", "Go to tab 2")
 nmap("<M-3>", ":tabnext 3<CR>", "Go to tab 3")
 nmap("<M-4>", ":tabnext 4<CR>", "Go to tab 4")
 nmap("<M-5>", ":tabnext 5<CR>", "Go to tab 5")
 
--- Control key mappings {{{2
+-- Ctrl {{{2
 map("n", "<C-S>", ":update<CR>", "Save file")
 map("v", "<C-S>", "<C-C>:update<CR>", "Save file")
 map("i", "<C-S>", "<Esc>:update<CR>", "Save file")
 nmap("<C-F>", ":FZF<CR>", "Open FZF")
 
--- Space key mappings {{{2
+-- Space {{{2
 vim.keymap.set("n", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
 vim.keymap.set("v", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
