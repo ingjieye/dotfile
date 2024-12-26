@@ -1,4 +1,20 @@
+------ Bootstrap lazy options {{{1
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
 ------ Basic Options {{{1
+vim.opt.rtp:prepend(lazypath)
 vim.opt.cmdheight = 2
 vim.opt.backspace = "indent,eol,start"
 vim.opt.termguicolors = true -- 开启真彩色
@@ -80,24 +96,64 @@ function _G.qftf(info)
 end
 
 vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
-
------- Lazy.lua {{{2
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
-
+------ Plugins {{{1
+require("lazy").setup({
+  spec = {
+    {
+        "pappasam/papercolor-theme-slim",
+        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
+        config = function()
+            -- load the colorscheme here
+            vim.cmd([[colorscheme PaperColorSlim]])
+        end,
+    },
+    { "ingjieye/papercolor-theme" },
+    { "mhinz/vim-signify" },
+    { "nvim-tree/nvim-web-devicons" },
+    { "nvim-lualine/lualine.nvim" },
+    { "nvim-lua/lsp-status.nvim" },
+    { "scrooloose/nerdcommenter" },
+    { "christoomey/vim-tmux-navigator" },
+    { "junegunn/fzf", build = "./install --all" },
+    { "junegunn/fzf.vim" },
+    { "r0mai/vim-djinni" },
+    { "ranjithshegde/ccls.nvim" },
+    { "mtdl9/vim-log-highlighting" },
+    { "rhysd/git-messenger.vim" },
+    { "tpope/vim-fugitive" },
+    { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", ft = { "markdown" } },
+    { "godlygeek/tabular" },
+    { "plasticboy/vim-markdown" },
+    { "keith/swift.vim" },
+    { "phaazon/hop.nvim" },
+    { "kyazdani42/nvim-web-devicons" },
+    { "kyazdani42/nvim-tree.lua" },
+    { "aklt/plantuml-syntax" },
+    { "tyru/open-browser.vim" },
+    { "weirongxu/plantuml-previewer.vim" },
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+    { "nvim-treesitter/playground" },
+    { "nvim-neotest/nvim-nio" },
+    { "mfussenegger/nvim-dap" },
+    { "rcarriga/nvim-dap-ui" },
+    { "nvim-lua/plenary.nvim" },
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope.nvim", tag = "0.1.5" },
+    { "kevinhwang91/nvim-bqf" },
+    { "nvim-neotest/neotest" },
+    { "windwp/nvim-autopairs" },
+    { "alfaix/neotest-gtest" },
+    { "neovim/nvim-lspconfig" },
+    { "hrsh7th/cmp-buffer" },
+    { "hrsh7th/cmp-nvim-lsp" },
+    { "hrsh7th/nvim-cmp" },
+    { "zbirenbaum/copilot.lua" },
+    { "CopilotC-Nvim/CopilotChat.nvim" },
+    { "zbirenbaum/copilot-cmp" },
+    { "ThePrimeagen/harpoon" },
+  }
+})
 ------ Plugin options {{{1
 ------ ('plugins.cmp') {{{2
 local cmp = require('cmp')
@@ -300,7 +356,7 @@ require('bqf').setup({
         winblend = 5,
         win_height = 48,
         win_vheight = 12,
-        delay_syntax = 0,
+        delay_syntax = 1,
         border = 'double',
         show_title = true,
         should_preview_cb = function(bufnr, qwinid)
@@ -360,7 +416,7 @@ require('telescope').setup{
       }
     },
     preview = {
-      treesitter = false,
+      treesitter = true,
     },
     layout_strategy = 'vertical',
   },
@@ -635,13 +691,9 @@ require'nvim-treesitter.configs'.setup {
     -- list of language that will be disabled
     -- disable = { "c", "cpp"},
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-    -- disable = function(lang, buf)
-    --    local max_filesize = 500 * 1024 -- 100 KB
-    --    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-    --    if ok and stats and stats.size > max_filesize then
-    --        return true
-    --    end
-    -- end,
+    disable = function(lang, buf)
+        return false
+    end,
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -748,6 +800,7 @@ local on_attach = function(client, bufnr)
     -- Jump to Definitions
     nmap('gd', '<cmd>Telescope lsp_definitions<cr>', 'Definitions')
     nmap('<leader>gd', "<cmd>lua require('telescope.builtin').lsp_definitions({ jump_type='vsplit' })<cr>", 'Definitions')
+    nmap('<leader>gt', "<cmd>lua require('telescope.builtin').lsp_definitions({ jump_type='tab' })<cr>", 'Definitions')
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', 'Declarations')
 
     local function custom_references()
@@ -925,15 +978,18 @@ local function nmapp(lhs, rhs, opts)
     vim.api.nvim_set_keymap('n', lhs, rhs, options)
 end
 
--- Toggle quickfix window function
-local function ToggleQuickFix()
-    local qf_exists = false
+local function isQuickFixOpen()
     for _, win in pairs(vim.fn.getwininfo()) do
-        if win["quickfix"] == 1 then
-            qf_exists = true
+        if win.quickfix == 1 then
+            return true
         end
     end
-    if qf_exists == true then
+    return false
+end
+
+-- Toggle quickfix window function
+local function ToggleQuickFix()
+    if isQuickFixOpen() then
         vim.cmd "cclose"
     else
         vim.cmd "copen"
@@ -991,10 +1047,8 @@ nmap("s", ":HopChar2<CR>", "Hop to character")
 -- Map 'q' to close quickfix window if it's open, otherwise act as normal 'q'
 nmap('q', function()
     -- check if there's any quickfix window
-    for _, win in pairs(vim.fn.getwininfo()) do
-        if win.quickfix == 1 then
-            return ':cclose<cr>'
-        end
+    if isQuickFixOpen() then
+        return ':cclose<cr>'
     end
     return 'q'
 end, { expr = true, silent = true, desc = "close quickfix window if open, otherwise normal 'q'" })
@@ -1011,6 +1065,26 @@ map("n", "<C-S>", ":update<CR>", "Save file")
 map("v", "<C-S>", "<C-C>:update<CR>", "Save file")
 map("i", "<C-S>", "<Esc>:update<CR>", "Save file")
 nmap("<C-F>", ":FZF<CR>", "Open FZF")
+
+-- Map <C-P> and <C-N> to Jump between coc diagnostics and quickfix, if no quickfix, then jump between lsp diagnostics
+local function CtrlN()
+    if isQuickFixOpen() then
+        vim.cmd('cnext')
+    else
+        vim.diagnostic.goto_next()
+    end
+end
+local function CtrlP()
+    if isQuickFixOpen() then
+        vim.cmd('cprev')
+    else
+        vim.diagnostic.goto_prev()
+    end
+end
+
+nmap("<C-N>", CtrlN, "Next quickfix")
+nmap("<C-P>", CtrlP, "Previous quickfix")
+-- <cmd>lua vim.diagnostic.goto_prev()<cr>
 
 -- Space {{{2
 vim.keymap.set("n", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
