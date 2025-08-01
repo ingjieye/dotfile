@@ -1,0 +1,6 @@
+.dotignore
+.dothardlink
+deploy.sh
+install.sh
+README.md
+private/
