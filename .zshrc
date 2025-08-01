@@ -50,13 +50,6 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 autoload -Uz compinit
 compinit
 
-function _cmakeSave() {
-	\cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=YES "$@" && 
-		echo `date` `pwd` >> ~/cmake_history.txt &&
-	    echo "cmake $@" >> ~/cmake_history.txt
-		echo "" >> ~/cmake_history.txt
-}
-
 stty -ixon #防止 ctrl+s silent 当前 shell
 set -o ignoreeof #防止ctrl+d kill 当前 shell
 IGNOREEOF=100000000
@@ -80,8 +73,13 @@ bindkey '^x^e' edit-command-line
 
 # ---------- Aliases --------- {{{1
 # --- General ---
-alias ..='cd ..'
-alias ....='cd ../..'
+function ..() {
+  cd ..
+}
+
+function ../..() {
+  cd ../..
+}
 alias socks5="http_proxy=http://192.168.1.204:8118 https_proxy=$http_proxy all_proxy=$http_proxy HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
 if command -v nvim &> /dev/null; then 
@@ -89,16 +87,17 @@ if command -v nvim &> /dev/null; then
     export EDITOR=nvim
 fi
 alias ll='ls -alh'
-alias lg=lazygit
+alias python=python3
+alias pip=pip3
 
 # --- Git ---
 alias gs='git status'
-alias gc='git checkout'
-alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
+alias gc='git commit'
+alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)'
 alias gd='git diff'
 alias ga='git add'
 alias gl='git log'
-alias pip=pip3
+alias lg=lazygit
 
 # --- Adb ---
 function _adb_export_and_connect() {
@@ -112,7 +111,7 @@ alias cu360='_adb_export_and_connect cu360'
 alias s7='_adb_export_and_connect s7'
 
 
-function depot_tools_enable()
+function enable_depot_tools()
 {
     export PATH="$HOME/dev/source_code/depot_tools:$PATH"
     export PATH="$HOME/dev/source_code/depot_tools/python-bin:$PATH"
