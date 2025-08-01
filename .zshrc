@@ -1,8 +1,11 @@
-# Exports {{{1
+# ---------- Exports --------- {{{1
+# ---------- General --------- {{{2
 export LC_ALL=en_US.UTF-8
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/opt/homebrew/bin
+
+# ---------- brew --------- {{{2
 if [[ "$(uname -s)" == "Linux" ]]; then BREW_TYPE="linuxbrew"; else BREW_TYPE="homebrew"; fi
 # brew 清华源
 export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
@@ -12,6 +15,7 @@ export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 #export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.aliyun.com/homebrew/homebrew-bottles"
 
+# ---------- others --------- {{{2
 # manpages colored
 export LESS_TERMCAP_mb=$'\e[1;32m'
 export LESS_TERMCAP_md=$'\e[1;32m'
@@ -29,7 +33,7 @@ export PATH="$HOME/Library/Python/3.8/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-file ~/.fd-ignore'
 
-# zsh settings {{{1
+# ---------- zsh settings --------- {{{1
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=10000000
@@ -71,7 +75,7 @@ zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 
-# Aliases {{{1
+# ---------- Aliases --------- {{{1
 # --- General ---
 alias ..='cd ..'
 alias ....='cd ../..'
