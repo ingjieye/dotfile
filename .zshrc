@@ -2,8 +2,14 @@
 # ---------- General --------- {{{2
 export LC_ALL=en_US.UTF-8
 export GOPATH=$HOME/go
+
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/opt/homebrew/bin
+export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/Library/Python/3.8/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+export EDITOR=vim
 
 # ---------- brew --------- {{{2
 if [[ "$(uname -s)" == "Linux" ]]; then BREW_TYPE="linuxbrew"; else BREW_TYPE="homebrew"; fi
@@ -14,6 +20,8 @@ export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
 export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 #export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.aliyun.com/homebrew/homebrew-bottles"
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 
 # ---------- others --------- {{{2
 # manpages colored
@@ -25,12 +33,7 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 export LESS_TERMCAP_so=$'\E[30;43m'
 
-export EDITOR=vim
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export PATH="$HOME/Library/Python/3.8/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+export TLDR_AUTO_UPDATE_DISABLED=1
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-file ~/.fd-ignore'
 
 # ---------- zsh settings --------- {{{1
