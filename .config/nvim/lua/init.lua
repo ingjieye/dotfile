@@ -36,6 +36,8 @@ vim.opt.updatetime = 100 -- Smaller updatetime for CursorHold & CursorHoldI
 vim.opt.showbreak = "↪"
 vim.opt.breakindent = true
 vim.opt.showmode = false
+vim.opt.fillchars:append({ eob = " " })
+vim.opt.fillchars:append({ eob = " " })
 
 -- Leader key
 vim.g.mapleader = "," -- leader键变为逗号
@@ -191,13 +193,13 @@ cmp.setup {
         }),
     },
     sources = {
-        {name = "copilot"},
         {name = 'nvim_lsp'},
+        {name = "copilot"},
         {name = 'buffer'},
     },
     completion = {completeopt = 'menu,menuone,noselect,noinsert'},
     experimental = {
-        ghost_text = true,
+        ghost_text = false,
     },
 }
 ------ ('plugins.copilot') {{{2
@@ -309,7 +311,10 @@ local dap, dapui = require('dap'), require("dapui")
 dap.adapters.lldb = {
   type = 'executable',
   command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
-  name = 'lldb'
+  name = 'lldb',
+  options = {
+      initialize_timeout_sec = 30
+  }
 }
 
 dap.configurations.cpp = {
@@ -356,18 +361,9 @@ require('bqf').setup({
         winblend = 5,
         win_height = 48,
         win_vheight = 12,
-        delay_syntax = 1,
+        delay_syntax = 50,
         border = 'double',
         show_title = true,
-        should_preview_cb = function(bufnr, qwinid)
-            local ret = true
-            local bufname = vim.api.nvim_buf_get_name(bufnr)
-            if bufname:match('^fugitive://') then
-                -- skip fugitive buffer
-                ret = false
-            end
-            return ret
-        end
     },
 
     -- zf to toggle fzf, in fzf, enter regex to filter result, and then
@@ -500,7 +496,7 @@ require('lualine').setup {
         }
     },
     sections = {
-        lualine_a = {'mode'},
+        lualine_a = { 'mode' },
         lualine_b = {
             {
                 'filename',
@@ -534,7 +530,7 @@ require('lualine').setup {
     inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = {'filename'},
+        lualine_c = { { 'filename', path = 1 } },
         lualine_x = {'location'},
         lualine_y = {},
         lualine_z = {}
@@ -582,12 +578,11 @@ lsp_status.config({
 lsp_status.register_progress()
 ------ ('plugins.signify') {{{2
 -- -- Signify settings
-vim.g.signify_sign_show_count = 1
+vim.g.signify_sign_show_count = 0
 vim.g.signify_realtime = 1 -- 实时
-vim.g.signify_sign_add = '┃'
-vim.g.signify_sign_change = '┃'
-vim.g.signify_sign_change_delete = '┃'
-vim.g.signify_sign_delete_first_line = '┃'
+vim.g.signify_sign_add = '▊'
+vim.g.signify_sign_change = '▊'
+vim.g.signify_sign_delete = '▊'
 ------ ('plugins.nerdcommenter') {{{2
 -- NERDCommenter settings
 vim.g.NERDCreateDefaultMappings = 0
@@ -835,7 +830,7 @@ local on_attach = function(client, bufnr)
     nmap('<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<cr>') -- show code action (quick fix)
     nmap('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', 'Rename') -- rename
     nmap('<space>=', '<cmd>lua vim.lsp.buf.formatting()<cr>') --format
-    map('v', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', {silent = false}) --format
+    map('v', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR><Esc>', {silent = false}) --format
     function _G.format_current_line()
         local line = vim.api.nvim_win_get_cursor(0)[1]
         vim.lsp.buf.format({
@@ -1023,14 +1018,15 @@ nmap("<leader>nf", ":NvimTreeFindFile<CR>", "Find file in NvimTree")
 nmap("<leader>cg", ":TSHighlightCapturesUnderCursor<CR>", "Show treesitter captures")
 
 -- Debug Adapter Protocol (DAP) mappings
-nmap("<leader>dk", ":lua require'dap'.step_out()<CR>", "Step out")
-nmap("<leader>dl", ":lua require'dap'.step_into()<CR>", "Step into")
-nmap("<leader>dj", ":lua require'dap'.step_over()<CR>", "Step over")
-nmap("<leader>dc", ":lua require'dap'.continue()<CR>", "Continue")
-nmap("<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>", "Toggle breakpoint")
-nmap("<leader>d_", ":lua require'dap'.run_last()<CR>", "Run last")
-nmap("<leader>ds", ":lua require'dap'.terminate()<CR>", "Terminate")
-nmap("<leader>du", ":lua require'dapui'.toggle()<CR>", "Toggle DAP UI")
+nmap("<leader>dk", function() require'dap'.step_out() end, "Step out")
+nmap("<leader>dl", function() require'dap'.step_into() end, "Step into")
+nmap("<leader>dj", function() require'dap'.step_over() end, "Step over")
+nmap("<leader>dc", function() require'dap'.continue() end, "Continue")
+nmap("<leader>db", function() require'dap'.toggle_breakpoint() end, "Toggle breakpoint")
+nmap("<leader>d_", function() require'dap'.run_last() end, "Run last")
+nmap("<leader>ds", function() require'dap'.terminate() end, "Terminate")
+nmap("<leader>du", function() require'dapui'.toggle() end, "Toggle DAP UI")
+nmap("<leader>dr", function() require'neotest'.run.run({strategy = "dap"}) end, "Run tests with DAP")
 
 -- Telescope fuzzy finder mappings
 nmap("<leader>ff", ":Telescope<CR>", "Open Telescope")

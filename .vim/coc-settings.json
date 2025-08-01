@@ -2,6 +2,8 @@
   "diagnostic.errorSign": "✘",
   "diagnostic.infoSign": "ℹ",
   "diagnostic.hintSign": "➤",
+  "typeHierarchy.splitCommand": "belowright 10 split",
+  "typeHierarchy.enableTooltip": false,
   "languageserver": {
     "ccls": {
         "command": "ccls",
@@ -14,25 +16,21 @@
                     "/jni/",
                     "/DerivedData/"
                 ],
-                "threads": 4
+                "threads": 4,
+                "initialNoLinkage": false
             },
             "diagnostics": {
                 "onChange": 0
             },
             "completion": {
-                "caseSensitivity": 1,
-                "filterAndSort": false,
-                "maxNum": 100
+                "caseSensitivity": 1
             },
             "cache": {
                 "retainInMemory": 0
             },
             "clang": {
                 "excludeArgs": [
-                    "-xc++",
-                    "-gmodules",
-                    "-fmodules*",
-                    "-Wunused-variable"
+
                 ]
             }
         }
@@ -46,6 +44,7 @@
         }
     },
     "python": {
+        "filetypes": ["py"],
         "pythonPath": "/usr/bin/python3"
     }
   },
@@ -53,13 +52,14 @@
   "pyright.inlayHints.variableTypes": false,
   "python.analysis.diagnosticSeverityOverrides": {
       "reportUnknownArgumentType": "none",
-      "reportGeneralTypeIssues": "none"
+      "reportGeneralTypeIssues": "none",
+      "reportMissingImports": "information"
   },
   "suggest.floatConfig": {
       "border": false
   },
   "suggest.labelMaxLength": 100,
-  "suggest.filterGraceful": false,
+  "suggest.filterGraceful": true,
   "suggest.completionItemKindLabels": {
     "text": "\ueb8d Text",
     "method": "\uea8c Method",
