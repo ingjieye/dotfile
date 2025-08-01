@@ -160,15 +160,19 @@ esac
 # Plug-in {{{1
 source ~/.zsh/antigen.zsh
 antigen bundle Aloxaf/fzf-tab
-#antigen bundle 'wfxr/forgit'
 antigen bundle zsh-users/zsh-completions
-antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle MichaelAquilina/zsh-auto-notify
+antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
-# Plug-in settings {{{2
-#fzf-tab {{{3
+# Plug-in settings {{{1
+# ----- fzf-tab ----- {{{2
 # disable sort when completing options of any command
 zstyle ':completion:complete:*:options' sort false
+
+# set descriptions format to enable group support
+# NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+zstyle ':completion:*:descriptions' format '[%d]'
 
 # use input as query string when completing zlua
 zstyle ':fzf-tab:complete:_zlua:*' query-string input
@@ -186,15 +190,18 @@ local realpath=\${ctxt[IPREFIX]}\${ctxt[hpre]}\$in
 realpath=\${(Qe)~realpath}
 "
 
+# set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 # give a preview of commandline arguments when completing `kill`
 zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
 zstyle ':fzf-tab:complete:kill:argument-rest' extra-opts --preview=$extract'ps --pid=$in[(w)1] -o cmd --no-headers -w -w' --preview-window=down:3:wrap
 
 # give a preview of directory by exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' extra-opts --preview=$extract'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 # }}}
-#rbenv {{{3
+#----- rbenv ----- {{{2
 if command -v rbenv &> /dev/null; then 
     eval "$(rbenv init - zsh)"
 fi
