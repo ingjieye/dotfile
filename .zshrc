@@ -64,13 +64,6 @@ fi
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Enable Ctrl-x-e to edit command line
-autoload -U edit-command-line
-# Emacs style
-zle -N edit-command-line
-bindkey '^xe' edit-command-line
-bindkey '^x^e' edit-command-line
-
 # ---------- Aliases --------- {{{1
 # --- General ---
 function ..() {
@@ -210,4 +203,18 @@ fi
 #export NVM_DIR="$HOME/.nvm"
 #[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+#----- lazygit ----- {{{2
+export AUTO_NOTIFY_IGNORE=(
+'vim' 'nvim' 'less' 'more' 'man' 'tig' 'watch' 'git commit' 'top' 'htop' 'ssh' 'nano' 'vi' 'lazygit' 'scrcpy' 'lg'
+)
+
 # Functions {{{1
+
+# Keymap {{{1
+# Enable Ctrl-x-e to edit command line
+autoload -U edit-command-line
+# Emacs style
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
