@@ -1,4 +1,3 @@
-.vim/
 build/
 .cache/*
 .ccls-cache/*
