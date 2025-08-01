@@ -1,9 +1,9 @@
 user_pref("widget.non-native-theme.scrollbar.style", 1);
 
 //scroll speed
-user_pref("mousewheel.default.delta_multiplier_x", 100);
-user_pref("mousewheel.default.delta_multiplier_y", 100);
-user_pref("mousewheel.default.delta_multiplier_z", 100);
+user_pref("mousewheel.default.delta_multiplier_x", 150);
+user_pref("mousewheel.default.delta_multiplier_y", 150);
+user_pref("mousewheel.default.delta_multiplier_z", 150);
 
 //disable warning when opening about:config
 user_pref("browser.aboutConfig.showWarning", false);
@@ -23,7 +23,11 @@ user_pref("browser.toolbars.bookmarks.visibility", "always");
 //open bookmarks in new tab
 user_pref("browser.tabs.loadBookmarksInTabs", true);
 
-//From https://github.com/yokoffing/Betterfox {{{1
+//Disable preview
+user_pref("browser.tabs.hoverPreview.enabled", false);
+
+
+// ------- From https://github.com/yokoffing/Betterfox ---------{{{1
 /****************************************************************************
  * SECTION: FASTFOX                                                         *
 ****************************************************************************/
@@ -114,7 +118,7 @@ user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 user_pref("extensions.pocket.enabled", false);
 
 /** DOWNLOADS ***/
-user_pref("browser.download.always_ask_before_handling_new_types", true);
+user_pref("browser.download.always_ask_before_handling_new_types", false);
 user_pref("browser.download.manager.addToRecentDocs", false);
 
 /** PDF ***/
