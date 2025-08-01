@@ -1,3 +1,5 @@
+syntax enable
+syntax on
 "----------------- Colorschemes ----------------- {{{1
 " Color picker: https://www.w3schools.com/colors/colors_picker.asp
 function! HighlightsForPaperColorSlim() abort
@@ -13,6 +15,10 @@ function! HighlightsForPaperColorSlim() abort
         highlight! DiagnosticUnderLineInfo          guifg=#005faf guibg=NONE    gui=undercurl
         highlight! DiagnosticUnderLineHint          guifg=#005f87 guibg=NONE    gui=undercurl
         highlight! DiagnosticUnderLineOk            guifg=#008700 guibg=NONE    gui=undercurl
+
+        highlight! SignifySignAdd                   guifg=#48985D guibg=NONE    gui=NONE
+        highlight! SignifySignDelete                guifg=#af0000 guibg=NONE    gui=NONE
+        highlight! SignifySignChange                guifg=#ffd787 guibg=NONE    gui=NONE
 
         highlight! link @type                                  NormalNC
         highlight! link @type.builtin                          @keyword
