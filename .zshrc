@@ -85,8 +85,8 @@ alias pip=pip3
 
 # --- Git ---
 alias gs='git status'
-alias gc='git commit'
-alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)'
+alias gc='git checkout'
+alias gp='git pull origin $(git rev-parse --abbrev-ref HEAD)' 
 alias gd='git diff'
 alias ga='git add'
 alias gl='git log'
@@ -208,8 +208,6 @@ fi
 export AUTO_NOTIFY_IGNORE=(
 'vim' 'nvim' 'less' 'more' 'man' 'tig' 'watch' 'git commit' 'top' 'htop' 'ssh' 'nano' 'vi' 'lazygit' 'scrcpy' 'lg'
 )
-
-# Functions {{{1
 
 # Keymap {{{1
 # Enable Ctrl-x-e to edit command line
