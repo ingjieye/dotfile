@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+if ! command -v m1ddc &> /dev/null; then
+    echo "m1ddc could not be found, please install it first"
+    exit 1
+fi
+
+echo "Detecting displays..."
+display_list=$(m1ddc display list)
+echo "$display_list"
+echo "---------------------"
+
+DID_SWITCH=false
+while read -r line; do
+  if [[ $line =~ \[([0-9]+)\][[:space:]]+(.+)[[:space:]]\( ]]; then
+    index="${BASH_REMATCH[1]}"
+    name="${BASH_REMATCH[2]}"
+
+    if [[ "$name" == "LG ULTRAFINE" ]]; then
+        echo "Found '$name' (display $index), setting input to HDMI2..."
+        # LG Display
+        # Input Source 	    Value
+        # MONITOR_AUTO 	    0x0
+        # MONITOR_DP1 	    0xD0
+        # MONITOR_DP2 	    0xD1
+        # MONITOR_DP3 	    0xD2
+        # MONITOR_USB_C 	0xD2
+        # MONITOR_HDMI1 	0x90
+        # MONITOR_HDMI2 	0x91
+        HDMI2_VALUE=$(printf "%d\n" 0x91)
+        m1ddc display "$index" set input-alt "$HDMI2_VALUE" 1>/dev/null 2>&1
+        echo "Done"
+        DID_SWITCH=true
+        break
+    fi
+  fi
+done <<< "$display_list"
+
+if [ "$DID_SWITCH" = false ]; then
+    echo "No supported display found"
+fi

@@ -33,6 +33,7 @@ install_essentials_osx() {
     brew install plantuml #weirongxu/plantuml-previewer
     brew install golang
     brew install wget
+    brew install m1ddc #Control external monitor through cli
     go install golang.org/x/tools/gopls@latest #go LSP
 
     sudo gem install cocoapods
