@@ -6,7 +6,7 @@
     <string>com.user.wifimonitor.watch</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/yeyj/dev/dotfile/bin/on_wifi_change.sh</string>
+        <string>/Users/yeyj/.local/bin/wifi-change-dispatcher.sh</string>
     </array>
     <key>WatchPaths</key>
     <array>
