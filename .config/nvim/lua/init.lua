@@ -310,7 +310,7 @@ require'nvim-tree'.setup {
 local dap, dapui = require('dap'), require("dapui")
 dap.adapters.lldb = {
   type = 'executable',
-  command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
+  command = '/opt/homebrew/opt/llvm@16/bin/lldb-vscode',
   name = 'lldb',
   options = {
       initialize_timeout_sec = 30
