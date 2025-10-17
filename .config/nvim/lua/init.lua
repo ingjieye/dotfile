@@ -929,10 +929,10 @@ local lsp_options = {
     lua_ls = lua_ls_options,
 }
 
-local servers = {'ccls', 'lua_ls'}
+local servers = {'ccls', 'lua_ls', 'gopls'}
 local nvim_lsp = require('lspconfig')
 for _, lsp in ipairs(servers) do
-    local lsp_option = lsp_options[lsp]
+    local lsp_option = lsp_options[lsp] or {}
     local merged_option = vim.tbl_extend('force', global_lsp_options, lsp_option)
     nvim_lsp[lsp].setup(merged_option)
 end
