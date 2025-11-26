@@ -1,0 +1,189 @@
+{
+    // ===== 编辑器外观设置 =====
+    // 字体和大小
+    "editor.fontFamily": "CaskaydiaCove Nerd Font Mono",
+    "editor.fontSize": 15,
+    "debug.console.fontSize": 13,
+    "terminal.integrated.fontSize": 13,
+    "window.title": "${remoteName}${separator}${folderName}${separator}${activeEditorShort}",
+    "window.autoDetectColorScheme": true,
+    "workbench.preferredLightColorTheme": "papercolor-vscode-light",
+
+    //外观
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.showIcons": false,
+    "workbench.editor.tabActionCloseVisibility": false,
+    
+    // ===== 编辑器行为设置 =====
+    // 文本编辑
+    "editor.wordWrap": "on",
+    "editor.smoothScrolling": true,
+    "editor.stickyScroll.enabled": false,
+    
+    // // 滚动行为
+    // "editor.mouseWheelScrollSensitivity": 0.8,
+    // "workbench.list.mouseWheelScrollSensitivity": 0.3,
+    // "terminal.integrated.mouseWheelScrollSensitivity": 0.3,
+    
+    // 折叠和显示
+    "editor.foldingMaximumRegions": 65000,
+    "editor.minimap.renderCharacters": false,
+    "editor.cursorBlinking": "solid",
+    
+    // Unicode 处理
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    
+    // 大文件处理
+    "editor.largeFileOptimizations": false,
+    "workbench.editorLargeFileConfirmation": 1000,
+    
+    // ===== 终端设置 =====
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "source": "Git Bash"
+        }
+    },
+    
+    // ===== Git 和 GitLens 设置 =====
+    "git.openRepositoryInParentFolders": "always",
+    "git.confirmSync": false,
+    "gitlens.plusFeatures.enabled": false,
+    "gitlens.codeLens.enabled": false,
+    
+    // ===== 语言特定设置 =====
+    // C/C++
+    "[cpp]": {
+        "editor.wordBasedSuggestions": "off",
+        "editor.suggest.insertMode": "replace",
+        "editor.semanticHighlighting.enabled": false
+    },
+    
+    // JavaScript
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    
+    // ===== 工具设置 =====
+    
+    // CCLS (C/C++ Language Server)
+    "ccls.codeLens.enabled": false,
+    "ccls.index.initialBlacklist": [".cmake", "/jni/", "DerivedData"],
+    "ccls.index.threads": 4,
+    "ccls.diagnostics.onChange": 0,
+    
+    // Python
+    "python.defaultInterpreterPath": "/usr/bin/python3",
+    
+    // ===== 搜索设置 =====
+    "search.searchEditor.defaultNumberOfContextLines": 0,
+    "search.useIgnoreFiles": false,
+    "search.searchEditor.doubleClickBehaviour": "selectWord",
+    "search.exclude": {
+        "**/.ccls-cache/**": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/platform/ios/rcv/gen/**": true,
+        "**/platform/android/librcvcore/**": true,
+        // "**/private/gen/**": true,
+        "**/build/**": true,
+        "**idl/yaml/**": true,
+        "compile_commands.json": false
+    },
+    
+    // ===== 安全和更新 =====
+    "security.workspace.trust.enabled": true,
+    
+    // ===== 其他设置 =====
+    "extensions.ignoreRecommendations": true,
+    "explorer.confirmDragAndDrop": false,
+    "diffEditor.renderSideBySide": false,
+    
+    // 远程连接设置
+    "remote.SSH.remotePlatform": {
+        "dell": "windows",
+        "10.32.63.139": "windows",
+        "Rondo": "windows",
+        "Home": "linux",
+        "192.168.1.10": "linux",
+        "192.168.1.63": "windows"
+    },
+    
+    // GitHub Copilot
+    "cursor.cpp.disabledLanguages": [
+        "markdown",
+        "plaintext",
+        "untitled",
+        "log"
+    ],
+    "gitlens.hovers.avatars": false,
+    "diffEditor.maxComputationTime": 0,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[typescript]": {},
+    "python.createEnvironment.trigger": "off",
+    "log-regex-filter.regexes": [
+        {
+            "name": "TrackCreated",
+            "pattern": "peer_connection.cpp.*on add track, trackId=(\\S+)"
+        },
+        {
+            "name": "JoinMeeting",
+            "pattern": "rcv_ui_controller.*joinMeetingWithOptions.*meetingId = "
+        }
+    ],
+    "projectManager.groupList": true,
+    "projectManager.git.baseFolders": [
+        "~/dev/rc"
+    ],
+    "projectManager.git.maxDepthRecursion": 1,
+    "explicitFolding.rules": {
+        "yaml": {
+            "begin": "{{{",
+            "while": "*"
+        }
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "multiCommand.commands": [
+        {
+        "command": "multiCommand.GoToReference",
+        "sequence": [
+            "revealReference",
+            "closeReferenceSearch",
+            "extension.vim_escape"
+        ],
+        },
+    ],
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Abyss",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "workbench.editor.defaultBinaryEditor": "hexEditor.hexedit",
+    "debug.onTaskErrors": "abort",
+    "testMate.cpp.debug.configTemplate": null,
+    "testMate.cpp.discovery.loadOnStartup": true,
+    "explorer.confirmDelete": false,
+    "explorer.openEditors.visible": 12,
+}

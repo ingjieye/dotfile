@@ -1,0 +1,171 @@
+// Place your key bindings in this file to override the defaults
+[
+    // ===== 书签功能快捷键 =====
+    // 添加/删除书签
+    {
+        "key": "ctrl+m",
+        "command": "lineHighlightBookmark.toogleBookmarks",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "cmd+b",
+        "command": "lineHighlightBookmark.toogleBookmarks",
+        "when": "editorTextFocus && editorLangId == log"
+    },
+    // 书签导航
+    {
+        "key": "ctrl+n",
+        "command": "lineHighlightBookmark.navigateToNextBookmark",
+        "when": "editorLangId == log"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "lineHighlightBookmark.navigateToPrevBookmark",
+        "when": "editorLangId == log"
+    },
+    
+    // ===== 文件导航快捷键 =====
+    // 快速打开
+    {
+        "key": "ctrl+f",
+        "command": "workbench.action.quickOpen",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "-extension.vim_ctrl+f",
+        "when": "editorTextFocus && vim.active && vim.use<C-f> && !inDebugRepl && vim.mode != 'Insert'"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "-cursorRight",
+        "when": "textInputFocus"
+    },
+    
+    // 编辑器标签页切换
+    {
+        "key": "alt+1",
+        "command": "workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "alt+2",
+        "command": "workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "alt+3",
+        "command": "workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "alt+4",
+        "command": "workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "alt+5",
+        "command": "workbench.action.openEditorAtIndex5"
+    },
+    
+    // ===== 编辑操作快捷键 =====
+    // 保存文件
+    {
+        "key": "ctrl+s",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus"
+    },
+    // {
+    //     "key": "c f",
+    //     "command": "editor.action.formatSelection",
+    //     "when": "vim.mode == 'Normal' && editorTextFocus"
+    // }
+    
+    // ===== 代码导航快捷键 =====
+    // 查找引用
+    {
+        "key": "g r",
+        // "command": "editor.action.goToReferences",
+        "command": "editor.action.referenceSearch.trigger",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "enter",
+        "command": "multiCommand.GoToReference",
+        "when": "inReferenceSearchEditor || referenceSearchVisible"
+    },
+    {
+        "key": "g d",
+        "command": "editor.action.goToDeclaration",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "shift+k",
+        "command": "editor.action.showHover",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "x b",
+        "command": "ccls.base",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "x d",
+        "command": "editor.action.goToImplementation",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "space o",
+        "command": "workbench.action.gotoSymbol",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "g m",
+        "command": "gitlens.toggleFileBlame",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "g g",
+        "command": "cursorTop",
+        "when": "vim.mode == 'Normal' && editorTextFocus"
+    },
+    {
+        "key": "cmd+i",
+        "command": "composerMode.agent"
+    },
+    {
+        "key": "cmd+l",
+        "command": "composerMode.chat"
+    },
+    {
+        "key": "ctrl+s",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "extension.vim_escape",         // Vim 插件的退出 Insert 模式命令 (相当于按 Esc)
+                "workbench.action.files.save", // VSCode 的保存文件命令
+            ]
+        },
+        "when": "editorTextFocus && vim.mode == 'Insert'" // 关键：仅当编辑器有焦点且 Vim 处于 Insert 模式时
+    },
+    {
+        "key": "ctrl+o",
+        "command": "workbench.action.navigateBack",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "workbench.action.navigateForward",
+        "when": "editorTextFocus && vim.mode == 'Normal'"
+    },
+    {
+        "key": "u",
+        "command": "undo",
+        "when": "editorTextFocus && vim.mode == 'Normal'" // 关键：仅当编辑器有焦点且 Vim 处于 Insert 模式时
+    },
+    {
+        "key": "ctrl+j",
+        "command": "terminal.focus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.togglePanel",
+        "when": "panelFocus"
+    }
+]
