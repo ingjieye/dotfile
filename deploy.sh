@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-# 颜色定义
+# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -10,12 +10,15 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# 统计变量
+# Statistics variables
 created_softlinks=0
 created_hardlinks=0
 skipped_existing=0
 skipped_ignored=0
 created_dirs=0
+created_softlink_files=()
+created_hardlink_files=()
+created_dir_files=()
 
 info() {
     echo -e "${BLUE}[INFO]${NC} $*"
@@ -29,40 +32,39 @@ success() {
     echo -e "${GREEN}[SUCCESS]${NC} $*"
 }
 
-# 读取模式文件，如果不存在返回不匹配任何文件的模式
+# Read pattern file, returns a non-matching pattern if file doesn't exist
 read_patterns() {
     local file="$1"
     if [[ -f "$file" ]]; then
         paste -s -d '|' "$file"
     else
-        echo "a^"  # 不匹配任何文件的正则表达式
+        echo "a^"  # A regex that matches no files
     fi
 }
 
-# 获取指定目录下的文件列表
+# Get file list from a specified directory
 get_files() {
     local dir="$1"
     if [[ "$dir" == "." ]]; then
-        # 根目录：排除 private/ 目录下的所有内容，包括 private 目录本身
+        # Root directory: exclude all content under private/, including the directory itself
         git ls-files --exclude-standard -oc --full-name | { grep -vE '^private(/|$)' || true; }
     elif [[ "$dir" == "private" ]]; then
-        # private 是 submodule，需要进入目录内部获取文件
+        # private is a submodule, need to enter it to get files
         if [[ -d "private" ]]; then
             (cd private && git ls-files --exclude-standard -oc --full-name | sed 's|^|private/|')
         fi
     else
-        # 其他目录：获取该目录下的所有文件
+        # Other directories: get all files under the directory
         git ls-files --exclude-standard -oc --full-name "$dir/" | { grep . || true; }
     fi
 }
 
-# 处理指定目录的部署
+# Handle deployment for a specified directory
 deploy_directory() {
     local source_dir="$1"
     local target_prefix="$2"
-    local display_name="$3"
     
-    # 读取配置文件
+    # Read configuration files
     local ignore_file="${source_dir:+$source_dir/}.dotignore"
     local hardlink_file="${source_dir:+$source_dir/}.dothardlink"
     
@@ -70,76 +72,94 @@ deploy_directory() {
     skip_pattern=$(read_patterns "$ignore_file")
     hardlink_pattern=$(read_patterns "$hardlink_file")
     
-    # 获取文件列表
+    # Get file list
     local files=()
     while IFS= read -r line; do
         [[ -n "$line" ]] && files+=("$line")
     done < <(get_files "$source_dir")
     
     if [[ ${#files[@]} -eq 0 ]]; then
-        echo "  没有找到文件"
+        echo "  No files found"
         return
     fi
     
     local processed=0
-    # 处理每个文件
+    # Process each file
     for source_file in "${files[@]}"; do
-        # 计算目标路径
+        # Calculate target path
         local target_file="${source_file#$target_prefix}"
         local target_path="$HOME/$target_file"
         local source_path="$PWD/$source_file"
         
-        # 检查是否需要跳过
+        # Check if should be skipped
         if [[ -n "$skip_pattern" && "$target_file" =~ ($skip_pattern) ]]; then
             ((skipped_ignored++))
             continue
         fi
         
-        # 确保目标目录存在
+        # Ensure target directory exists
         local target_dir
         target_dir=$(dirname "$target_path")
         if [[ ! -d "$target_dir" ]]; then
             mkdir -p "$target_dir"
             ((created_dirs++))
+            created_dir_files+=("$target_dir")
         fi
         
-        # 检查目标是否已存在
+        # Check if target already exists
         if [[ -e "$target_path" || -L "$target_path" ]]; then
             ((skipped_existing++))
             continue
         fi
         
-        # 创建链接
+        # Create link
         if [[ -n "$hardlink_pattern" && "$target_file" =~ ($hardlink_pattern) ]]; then
             ln "$source_path" "$target_path"
             ((created_hardlinks++))
+            created_hardlink_files+=("$target_path")
         else
             ln -s "$source_path" "$target_path"
             ((created_softlinks++))
+            created_softlink_files+=("$target_path")
         fi
         ((processed++))
     done
 }
 
-# 打印最终统计
+# Print final summary
 print_summary() {
-    echo -e "${GREEN}========== 部署完成 ==========${NC}"
-    echo -e "${GREEN}✓${NC} 创建软链接: ${GREEN}$created_softlinks${NC} 个"
-    echo -e "${GREEN}✓${NC} 创建硬链接: ${GREEN}$created_hardlinks${NC} 个"
-    echo -e "${BLUE}ℹ${NC} 创建目录: ${BLUE}$created_dirs${NC} 个"
-    echo -e "${YELLOW}⚠${NC} 跳过已存在: ${YELLOW}$skipped_existing${NC} 个"
-    echo -e "${YELLOW}⚠${NC} 跳过忽略文件: ${YELLOW}$skipped_ignored${NC} 个"
-    echo -e "${GREEN}============================${NC}"
+    echo -e "${GREEN}========== Deployment Complete ==========${NC}"
+    echo -e "${GREEN}✓${NC} Created soft links: ${GREEN}$created_softlinks${NC}"
+    if [[ ${#created_softlink_files[@]} -gt 0 ]]; then
+        for file in "${created_softlink_files[@]}"; do
+            echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
+        done
+    fi
+    echo -e "${GREEN}✓${NC} Created hard links: ${GREEN}$created_hardlinks${NC}"
+    if [[ ${#created_hardlink_files[@]} -gt 0 ]]; then
+        for file in "${created_hardlink_files[@]}"; do
+            echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
+        done
+    fi
+    echo -e "${BLUE}ℹ${NC} Created directories: ${BLUE}$created_dirs${NC}"
+    if [[ ${#created_dir_files[@]} -gt 0 ]]; then
+        for file in "${created_dir_files[@]}"; do
+            echo -e "  ${BLUE}ℹ${NC} ${CYAN}$file${NC}"
+        done
+    fi
+    echo -e "${YELLOW}⚠${NC} Skipped existing: ${YELLOW}$skipped_existing${NC}"
+    echo -e "${YELLOW}⚠${NC} Skipped ignored files: ${YELLOW}$skipped_ignored${NC}"
+    echo -e "${GREEN}=====================================${NC}"
 }
 
-# 主程序
+# Main program
 main() {
-    # 部署根目录文件
-    deploy_directory "." "" "根目录"
+    # Deploy root directory files
+    deploy_directory "." ""
     
-    # 部署 private 目录文件（如果存在）
+    # Deploy private directory files (if it exists)
     if [[ -d "private" ]]; then
-        deploy_directory "private" "private/" "private 目录"
+        deploy_directory "private" "private/"
     fi
     
     print_summary
