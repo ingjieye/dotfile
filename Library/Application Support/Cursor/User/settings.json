@@ -186,4 +186,11 @@
     "testMate.cpp.discovery.loadOnStartup": true,
     "explorer.confirmDelete": false,
     "explorer.openEditors.visible": 12,
+    "vim.leader": ",",
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<leader>", "r", "n"],
+            "commands": ["editor.action.rename"]
+        }
+    ]
 }
