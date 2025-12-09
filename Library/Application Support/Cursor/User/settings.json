@@ -186,6 +186,7 @@
     "testMate.cpp.discovery.loadOnStartup": true,
     "explorer.confirmDelete": false,
     "explorer.openEditors.visible": 12,
+    "remote.SSH.showTrafficMonitor": false,
     "vim.leader": ",",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
