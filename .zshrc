@@ -6,7 +6,6 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/opt/homebrew/bin
 export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export PATH="$HOME/Library/Python/3.8/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 export EDITOR=vim
@@ -80,8 +79,9 @@ if command -v nvim &> /dev/null; then
     export EDITOR=nvim
 fi
 alias ll='ls -alh'
-alias python=python3
-alias pip=pip3
+# alias python=python3.11
+# alias python3=python3.11
+# alias pip=pip3.11
 
 # --- Git ---
 alias gs='git status'
