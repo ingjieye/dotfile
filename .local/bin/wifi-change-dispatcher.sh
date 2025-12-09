@@ -1,4 +1,5 @@
 #!/bin/zsh
+exit 0
 
 # This script:
 # 1. automatically executed by ~/Library/LaunchAgents/com.user.wifimonitor.plist
@@ -29,16 +30,7 @@ run_scripts() {
     return
   fi
 
-  SSID=$(for i in ${(o)$(ifconfig -lX "en[0-9]")};do ipconfig getsummary ${i} | awk '/ SSID/ {print $NF}';done 2> /dev/null)
-  ROUTER_IP=""
-  while [[ -z "$ROUTER_IP" ]]; do
-    ROUTER_IP=$(netstat -nr | grep default | grep -o -E '([0-9]{1,3}\.){3}[0-9]{1,3}')
-    if [[ -z "$ROUTER_IP" ]]; then
-      log_message "ROUTER_IP is empty, retrying in 1 second..."
-      sleep 1
-    fi
-  done
-  MAC=$(arp $ROUTER_IP | awk '{print $4}')
+  SSID=$(shortcuts run WRITE_SSID_TO_FILE)
   
   # If SSID is empty, it means not connected to any Wi-Fi, so just return
   if [[ -z "$SSID" ]]; then
@@ -46,13 +38,13 @@ run_scripts() {
     return
   fi
 
-  log_message "Wi-Fi is connected to '$SSID'. MAC is '$MAC'. Executing scripts from: $SCRIPT_DIR"
+  log_message "Wi-Fi is connected to '$SSID'. Executing scripts from: $SCRIPT_DIR"
   
   for script in "$SCRIPT_DIR"/*; do
     if [[ -f "$script" && -x "$script" ]]; then
       log_message "-> Running: $(basename "$script")"
       # Use a pipe to read the script's output line by line and log it
-      "$script" "$SSID" "$MAC" 2>&1 | while IFS= read -r line; do
+      "$script" "$SSID" 2>&1 | while IFS= read -r line; do
         log_message "  [$(basename "$script")] $line"
       done
       local exit_code=${pipestatus[1]}
