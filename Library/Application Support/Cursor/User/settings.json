@@ -190,8 +190,12 @@
     "vim.leader": ",",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before": ["<leader>", "r", "n"],
-            "commands": ["editor.action.rename"]
+            "before": ["<leader>", "r", "n"], 
+            "commands": ["editor.action.rename"] 
+        },
+        {
+            "before": ["<leader>", "c", "f"],
+            "commands": ["editor.action.formatSelection"]
         }
     ]
 }
