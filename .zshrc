@@ -7,6 +7,7 @@ export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:/opt/homebrew/bin
 export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=vim
 
@@ -39,6 +40,7 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-f
 HISTFILE=~/.histfile
 HISTSIZE=1000000
 SAVEHIST=10000000
+setopt INC_APPEND_HISTORY   # 每条命令执行后立即追加到历史文件
 setopt HIST_IGNORE_DUPS
 bindkey -e
 
@@ -46,8 +48,6 @@ zstyle :compinstall filename '/home/yeyj/.zshrc'
 PROMPT=$'%F{blue}%F{CYAN}%B%F{cyan}%n %F{white}@ %F{magenta}%m %F{white}>>= %F{green}%~ %1(j,%F{red}:%j,)%b\n%F{blue}%B%(?..[%?] )%{%F{red}%}%# %F{white}%b'
 
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
-autoload -Uz compinit
-compinit
 
 stty -ixon #防止 ctrl+s silent 当前 shell
 set -o ignoreeof #防止ctrl+d kill 当前 shell
@@ -158,6 +158,11 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle MichaelAquilina/zsh-auto-notify
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
+
+# Load compinit after fzf-tab
+autoload -Uz compinit
+compinit
+
 # Plug-in settings {{{1
 # ----- fzf-tab ----- {{{2
 # disable sort when completing options of any command

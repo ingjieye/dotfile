@@ -10,9 +10,10 @@
     "workbench.preferredLightColorTheme": "papercolor-vscode-light",
 
     //外观
-    "workbench.editor.tabSizing": "shrink",
+    "workbench.editor.tabSizing": "fixed",
     "workbench.editor.showIcons": false,
     "workbench.editor.tabActionCloseVisibility": false,
+    "workbench.editor.pinnedTabSizing": "normal",
     
     // ===== 编辑器行为设置 =====
     // 文本编辑
@@ -123,12 +124,12 @@
         "Rondo": "windows",
         "Home": "linux",
         "192.168.1.10": "linux",
-        "192.168.1.63": "windows"
+        "192.168.1.63": "windows",
+        "rcubuntu": "linux"
     },
     
     // GitHub Copilot
     "cursor.cpp.disabledLanguages": [
-        "markdown",
         "plaintext",
         "untitled",
         "log"
@@ -167,13 +168,17 @@
     "security.workspace.trust.untrustedFiles": "open",
     "multiCommand.commands": [
         {
-        "command": "multiCommand.GoToReference",
-        "sequence": [
-            "revealReference",
-            "closeReferenceSearch",
-            "extension.vim_escape"
-        ],
-        },
+            "command": "multiCommand.GoToReference",
+            "sequence": [
+                //如何寻找可用 command：打开键盘快捷方式，在某个项目右键，复制命令 ID
+                "revealReference",
+                "closeReferenceSearch",
+                "extension.vim_escape",
+                "cancelSelection",
+                "extension.vim_escape",
+                "cancelSelection", //只用一个的话，有时候会不生效
+            ],
+        }
     ],
     "window.commandCenter": true,
     "workbench.colorTheme": "Abyss",
@@ -196,6 +201,32 @@
         {
             "before": ["<leader>", "c", "f"],
             "commands": ["editor.action.formatSelection"]
+        },
+        {
+            "before": ["<leader>", "c", "c"],
+            "commands": ["editor.action.commentLine"]
+        },
+        {
+            // "before": ["<leader>", "g", "d"],
+            // "commands": [
+            // //   "workbench.action.splitEditorRight",
+            //   "editor.action.goToDeclaration"
+            // ]
+        },
+        {
+            "before": ["[", "c"],
+            "commands": ["workbench.action.editor.previousChange"]
+        },
+        {
+            "before": ["]", "c"],
+            "commands": ["workbench.action.editor.nextChange"]
         }
-    ]
+    ],
+    "extensions.gallery.serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "terminal.integrated.commandsToSkipShell": [
+        "workbench.action.togglePanel"
+    ],
+    "workbench.preferredDarkColorTheme": "papercolor-vscode-dark",
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "claudeCode.preferredLocation": "panel"
 }

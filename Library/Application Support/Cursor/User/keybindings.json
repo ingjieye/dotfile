@@ -23,7 +23,6 @@
         "command": "lineHighlightBookmark.navigateToPrevBookmark",
         "when": "editorLangId == log"
     },
-    
     // ===== 文件导航快捷键 =====
     // 快速打开
     {
@@ -76,7 +75,6 @@
     //     "command": "editor.action.formatSelection",
     //     "when": "vim.mode == 'Normal' && editorTextFocus"
     // }
-    
     // ===== 代码导航快捷键 =====
     // 查找引用
     {
@@ -138,7 +136,7 @@
         "command": "runCommands",
         "args": {
             "commands": [
-                "extension.vim_escape",         // Vim 插件的退出 Insert 模式命令 (相当于按 Esc)
+                "extension.vim_escape", // Vim 插件的退出 Insert 模式命令 (相当于按 Esc)
                 "workbench.action.files.save", // VSCode 的保存文件命令
             ]
         },
@@ -161,21 +159,21 @@
     },
     {
         "key": "ctrl+j",
-        "command": "terminal.focus"
+        "command": "terminal.focus" //切换focus到终端
     },
     {
         "key": "ctrl+k",
-        "command": "workbench.action.togglePanel",
+        "command": "workbench.action.togglePanel", //切换focus到 编辑器
         "when": "panelFocus"
     },
     {
         "key": "ctrl+h",
-        "command": "workbench.action.terminal.focusPreviousPane",
+        "command": "workbench.action.terminal.focusPreviousPane", //左右切换终端
         "when": "terminalFocus"
     },
     {
         "key": "ctrl+l",
-        "command": "workbench.action.terminal.focusNextPane",
+        "command": "workbench.action.terminal.focusNextPane", //左右切换终端
         "when": "terminalFocus"
     }
 ]

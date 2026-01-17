@@ -194,7 +194,7 @@ cmp.setup {
     },
     sources = {
         {name = 'nvim_lsp'},
-        {name = "copilot"},
+        -- {name = "copilot"},
         {name = 'buffer'},
     },
     completion = {completeopt = 'menu,menuone,noselect,noinsert'},
