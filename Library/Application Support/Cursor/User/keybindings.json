@@ -163,7 +163,13 @@
     },
     {
         "key": "ctrl+k",
-        "command": "workbench.action.togglePanel", //切换focus到 编辑器
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.focusActiveEditorGroup", //切换 focus 到编辑器
+                "workbench.action.togglePanel" //隐藏底部 Panel
+            ]
+        },
         "when": "panelFocus"
     },
     {
