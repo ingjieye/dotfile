@@ -181,5 +181,10 @@
         "key": "ctrl+l",
         "command": "workbench.action.terminal.focusNextPane", //左右切换终端
         "when": "terminalFocus"
+    },
+    {
+        "key": "alt+cmd+s",
+        "command": "workbench.action.toggleUnifiedSidebarFromKeyboard",
+        "when": "cursor.agentIdeUnification.enabled == true && !isAuxiliaryWindowFocusedContext"
     }
 ]

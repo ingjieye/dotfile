@@ -8,37 +8,30 @@
     "window.title": "${remoteName}${separator}${folderName}${separator}${activeEditorShort}",
     "window.autoDetectColorScheme": true,
     "workbench.preferredLightColorTheme": "papercolor-vscode-light",
-
     //外观
     "workbench.editor.tabSizing": "fixed",
     "workbench.editor.showIcons": false,
     "workbench.editor.tabActionCloseVisibility": false,
     "workbench.editor.pinnedTabSizing": "normal",
-    
     // ===== 编辑器行为设置 =====
     // 文本编辑
     "editor.wordWrap": "on",
     "editor.smoothScrolling": true,
     "editor.stickyScroll.enabled": false,
-    
     // // 滚动行为
     // "editor.mouseWheelScrollSensitivity": 0.8,
     // "workbench.list.mouseWheelScrollSensitivity": 0.3,
     // "terminal.integrated.mouseWheelScrollSensitivity": 0.3,
-    
     // 折叠和显示
     "editor.foldingMaximumRegions": 65000,
     "editor.minimap.renderCharacters": false,
     "editor.cursorBlinking": "solid",
-    
     // Unicode 处理
     "editor.unicodeHighlight.ambiguousCharacters": false,
     "editor.unicodeHighlight.invisibleCharacters": false,
-    
     // 大文件处理
     "editor.largeFileOptimizations": false,
     "workbench.editorLargeFileConfirmation": 1000,
-    
     // ===== 终端设置 =====
     "terminal.integrated.defaultProfile.windows": "Git Bash",
     "terminal.integrated.profiles.windows": {
@@ -58,13 +51,11 @@
             "source": "Git Bash"
         }
     },
-    
     // ===== Git 和 GitLens 设置 =====
     "git.openRepositoryInParentFolders": "always",
     "git.confirmSync": false,
     "gitlens.plusFeatures.enabled": false,
     "gitlens.codeLens.enabled": false,
-    
     // ===== 语言特定设置 =====
     // C/C++
     "[cpp]": {
@@ -72,23 +63,22 @@
         "editor.suggest.insertMode": "replace",
         "editor.semanticHighlighting.enabled": false
     },
-    
     // JavaScript
     "[javascript]": {
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
-    
     // ===== 工具设置 =====
-    
     // CCLS (C/C++ Language Server)
     "ccls.codeLens.enabled": false,
-    "ccls.index.initialBlacklist": [".cmake", "/jni/", "DerivedData"],
-    "ccls.index.threads": 4,
+    "ccls.index.initialBlacklist": [
+        ".cmake",
+        "/jni/",
+        "DerivedData"
+    ],
+    "ccls.index.threads": 1,
     "ccls.diagnostics.onChange": 0,
-    
     // Python
-    "python.defaultInterpreterPath": "/usr/bin/python3",
-    
+    "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
     // ===== 搜索设置 =====
     "search.searchEditor.defaultNumberOfContextLines": 0,
     "search.useIgnoreFiles": false,
@@ -108,15 +98,12 @@
         "**idl/yaml/**": true,
         "compile_commands.json": false
     },
-    
     // ===== 安全和更新 =====
     "security.workspace.trust.enabled": true,
-    
     // ===== 其他设置 =====
     "extensions.ignoreRecommendations": true,
     "explorer.confirmDragAndDrop": false,
     "diffEditor.renderSideBySide": false,
-    
     // 远程连接设置
     "remote.SSH.remotePlatform": {
         "dell": "windows",
@@ -127,7 +114,6 @@
         "192.168.1.63": "windows",
         "rcubuntu": "linux"
     },
-    
     // GitHub Copilot
     "cursor.cpp.disabledLanguages": [
         "plaintext",
@@ -195,16 +181,34 @@
     "vim.leader": ",",
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before": ["<leader>", "r", "n"], 
-            "commands": ["editor.action.rename"] 
+            "before": [
+                "<leader>",
+                "r",
+                "n"
+            ],
+            "commands": [
+                "editor.action.rename"
+            ]
         },
         {
-            "before": ["<leader>", "c", "f"],
-            "commands": ["editor.action.formatSelection"]
+            "before": [
+                "<leader>",
+                "c",
+                "f"
+            ],
+            "commands": [
+                "editor.action.formatSelection"
+            ]
         },
         {
-            "before": ["<leader>", "c", "c"],
-            "commands": ["editor.action.commentLine"]
+            "before": [
+                "<leader>",
+                "c",
+                "c"
+            ],
+            "commands": [
+                "editor.action.commentLine"
+            ]
         },
         {
             // "before": ["<leader>", "g", "d"],
@@ -214,19 +218,73 @@
             // ]
         },
         {
-            "before": ["[", "c"],
-            "commands": ["workbench.action.editor.previousChange"]
+            "before": [
+                "[",
+                "c"
+            ],
+            "commands": [
+                "workbench.action.editor.previousChange"
+            ]
         },
         {
-            "before": ["]", "c"],
-            "commands": ["workbench.action.editor.nextChange"]
+            "before": [
+                "]",
+                "c"
+            ],
+            "commands": [
+                "workbench.action.editor.nextChange"
+            ]
         }
     ],
-    "extensions.gallery.serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
     "terminal.integrated.commandsToSkipShell": [
         "workbench.action.togglePanel"
     ],
-    "workbench.preferredDarkColorTheme": "papercolor-vscode-dark",
     "diffEditor.hideUnchangedRegions.enabled": true,
-    "claudeCode.preferredLocation": "panel"
+    "claudeCode.preferredLocation": "panel",
+    "workbench.preferredDarkColorTheme": "One Monokai",
+    "debug.toolBarLocation": "docked",
+    "cursorBlame.editorDecoration.enabled": false,
+    "antigravity.marketplaceGalleryItemURL": "https://marketplace.visualstudio.com/items",
+    "antigravity.marketplaceExtensionGalleryServiceURL": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "extensionsGallery": {
+        "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+        "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
+        "itemUrl": "https://marketplace.visualstudio.com/items",
+        "controlUrl": "",
+        "recommendationsUrl": ""
+    },
+    "workbench.activityBar.location": "top",
+    "editor.minimap.enabled": false,
+    "python.languageServer": "None",
+    "cursorpyright.disableLanguageServices": true,
+    "tfa.system.autoAccept": false,
+    "terminal.integrated.profiles.osx": {
+        "bash": {
+            "path": "bash",
+            "args": [
+                "-l"
+            ],
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "/bin/zsh",
+            "args": [
+                "-l"
+            ]
+        },
+        "fish": {
+            "path": "fish",
+            "args": [
+                "-l"
+            ]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    }
 }
