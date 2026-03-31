@@ -106,11 +106,41 @@ require("lazy").setup({
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
-            -- load the colorscheme here
-            vim.cmd([[colorscheme PaperColorSlim]])
+            vim.opt.background = "light"
+            vim.cmd([[colorscheme PaperColorSlimLight]])
+            vim.cmd([[set guicursor=n-v-sm:block-Cursor,i-ci-c-ve:ver25-Cursor,r-cr-o:hor20-Cursor]])
+
+            local hl = vim.api.nvim_set_hl
+            -- LspReference
+            hl(0, 'LspReferenceText',  { bg = '#d0d0d0', underline = false })
+            hl(0, 'LspReferenceRead',  { bg = '#c8e0c8', underline = false })
+            hl(0, 'LspReferenceWrite', { bg = '#e0c8c8', underline = false })
+            -- PaperColorSlim overrides
+            hl(0, 'Function',                    { fg = '#005faf', bold = true })
+            hl(0, 'Constant',                    { fg = '#444444' })
+            hl(0, 'DiffAdd',                     { fg = '#444444', bg = '#48985D' })
+            hl(0, 'DiffDelete',                  { fg = '#444444', bg = '#af0000' })
+            hl(0, 'Search',                      { fg = '#444444', bg = '#ffff5f' })
+            hl(0, 'LineNr',                      { fg = '#b2b2b2' })
+            hl(0, 'DiagnosticUnderLineError',    { fg = '#af0000', undercurl = true })
+            hl(0, 'DiagnosticUnderLineWarn',     { fg = '#af5f00', undercurl = true })
+            hl(0, 'DiagnosticUnderLineInfo',     { fg = '#005faf', undercurl = true })
+            hl(0, 'DiagnosticUnderLineHint',     { fg = '#005f87', undercurl = true })
+            hl(0, 'DiagnosticUnderLineOk',       { fg = '#008700', undercurl = true })
+            hl(0, 'SignifySignAdd',              { fg = '#48985D' })
+            hl(0, 'SignifySignDelete',           { fg = '#af0000' })
+            hl(0, 'SignifySignChange',           { fg = '#ffd787' })
+            -- Treesitter links
+            hl(0, '@type',             { link = 'NormalNC' })
+            hl(0, '@type.builtin',     { link = '@keyword' })
+            hl(0, '@constant.builtin', { link = '@keyword' })
+            hl(0, '@operator',         { link = 'NormalNC' })
+            hl(0, '@variable',         { link = 'NormalNC' })
+            hl(0, '@punctuation',      { link = 'NormalNC' })
+            -- SignColumn transparent
+            hl(0, 'SignColumn',        { bg = 'NONE' })
         end,
     },
-    { "ingjieye/papercolor-theme" },
     { "mhinz/vim-signify" },
     { "nvim-tree/nvim-web-devicons" },
     { "nvim-lualine/lualine.nvim" },
@@ -120,7 +150,7 @@ require("lazy").setup({
     { "junegunn/fzf", build = "./install --all" },
     { "junegunn/fzf.vim" },
     { "r0mai/vim-djinni" },
-    { "ranjithshegde/ccls.nvim" },
+    { "ingjieye/ccls.nvim", branch = "fix/treesitter-attach-on-jump" },
     { "mtdl9/vim-log-highlighting" },
     { "rhysd/git-messenger.vim" },
     { "tpope/vim-fugitive" },
@@ -798,26 +828,21 @@ local on_attach = function(client, bufnr)
     nmap('<leader>gt', "<cmd>lua require('telescope.builtin').lsp_definitions({ jump_type='tab' })<cr>", 'Definitions')
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', 'Declarations')
 
-    local function custom_references()
-        local params = vim.lsp.util.make_position_params()
-        params.context = {
-            includeDeclaration = false,
-        }
-        vim.lsp.buf_request(0, 'textDocument/references', params, function(err, result, ctx, config)
-            if err or not result or vim.tbl_isempty(result) then
-                return
+    -- Jump to references (skip declaration, jump directly if only 1 result)
+    vim.keymap.set('n', 'gr', function()
+        vim.lsp.buf.references({ includeDeclaration = false }, {
+            on_list = function(options)
+                if #options.items == 1 then
+                    local item = options.items[1]
+                    vim.cmd('edit ' .. vim.fn.fnameescape(item.filename))
+                    vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+                else
+                    vim.fn.setqflist({}, ' ', options)
+                    vim.cmd('botright copen')
+                end
             end
-            if #result == 1 then
-                vim.lsp.util.jump_to_location(result[1], client.offset_encoding)
-            else
-                vim.lsp.handlers['textDocument/references'](err, result, ctx, config)
-            end
-        end)
-    end
-
-    -- Jump to references
-    -- nmap('gr', '<cmd>lua vim.lsp.buf.references({ includeDeclaration = false })<CR>', 'References')
-    nmap('gr', custom_references, { desc = 'References' })
+        })
+    end, { buffer = bufnr, nowait = true, desc = 'References' })
     nmap(',f', '<cmd>lua require("ccls.protocol").request("textDocument/references",{excludeRole=32})<cr>') -- not call
     nmap(',m', '<cmd>lua require("ccls.protocol").request("textDocument/references",{role=64})<cr>')        -- macro
     nmap(',r', '<cmd>lua require("ccls.protocol").request("textDocument/references",{role=8})<cr>')         -- read
@@ -916,13 +941,14 @@ local on_attach = function(client, bufnr)
 end
 
 ------ lspconfig {{{2
-local global_lsp_options =
-{
-    on_attach = on_attach,
-    flags = {
-        debounce_text_changes = 150,
-    }
-}
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+            on_attach(client, args.buf)
+        end
+    end,
+})
 
 local lsp_options = {
     ccls = ccls_options,
@@ -930,12 +956,10 @@ local lsp_options = {
 }
 
 local servers = {'ccls', 'lua_ls', 'gopls'}
-local nvim_lsp = require('lspconfig')
-for _, lsp in ipairs(servers) do
-    local lsp_option = lsp_options[lsp] or {}
-    local merged_option = vim.tbl_extend('force', global_lsp_options, lsp_option)
-    nvim_lsp[lsp].setup(merged_option)
+for _, server in ipairs(servers) do
+    vim.lsp.config(server, lsp_options[server] or {})
 end
+vim.lsp.enable(servers)
 
 
 ------ keymappings {{{1
