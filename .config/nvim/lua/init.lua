@@ -150,7 +150,7 @@ require("lazy").setup({
     { "junegunn/fzf", build = "./install --all" },
     { "junegunn/fzf.vim" },
     { "r0mai/vim-djinni" },
-    { "ingjieye/ccls.nvim", branch = "fix/treesitter-attach-on-jump" },
+    { "ranjithshegde/ccls.nvim"},
     { "mtdl9/vim-log-highlighting" },
     { "rhysd/git-messenger.vim" },
     { "tpope/vim-fugitive" },
@@ -180,10 +180,16 @@ require("lazy").setup({
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/nvim-cmp" },
-    { "zbirenbaum/copilot.lua" },
-    { "CopilotC-Nvim/CopilotChat.nvim" },
-    { "zbirenbaum/copilot-cmp" },
     { "ThePrimeagen/harpoon" },
+    {
+        "igorlfs/nvim-dap-view",
+        -- let the plugin lazy load itself
+        lazy = false,
+        version = "1.*",
+        ---@module 'dap-view'
+        ---@type dapview.Config
+        opts = {},
+    },
   }
 })
 ------ Plugin options {{{1
@@ -194,7 +200,6 @@ cmp.setup {
     formatting = {
         format = function(entry, vim_item)
             vim_item.menu = ({
-                copilot = "[Copilot]",
                 buffer = "[Buffer]",
                 nvim_lsp = "[LSP]",
                 ultisnips = "[UltiSnips]",
@@ -224,7 +229,6 @@ cmp.setup {
     },
     sources = {
         {name = 'nvim_lsp'},
-        -- {name = "copilot"},
         {name = 'buffer'},
     },
     completion = {completeopt = 'menu,menuone,noselect,noinsert'},
@@ -232,104 +236,6 @@ cmp.setup {
         ghost_text = false,
     },
 }
------- ('plugins.copilot') {{{2
-require('copilot').setup({
-  panel = {
-    enabled = false,
-    auto_refresh = false,
-    keymap = {
-      jump_prev = "[[",
-      jump_next = "]]",
-      accept = "<CR>",
-      refresh = "gr",
-      open = "<M-CR>"
-    },
-    layout = {
-      position = "bottom", -- | top | left | right
-      ratio = 0.4
-    },
-  },
-  suggestion = {
-    enabled = false,
-    auto_trigger = true,
-    hide_during_completion = true,
-    debounce = 75,
-    keymap = {
-      accept = "<M-l>",
-      accept_word = false,
-      accept_line = false,
-      next = "<M-]>",
-      prev = "<M-[>",
-      dismiss = "<C-]>",
-    },
-  },
-  filetypes = {
-    yaml = false,
-    markdown = false,
-    help = false,
-    gitcommit = false,
-    gitrebase = false,
-    hgcommit = false,
-    svn = false,
-    cvs = false,
-    ["."] = false,
-  },
-  copilot_node_command = 'node', -- Node.js version must be > 18.x
-  server_opts_overrides = {},
-})
------- ('plugins.copilot_chat') {{{2
-require("CopilotChat").setup {
-    mappings = {
-        complete = {
-            insert = '<Tab>',
-        },
-        close = {
-            normal = 'q',
-            insert = '<C-c>',
-        },
-        reset = {
-            normal = '<C-q>',
-            insert = '<C-q>',
-        },
-        submit_prompt = {
-            normal = '<CR>',
-            insert = '<C-s>',
-        },
-        toggle_sticky = {
-            detail = 'Makes line under cursor sticky or deletes sticky line.',
-            normal = 'gr',
-        },
-        accept_diff = {
-            normal = '<C-y>',
-            insert = '<C-y>',
-        },
-        jump_to_diff = {
-            normal = 'gj',
-        },
-        quickfix_diffs = {
-            normal = 'gq',
-        },
-        yank_diff = {
-            normal = 'gy',
-            register = '"',
-        },
-        show_diff = {
-            normal = 'gd',
-        },
-        show_info = {
-            normal = 'gi',
-        },
-        show_context = {
-            normal = 'gc',
-        },
-        show_help = {
-            normal = 'gh',
-        },
-    },
-}
-
------- ('plugins.copilot_cmp') {{{2
-require("copilot_cmp").setup()
 ------ ('plugins.nvim-tree') {{{2
 require'nvim-tree'.setup {
     git = {
@@ -339,12 +245,12 @@ require'nvim-tree'.setup {
 ------ ('plugins.dap') {{{2
 local dap, dapui = require('dap'), require("dapui")
 dap.adapters.lldb = {
-  type = 'executable',
-  command = '/opt/homebrew/opt/llvm@16/bin/lldb-vscode',
-  name = 'lldb',
-  options = {
-      initialize_timeout_sec = 30
-  }
+  type = 'server',
+  port = "${port}",
+  executable = {
+    command = vim.fn.expand('~/.vscode/extensions/vadimcn.vscode-lldb-1.12.1/adapter/codelldb'),
+    args = { "--port", "${port}" },
+  },
 }
 
 dap.configurations.cpp = {
@@ -362,6 +268,23 @@ dap.configurations.cpp = {
 }
 
 dapui.setup()
+
+-- Disable exception breakpoints for C++ (avoid stopping on __cxa_throw)
+-- Note: dap.defaults.lldb.exception_breakpoints = {} alone is not enough,
+-- because nvim-dap-view overrides it in configurationDone with its own state (initialized from filter.default).
+-- So we also override the nvim-dap-view state after it initializes.
+dap.listeners.after.initialize["disable_cpp_exception_bp"] = function(session)
+    if session.config.type ~= "lldb" then return end
+    vim.schedule(function()
+        local state = require("dap-view.state")
+        local opts = state.exceptions_options["lldb"]
+        if opts then
+            for _, opt in ipairs(opts) do
+                opt.enabled = false
+            end
+        end
+    end)
+end
 
 vim.fn.sign_define("DapBreakpoint", { text = "🔴" })
 vim.fn.sign_define("DapStopped", { text = "👉" })
@@ -1051,6 +974,8 @@ nmap("<leader>d_", function() require'dap'.run_last() end, "Run last")
 nmap("<leader>ds", function() require'dap'.terminate() end, "Terminate")
 nmap("<leader>du", function() require'dapui'.toggle() end, "Toggle DAP UI")
 nmap("<leader>dr", function() require'neotest'.run.run({strategy = "dap"}) end, "Run tests with DAP")
+nmap("<leader>dt", function() require'gtest_debug'.debug_test() end, "Debug GTest at cursor")
+nmap("<leader>dn", function() require'gtest_debug'.show_test_name() end, "Show GTest name at cursor")
 
 -- Telescope fuzzy finder mappings
 nmap("<leader>ff", ":Telescope<CR>", "Open Telescope")
@@ -1105,7 +1030,3 @@ end
 nmap("<C-N>", CtrlN, "Next quickfix")
 nmap("<C-P>", CtrlP, "Previous quickfix")
 -- <cmd>lua vim.diagnostic.goto_prev()<cr>
-
--- Space {{{2
-vim.keymap.set("n", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
-vim.keymap.set("v", "<space>cc", function() require("CopilotChat").open() end, { desc = "Open Copilot Chat" })
