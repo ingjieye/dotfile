@@ -5,26 +5,40 @@ user_pref("mousewheel.default.delta_multiplier_x", 150);
 user_pref("mousewheel.default.delta_multiplier_y", 150);
 user_pref("mousewheel.default.delta_multiplier_z", 150);
 
-//disable warning when opening about:config
-user_pref("browser.aboutConfig.showWarning", false);
-
-//try to fix PR_END_OF_FILE_ERROR by disable ipv6 
+//try to fix PR_END_OF_FILE_ERROR by disable ipv6
 user_pref("network.dns.disableIPv6", true);
 
 //use native full screen on macOS
 user_pref("full-screen-api.macos-native-full-screen", true);
 
-//always load userChrome.css
-user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-
 //always show bookmark bar
-user_pref("browser.toolbars.bookmarks.visibility", "always");
+user_pref("browser.toolbars.bookmarks.visibility", "newtab");
 
 //open bookmarks in new tab
 user_pref("browser.tabs.loadBookmarksInTabs", true);
 
 //Disable preview
 user_pref("browser.tabs.hoverPreview.enabled", false);
+
+
+// ------- Clash/Mihomo Proxy Optimizations -------
+/** DNS **/
+// 禁用 Firefox 内置 DoH，让 Clash 统一处理 DNS（0=off,5=explicitly off）
+user_pref("network.trr.mode", 5);
+// SOCKS5 代理模式下，让代理服务器负责 DNS 解析，防止 DNS 泄漏（TUN 模式可不需要）
+user_pref("network.proxy.socks_remote_dns", true);
+// 缩短 DNS 缓存时间，避免 fake-ip 映射过期导致连接失败
+user_pref("network.dnsCacheExpirationGracePeriod", 60);
+// 禁用 ECH（加密客户端握手）的 DNS 配置查询，防止绕过代理规则
+user_pref("network.dns.echconfig.enabled", false);
+// 禁止将 HTTPS DNS 记录作为备用服务（Alt-Svc），防止流量绕过代理
+user_pref("network.dns.use_https_rr_as_altsvc", false);
+
+/** NETWORK **/
+// 禁用强制门户检测（使用代理时无意义，且可能产生额外连接）
+user_pref("network.captive-portal-service.enabled", false);
+// 禁用 Firefox 网络连通性检查（代理环境下由 Clash 保证连通性）
+user_pref("network.connectivity-service.enabled", false);
 
 
 // ------- From https://github.com/yokoffing/Betterfox ---------{{{1
@@ -55,7 +69,7 @@ user_pref("network.http.max-connections", 1800);
 user_pref("network.http.max-persistent-connections-per-server", 10);
 user_pref("network.http.max-urgent-start-excessive-connections-per-host", 5);
 user_pref("network.http.pacing.requests.enabled", false);
-user_pref("network.dnsCacheExpiration", 3600);
+user_pref("network.dnsCacheExpiration", 60); // 缩短为 60s，避免 fake-ip 缓存过期问题
 user_pref("network.ssl_tokens_cache_capacity", 10240);
 
 /** SPECULATIVE LOADING ***/

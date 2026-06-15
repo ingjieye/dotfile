@@ -155,8 +155,15 @@ require("lazy").setup({
     { "rhysd/git-messenger.vim" },
     { "tpope/vim-fugitive" },
     { "iamcco/markdown-preview.nvim", build = "cd app && yarn install", ft = { "markdown" } },
+    {
+        "OXY2DEV/markview.nvim",
+        lazy = false,
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons",
+        },
+    },
     { "godlygeek/tabular" },
-    { "plasticboy/vim-markdown" },
     { "keith/swift.vim" },
     { "phaazon/hop.nvim" },
     { "kyazdani42/nvim-web-devicons" },
@@ -581,8 +588,6 @@ vim.g.fzf_action = {
 } 
 ------ ('plugins.git-messenger') {{{2
 vim.g.git_messenger_date_format = "%Y-%m-%d %X" 
------- ('plugins.markdown') {{{2
-vim.g.vim_markdown_folding_disabled = 1 
 ------ ('plugins.plantuml') {{{2
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'plantuml',
@@ -594,7 +599,7 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 }) 
 ------ ('plugins.hop') {{{2
-require('hop').setup() 
+require('hop').setup()
 ------ ('plugins.ccls') {{{2
 require("ccls").setup({
     win_config = {

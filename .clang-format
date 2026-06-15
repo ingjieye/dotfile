@@ -2,7 +2,7 @@
 BasedOnStyle: Chromium
 BreakBeforeBraces: Linux
 IndentWidth: '4'
-ColumnLimit: 120
+ColumnLimit: 140
 AccessModifierOffset: -4
 NamespaceIndentation: None
 AllowShortFunctionsOnASingleLine: Empty

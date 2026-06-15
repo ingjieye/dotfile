@@ -2,11 +2,10 @@
     // ===== 编辑器外观设置 =====
     // 字体和大小
     "editor.fontFamily": "CaskaydiaCove Nerd Font Mono",
-    "editor.fontSize": 15,
+    "editor.fontSize": 14,
     "debug.console.fontSize": 13,
     "terminal.integrated.fontSize": 13,
     "window.title": "${remoteName}${separator}${folderName}${separator}${activeEditorShort}",
-    "window.autoDetectColorScheme": true,
     "workbench.preferredLightColorTheme": "papercolor-vscode-light",
     //外观
     "workbench.editor.tabSizing": "fixed",
@@ -167,7 +166,7 @@
         }
     ],
     "window.commandCenter": true,
-    "workbench.colorTheme": "Abyss",
+    "workbench.colorTheme": "papercolor-vscode-light",
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
@@ -253,7 +252,6 @@
         "controlUrl": "",
         "recommendationsUrl": ""
     },
-    "workbench.activityBar.location": "top",
     "editor.minimap.enabled": false,
     "python.languageServer": "None",
     "cursorpyright.disableLanguageServices": true,
@@ -286,5 +284,7 @@
             "path": "pwsh",
             "icon": "terminal-powershell"
         }
-    }
+    },
+    "extensions.gallery.serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "window.autoDetectColorScheme": false
 }
