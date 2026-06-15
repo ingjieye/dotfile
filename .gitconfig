@@ -5,6 +5,7 @@
     excludesfile = ~/.config/git/.gitignore_global
 	editor = nvim
     pager = delta
+	quotepath = false
 
 [interactive]
     diffFilter = delta --color-only
@@ -68,12 +69,14 @@
 
 [includeIf "gitdir:~/dev/rc/"]
     path = ~/.config/git/work.gitconfig
-[http]
-	proxy = http://127.0.0.1:7890
-[https]
-	proxy = http://127.0.0.1:7890
+; [http]
+;     proxy = http://127.0.0.1:7890
+; [https]
+;     proxy = http://127.0.0.1:7890
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[fetch]
+	prune = true
