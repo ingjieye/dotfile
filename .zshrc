@@ -11,6 +11,9 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export EDITOR=vim
 
+export JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+
 # ---------- brew --------- {{{2
 if [[ "$(uname -s)" == "Linux" ]]; then BREW_TYPE="linuxbrew"; else BREW_TYPE="homebrew"; fi
 # brew 清华源
@@ -155,7 +158,7 @@ source ~/.zsh/antigen.zsh
 antigen bundle Aloxaf/fzf-tab
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle MichaelAquilina/zsh-auto-notify
+# antigen bundle MichaelAquilina/zsh-auto-notify
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
 
@@ -210,9 +213,9 @@ fi
 #[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 #----- lazygit ----- {{{2
-export AUTO_NOTIFY_IGNORE=(
-'vim' 'nvim' 'less' 'more' 'man' 'tig' 'watch' 'git commit' 'top' 'htop' 'ssh' 'nano' 'vi' 'lazygit' 'scrcpy' 'lg'
-)
+# export AUTO_NOTIFY_IGNORE=(
+# 'vim' 'nvim' 'less' 'more' 'man' 'tig' 'watch' 'git commit' 'top' 'htop' 'ssh' 'nano' 'vi' 'lazygit' 'scrcpy' 'lg'
+# )
 
 # Keymap {{{1
 # Enable Ctrl-x-e to edit command line
@@ -221,3 +224,27 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
+
+# opencode
+export PATH=/Users/yeyj/.opencode/bin:$PATH
+
+# tmux agent status wrapper for Codex.
+# Keeps the normal `codex` command name while clearing tmux window prefixes on exit.
+codex() {
+    local wrapper="/Users/yeyj/dev/playground/tmux_agent_hook/bin/codex-tmux-agent"
+    if [[ -x "$wrapper" ]]; then
+        "$wrapper" "$@"
+    else
+        command codex "$@"
+    fi
+}
+
+# tmux agent status wrapper for Claude Code.
+claude() {
+    local wrapper="/Users/yeyj/dev/playground/tmux_agent_hook/bin/claude-tmux-agent"
+    if [[ -x "$wrapper" ]]; then
+        "$wrapper" "$@"
+    else
+        command claude "$@"
+    fi
+}
