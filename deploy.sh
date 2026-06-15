@@ -2,167 +2,221 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-# Color definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Statistics variables
-created_softlinks=0
-created_hardlinks=0
-skipped_existing=0
-skipped_ignored=0
-created_dirs=0
-created_softlink_files=()
-created_hardlink_files=()
-created_dir_files=()
+DOTFILE_DIR="$PWD"
 
-info() {
-    echo -e "${BLUE}[INFO]${NC} $*"
-}
-
-warn() {
-    echo -e "${YELLOW}[WARN]${NC} $*"
-}
-
-success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $*"
-}
-
-# Read pattern file, returns a non-matching pattern if file doesn't exist
 read_patterns() {
     local file="$1"
     if [[ -f "$file" ]]; then
         paste -s -d '|' "$file"
     else
-        echo "a^"  # A regex that matches no files
+        echo "a^"
     fi
 }
 
-# Get file list from a specified directory
 get_files() {
     local dir="$1"
     if [[ "$dir" == "." ]]; then
-        # Root directory: exclude all content under private/, including the directory itself
         git ls-files --exclude-standard -oc --full-name | { grep -vE '^private(/|$)' || true; }
     elif [[ "$dir" == "private" ]]; then
-        # private is a submodule, need to enter it to get files
         if [[ -d "private" ]]; then
             (cd private && git ls-files --exclude-standard -oc --full-name | sed 's|^|private/|')
         fi
-    else
-        # Other directories: get all files under the directory
-        git ls-files --exclude-standard -oc --full-name "$dir/" | { grep . || true; }
     fi
 }
 
-# Handle deployment for a specified directory
+# --- deploy ---
+
+deploy_created_softlinks=0
+deploy_created_hardlinks=0
+deploy_skipped_existing=0
+deploy_skipped_ignored=0
+deploy_created_dirs=0
+deploy_softlink_files=()
+deploy_hardlink_files=()
+deploy_dir_files=()
+
 deploy_directory() {
     local source_dir="$1"
     local target_prefix="$2"
-    
-    # Read configuration files
+
     local ignore_file="${source_dir:+$source_dir/}.dotignore"
     local hardlink_file="${source_dir:+$source_dir/}.dothardlink"
-    
+
     local skip_pattern hardlink_pattern
     skip_pattern=$(read_patterns "$ignore_file")
     hardlink_pattern=$(read_patterns "$hardlink_file")
-    
-    # Get file list
+
     local files=()
     while IFS= read -r line; do
         [[ -n "$line" ]] && files+=("$line")
     done < <(get_files "$source_dir")
-    
+
     if [[ ${#files[@]} -eq 0 ]]; then
         echo "  No files found"
         return
     fi
-    
-    local processed=0
-    # Process each file
+
     for source_file in "${files[@]}"; do
-        # Calculate target path
         local target_file="${source_file#$target_prefix}"
         local target_path="$HOME/$target_file"
-        local source_path="$PWD/$source_file"
-        
-        # Check if should be skipped
+        local source_path="$DOTFILE_DIR/$source_file"
+
         if [[ -n "$skip_pattern" && "$target_file" =~ ($skip_pattern) ]]; then
-            ((skipped_ignored++))
+            ((deploy_skipped_ignored++))
             continue
         fi
-        
-        # Ensure target directory exists
+
         local target_dir
         target_dir=$(dirname "$target_path")
         if [[ ! -d "$target_dir" ]]; then
             mkdir -p "$target_dir"
-            ((created_dirs++))
-            created_dir_files+=("$target_dir")
+            ((deploy_created_dirs++))
+            deploy_dir_files+=("$target_dir")
         fi
-        
-        # Check if target already exists
+
         if [[ -e "$target_path" || -L "$target_path" ]]; then
-            ((skipped_existing++))
+            ((deploy_skipped_existing++))
             continue
         fi
-        
-        # Create link
+
         if [[ -n "$hardlink_pattern" && "$target_file" =~ ($hardlink_pattern) ]]; then
             ln "$source_path" "$target_path"
-            ((created_hardlinks++))
-            created_hardlink_files+=("$target_path")
+            ((deploy_created_hardlinks++))
+            deploy_hardlink_files+=("$target_path")
         else
             ln -s "$source_path" "$target_path"
-            ((created_softlinks++))
-            created_softlink_files+=("$target_path")
+            ((deploy_created_softlinks++))
+            deploy_softlink_files+=("$target_path")
         fi
-        ((processed++))
     done
 }
 
-# Print final summary
-print_summary() {
-    echo -e "${GREEN}========== Deployment Complete ==========${NC}"
-    echo -e "${GREEN}✓${NC} Created soft links: ${GREEN}$created_softlinks${NC}"
-    if [[ ${#created_softlink_files[@]} -gt 0 ]]; then
-        for file in "${created_softlink_files[@]}"; do
-            echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
-        done
-    fi
-    echo -e "${GREEN}✓${NC} Created hard links: ${GREEN}$created_hardlinks${NC}"
-    if [[ ${#created_hardlink_files[@]} -gt 0 ]]; then
-        for file in "${created_hardlink_files[@]}"; do
-            echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
-        done
-    fi
-    echo -e "${BLUE}ℹ${NC} Created directories: ${BLUE}$created_dirs${NC}"
-    if [[ ${#created_dir_files[@]} -gt 0 ]]; then
-        for file in "${created_dir_files[@]}"; do
-            echo -e "  ${BLUE}ℹ${NC} ${CYAN}$file${NC}"
-        done
-    fi
-    echo -e "${YELLOW}⚠${NC} Skipped existing: ${YELLOW}$skipped_existing${NC}"
-    echo -e "${YELLOW}⚠${NC} Skipped ignored files: ${YELLOW}$skipped_ignored${NC}"
-    echo -e "${GREEN}=====================================${NC}"
-}
-
-# Main program
-main() {
-    # Deploy root directory files
+cmd_deploy() {
     deploy_directory "." ""
-    
-    # Deploy private directory files (if it exists)
     if [[ -d "private" ]]; then
         deploy_directory "private" "private/"
     fi
-    
-    print_summary
+
+    echo -e "${GREEN}========== Deployment Complete ==========${NC}"
+    echo -e "${GREEN}✓${NC} Created soft links: ${GREEN}$deploy_created_softlinks${NC}"
+    for file in "${deploy_softlink_files[@]+"${deploy_softlink_files[@]}"}"; do
+        echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
+    done
+    echo -e "${GREEN}✓${NC} Created hard links: ${GREEN}$deploy_created_hardlinks${NC}"
+    for file in "${deploy_hardlink_files[@]+"${deploy_hardlink_files[@]}"}"; do
+        echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
+    done
+    echo -e "${BLUE}ℹ${NC} Created directories: ${BLUE}$deploy_created_dirs${NC}"
+    for file in "${deploy_dir_files[@]+"${deploy_dir_files[@]}"}"; do
+        echo -e "  ${BLUE}ℹ${NC} ${CYAN}$file${NC}"
+    done
+    echo -e "${YELLOW}⚠${NC} Skipped existing: ${YELLOW}$deploy_skipped_existing${NC}"
+    echo -e "${YELLOW}⚠${NC} Skipped ignored files: ${YELLOW}$deploy_skipped_ignored${NC}"
+    echo -e "${GREEN}=====================================${NC}"
 }
 
-main "$@"
+# --- check ---
+
+check_missing=0
+check_wrong=0
+check_ok=0
+
+check_directory() {
+    local source_dir="$1"
+    local target_prefix="$2"
+
+    local ignore_file="${source_dir:+$source_dir/}.dotignore"
+    local hardlink_file="${source_dir:+$source_dir/}.dothardlink"
+
+    local skip_pattern hardlink_pattern
+    skip_pattern=$(read_patterns "$ignore_file")
+    hardlink_pattern=$(read_patterns "$hardlink_file")
+
+    local files=()
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && files+=("$line")
+    done < <(get_files "$source_dir")
+
+    for source_file in "${files[@]}"; do
+        local target_file="${source_file#$target_prefix}"
+        local target_path="$HOME/$target_file"
+        local source_path="$DOTFILE_DIR/$source_file"
+
+        if [[ -n "$skip_pattern" && "$target_file" =~ ($skip_pattern) ]]; then
+            continue
+        fi
+
+        local is_hardlink=false
+        if [[ -n "$hardlink_pattern" && "$target_file" =~ ($hardlink_pattern) ]]; then
+            is_hardlink=true
+        fi
+
+        if [[ "$is_hardlink" == true ]]; then
+            if [[ ! -e "$target_path" ]]; then
+                echo -e "${RED}[MISSING]${NC} $target_file"
+                ((check_missing++))
+            elif [[ "$(stat -f %i "$source_path")" != "$(stat -f %i "$target_path")" ]]; then
+                echo -e "${YELLOW}[WRONG]${NC}  $target_file (not hard-linked to dotfile)"
+                ((check_wrong++))
+            else
+                ((check_ok++))
+            fi
+        else
+            if [[ ! -L "$target_path" ]]; then
+                if [[ -e "$target_path" ]]; then
+                    echo -e "${YELLOW}[WRONG]${NC}  $target_file (exists but not a symlink)"
+                    ((check_wrong++))
+                else
+                    echo -e "${RED}[MISSING]${NC} $target_file"
+                    ((check_missing++))
+                fi
+            else
+                local actual_target
+                actual_target=$(readlink "$target_path")
+                if [[ "$actual_target" != "$source_path" ]]; then
+                    echo -e "${YELLOW}[WRONG]${NC}  $target_file (symlink -> $actual_target)"
+                    ((check_wrong++))
+                else
+                    ((check_ok++))
+                fi
+            fi
+        fi
+    done
+}
+
+cmd_check() {
+    check_directory "." ""
+    if [[ -d "private" ]]; then
+        check_directory "private" "private/"
+    fi
+
+    echo ""
+    echo -e "${GREEN}OK: $check_ok${NC}  ${YELLOW}Wrong: $check_wrong${NC}  ${RED}Missing: $check_missing${NC}"
+    if [[ $((check_missing + check_wrong)) -eq 0 ]]; then
+        echo -e "${GREEN}All dotfiles are properly linked.${NC}"
+    else
+        exit 1
+    fi
+}
+
+# --- main ---
+
+usage() {
+    echo "Usage: $(basename "$0") [deploy|check]"
+    echo "  deploy  Create symlinks/hardlinks to \$HOME (default)"
+    echo "  check   Verify all dotfiles are properly linked"
+}
+
+case "${1:-deploy}" in
+    deploy) cmd_deploy ;;
+    check)  cmd_check ;;
+    -h|--help) usage ;;
+    *) usage; exit 1 ;;
+esac
