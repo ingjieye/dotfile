@@ -11,6 +11,14 @@ NC='\033[0m'
 
 DOTFILE_DIR="$PWD"
 
+get_inode() {
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        stat -f %i "$1"
+    else
+        stat -c %i "$1"
+    fi
+}
+
 read_patterns() {
     local file="$1"
     if [[ -f "$file" ]]; then
@@ -82,6 +90,13 @@ deploy_directory() {
         fi
 
         if [[ -e "$target_path" || -L "$target_path" ]]; then
+            if [[ -L "$target_path" ]]; then
+                local actual_target
+                actual_target=$(readlink "$target_path")
+                if [[ "$actual_target" != "$source_path" ]]; then
+                    echo -e "  ${YELLOW}⚠${NC} $target_file (symlink -> $actual_target, expected -> $source_path)"
+                fi
+            fi
             ((deploy_skipped_existing++))
             continue
         fi
@@ -162,7 +177,7 @@ check_directory() {
             if [[ ! -e "$target_path" ]]; then
                 echo -e "${RED}[MISSING]${NC} $target_file"
                 ((check_missing++))
-            elif [[ "$(stat -f %i "$source_path")" != "$(stat -f %i "$target_path")" ]]; then
+            elif [[ "$(get_inode "$source_path")" != "$(get_inode "$target_path")" ]]; then
                 echo -e "${YELLOW}[WRONG]${NC}  $target_file (not hard-linked to dotfile)"
                 ((check_wrong++))
             else
