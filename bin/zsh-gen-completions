@@ -1,0 +1,150 @@
+#!/usr/bin/env zsh
+# Scan installed commands and generate missing zsh completions to ~/.zsh/completions/
+# Usage: zsh-gen-completions [--force]
+
+COMP_DIR="${HOME}/.zsh/completions"
+mkdir -p "$COMP_DIR"
+
+force=0
+[[ "${1:-}" == "--force" ]] && force=1
+
+# Collect commands that already have completions from other sources
+typeset -aU existing
+for dir in \
+    /opt/homebrew/share/zsh/site-functions \
+    "${HOME}/.local/share/zinit/plugins/zsh-users---zsh-completions/src" \
+    /usr/share/zsh/*/functions \
+    /usr/local/share/zsh/site-functions; do
+    [[ -d "$dir" ]] || continue
+    for f in "$dir"/_*(N:t); do
+        existing+=(${f#_})
+    done
+done
+
+# Known commands and their completion generation commands
+typeset -A known=(
+    kubectl     "kubectl completion zsh"
+    helm        "helm completion zsh"
+    minikube    "minikube completion zsh"
+    kind        "kind completion zsh"
+    k3d         "k3d completion zsh"
+    stern       "stern --completion zsh"
+    flux        "flux completion zsh"
+    argocd      "argocd completion zsh"
+    cilium      "cilium completion zsh"
+    kustomize   "kustomize completion zsh"
+    skaffold    "skaffold completion zsh"
+    velero      "velero completion zsh"
+    docker      "docker completion zsh"
+    podman      "podman completion zsh"
+    nerdctl     "nerdctl completion zsh"
+    colima      "colima completion zsh"
+    terraform   "terraform -completion-zsh"
+    vault       "vault -autocomplete-zsh"
+    packer      "packer -autocomplete-zsh"
+    consul      "consul -autocomplete-zsh"
+    nomad       "nomad -autocomplete-zsh"
+    cargo       "rustup completions zsh cargo"
+    rustup      "rustup completions zsh"
+    uv          "uv generate-shell-completion zsh"
+    uvx         "uvx --generate-shell-completion zsh"
+    ruff        "ruff generate-shell-completion zsh"
+    poetry      "poetry completions zsh"
+    pdm         "pdm completion zsh"
+    pipx        "register-python-argcomplete pipx"
+    pnpm        "pnpm completion zsh"
+    bun         "bun completions"
+    deno        "deno completions zsh"
+    fnm         "fnm completions --shell zsh"
+    mise        "mise completion zsh"
+    rtx         "rtx completion zsh"
+    starship    "starship completions zsh"
+    zoxide      "zoxide init zsh"
+    atuin       "atuin gen-completions --shell zsh"
+    just        "just --completions zsh"
+    task        "task --completion zsh"
+    watchexec   "watchexec --completions zsh"
+    hugo        "hugo completion zsh"
+    zola        "zola completion zsh"
+    flyctl      "flyctl completion zsh"
+    wrangler    "wrangler completions zsh"
+    supabase    "supabase completion zsh"
+    gh          "gh completion -s zsh"
+    glab        "glab completion -s zsh"
+    act         "act completion zsh"
+    op          "op completion zsh"
+    restic      "restic generate --zsh /dev/stdout"
+    rclone      "rclone genautocomplete zsh /dev/stdout"
+    codex       "codex completion zsh"
+    chezmoi     "chezmoi completion zsh"
+    cobra       "cobra-cli completion zsh"
+    lazydocker  "lazydocker completion zsh"
+    trivy       "trivy completion zsh"
+    sops        "sops completion zsh"
+    earthly     "earthly completion zsh"
+    dagger      "dagger completion zsh"
+    orbctl      "orbctl completion zsh"
+    lima        "limactl completion zsh"
+    k9s         "k9s completion zsh"
+)
+
+# Common completion generation patterns to try for auto-detection
+probe_patterns=(
+    "completion zsh"
+    "completions zsh"
+    "completion --shell zsh"
+    "completions --shell zsh"
+    "generate-shell-completion zsh"
+    "--completions zsh"
+)
+
+generated=0
+skipped=0
+failed=0
+
+try_generate() {
+    local cmd=$1 gen_cmd=$2 target="$COMP_DIR/_$cmd"
+
+    # Skip if already covered by other sources (brew, zsh-completions, system)
+    (( ${existing[(Ie)$cmd]} )) && { (( skipped++ )); return }
+    # Skip if command not installed
+    command -v "$cmd" &>/dev/null || return
+    # Skip if already generated (unless --force)
+    [[ $force -eq 0 && -s "$target" ]] && { (( skipped++ )); return }
+
+    printf "  %-20s " "$cmd"
+    if out=$(eval "timeout 5 $gen_cmd" 2>/dev/null) && [[ ${#out} -gt 50 ]]; then
+        echo "$out" > "$target"
+        echo "ok ($(( ${#out} )) bytes)"
+        (( generated++ ))
+    else
+        echo "skip"
+        (( failed++ ))
+    fi
+}
+
+# --- Phase 1: known commands ---
+echo "known commands:"
+for cmd gen_cmd in "${(@kv)known}"; do
+    try_generate "$cmd" "$gen_cmd"
+done
+
+
+# --- Phase 3: clean up stale completions for uninstalled commands ---
+echo "cleanup:"
+for f in "$COMP_DIR"/_*(N); do
+    cmd=${f:t#_}
+    if ! command -v "$cmd" &>/dev/null; then
+        printf "  %-20s removed (command not found)\n" "$cmd"
+        rm -f "$f"
+    fi
+done
+
+echo ""
+echo "done: ${generated} generated, ${skipped} skipped, ${failed} failed"
+
+# Invalidate zcompdump so next shell picks up changes
+if [[ $generated -gt 0 ]]; then
+    rm -f ~/.zcompdump
+    echo "zcompdump cleared — new completions activate on next shell"
+fi
