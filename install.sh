@@ -17,33 +17,40 @@ install_brew() {
 install_essentials_osx() {
     echo 'Installing essentials for osx...'
     brew update
-    brew instal fzf nvim node tmux p7zip
-    brew install bat #color previewer for fzf
-    brew install eza #ls alternative
-    ~/.tmux/plugins/tpm/bin/install_plugins #install tmux plugins
 
-    brew install oath-toolkit #Google 2 factor authentication
-    brew install coreutils #realpath,dircolors tool
-    brew install tldr #tldr
-    brew install rbenv #ruby version manager
-    brew install rg #ripgrep
-    brew install fd #https://github.com/chinanf-boy/fd-zh
-    brew install git-delta #syntax hilighting pager
-    brew install cmake conan@1 ccache ninja
-    brew install plantuml #weirongxu/plantuml-previewer
-    brew install golang
-    brew install wget
-    brew install m1ddc #Control external monitor through cli
-    go install golang.org/x/tools/gopls@latest #go LSP
+    local packages=(
+        fzf nvim node tmux p7zip
+        bat              # color previewer for fzf
+        eza              # ls alternative
+        oath-toolkit     # Google 2 factor authentication
+        coreutils        # realpath, dircolors
+        tldr
+        rbenv            # ruby version manager
+        ripgrep
+        fd               # https://github.com/chinanf-boy/fd-zh
+        git-delta        # syntax highlighting pager
+        cmake conan@1 ccache ninja
+        plantuml         # weirongxu/plantuml-previewer
+        golang
+        wget
+        m1ddc            # control external monitor through cli
+        jesseduffield/lazygit/lazygit
+    )
+
+    for pkg in "${packages[@]}"; do
+        echo "Installing $pkg..."
+        brew install "$pkg" || echo "WARNING: failed to install $pkg"
+    done
+
+    ~/.tmux/plugins/tpm/bin/install_plugins
+
+    go install golang.org/x/tools/gopls@latest
 
     sudo gem install cocoapods
-    sudo spctl --master-disable #alow unsigned application to run
-    sudo pwpolicy -clearaccountpolicies #disable password length limit
+    sudo spctl --master-disable
+    sudo pwpolicy -clearaccountpolicies
 
-    brew install jesseduffield/lazygit/lazygit #lazygit, a git tui, see https://github.com/jesseduffield/lazygit
-    
-    brew tap homebrew/cask-fonts
-    brew install --cask "font-caskaydia-cove-nerd-font" #install nerd font
+    brew install --cask "font-caskaydia-cove-nerd-font"
 }
 
 install_essentials_linux() {
