@@ -17,10 +17,11 @@
     features = hoopoe
 
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 
 [diff]
     colorMoved = default
+    algorithm = histogram
 
 [push]
 	default = current
@@ -78,5 +79,8 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[rebase]
+	autoSquash = true
+	autoStash = true
 [fetch]
 	prune = true
