@@ -1,0 +1,15 @@
+# Add this to ~/.codex/config.toml, then review/trust it with /hooks in Codex.
+
+[[hooks.UserPromptSubmit]]
+
+[[hooks.UserPromptSubmit.hooks]]
+type = "command"
+command = "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status mark-running"
+timeout = 2
+
+[[hooks.Stop]]
+
+[[hooks.Stop.hooks]]
+type = "command"
+command = "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status mark-done"
+timeout = 2

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -u
+
+STATUS_SCRIPT="/Users/yeyj/bin/tmux-agent-hook/bin/tmux-agent-status"
+CLAUDE_BIN="${CLAUDE_BIN:-/Users/yeyj/.local/bin/claude}"
+CLEANED_UP=0
+
+cleanup() {
+  if [ "$CLEANED_UP" -eq 1 ]; then
+    return
+  fi
+  CLEANED_UP=1
+  "$STATUS_SCRIPT" clear >/dev/null 2>&1 || true
+}
+
+on_signal() {
+  cleanup
+  trap - INT TERM HUP
+  exit 130
+}
+
+trap cleanup EXIT
+trap on_signal INT TERM HUP
+
+"$CLAUDE_BIN" "$@"
+status=$?
+cleanup
+exit "$status"

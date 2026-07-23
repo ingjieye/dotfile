@@ -1,0 +1,48 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status mark-running",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status mark-done",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status mark-done",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status clear",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}
