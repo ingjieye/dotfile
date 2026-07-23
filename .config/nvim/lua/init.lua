@@ -37,7 +37,6 @@ vim.opt.showbreak = "↪"
 vim.opt.breakindent = true
 vim.opt.showmode = false
 vim.opt.fillchars:append({ eob = " " })
-vim.opt.fillchars:append({ eob = " " })
 
 -- Leader key
 vim.g.mapleader = "," -- leader键变为逗号
@@ -100,6 +99,37 @@ end
 vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
 ------ Plugins {{{1
 require("lazy").setup({
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        '2html_plugin',
+        'tohtml',
+        'getscript',
+        'getscriptPlugin',
+        'gzip',
+        'logipat',
+        'netrw',
+        'netrwPlugin',
+        'netrwSettings',
+        'netrwFileHandlers',
+        'matchit',
+        'tar',
+        'tarPlugin',
+        'rrhelper',
+        'spellfile_plugin',
+        'vimball',
+        'vimballPlugin',
+        'zip',
+        'zipPlugin',
+        'tutor',
+        'rplugin',
+        'synmenu',
+        'optwin',
+        'compiler',
+        'bugreport',
+      },
+    },
+  },
   spec = {
     {
         "pappasam/papercolor-theme-slim",
@@ -144,7 +174,17 @@ require("lazy").setup({
     { "mhinz/vim-signify" },
     { "nvim-tree/nvim-web-devicons" },
     { "nvim-lualine/lualine.nvim" },
-    { "nvim-lua/lsp-status.nvim" },
+    {
+        "nvim-lua/lsp-status.nvim",
+        config = function()
+            local orig = vim.lsp.buf_get_clients
+            if orig then
+                vim.lsp.buf_get_clients = function(bufnr)
+                    return vim.lsp.get_clients({ buffer = bufnr })
+                end
+            end
+        end,
+    },
     { "scrooloose/nerdcommenter" },
     { "christoomey/vim-tmux-navigator" },
     { "junegunn/fzf", build = "./install --all" },
@@ -166,8 +206,7 @@ require("lazy").setup({
     { "godlygeek/tabular" },
     { "keith/swift.vim" },
     { "phaazon/hop.nvim" },
-    { "kyazdani42/nvim-web-devicons" },
-    { "kyazdani42/nvim-tree.lua" },
+    { "nvim-tree/nvim-tree.lua" },
     { "aklt/plantuml-syntax" },
     { "tyru/open-browser.vim" },
     { "weirongxu/plantuml-previewer.vim" },
@@ -178,7 +217,7 @@ require("lazy").setup({
     { "rcarriga/nvim-dap-ui" },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-telescope/telescope.nvim", tag = "0.1.5" },
+    { "nvim-telescope/telescope.nvim" },
     { "kevinhwang91/nvim-bqf" },
     { "nvim-neotest/neotest" },
     { "windwp/nvim-autopairs" },
@@ -626,7 +665,7 @@ require("ccls").setup({
 ------ ('plugins.nvim-treesitter') {{{2
 require'nvim-treesitter.configs'.setup {
 
-  ensure_installed = {"lua", "vim", "vimdoc", "query", "go", "bash", "c", "cpp"},
+  ensure_installed = {"lua", "vim", "vimdoc", "query", "go", "bash", "c", "cpp", "kotlin"},
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -807,9 +846,10 @@ local on_attach = function(client, bufnr)
     nmap('xC', '<cmd>CclsOutgoingCalls<cr>', 'callee')
     nmap('xD', '<cmd>CclsDerivedHierarchy float<cr>')
     nmap('xM', '<cmd>CclsMemberHierarchy float<cr>', 'member')
-    nmap('xb', '<cmd>CclsBaseHierarchy float<cr>')
-    nmap('xc', '<cmd>CclsIncomingCallsHierarchy float<cr>', 'caller')
-    nmap('xd', '<cmd>CclsDerived<cr>')
+    local has_ccls = client.name == 'ccls'
+    nmap('xb', has_ccls and '<cmd>CclsBaseHierarchy float<cr>' or '<cmd>lua vim.lsp.buf.type_definition()<cr>', 'Base type')
+    nmap('xc', has_ccls and '<cmd>CclsIncomingCallsHierarchy float<cr>' or '<cmd>lua vim.lsp.buf.incoming_calls()<cr>', 'caller')
+    nmap('xd', has_ccls and '<cmd>CclsDerived<cr>' or '<cmd>lua vim.lsp.buf.implementation()<cr>', 'Derived/Implementation')
     nmap('xi', '<cmd>lua vim.lsp.buf.implementation()<cr>', 'Implementation')
     nmap('xm', '<cmd>CclsMember<cr>', 'member')
     nmap('xn', function() M.lsp.words.jump(vim.v.count1) end, 'Next reference')
@@ -837,7 +877,7 @@ local on_attach = function(client, bufnr)
     -- end
 
     -- Support highlight current word
-    if client.supports_method 'textDocument/documentHighlight' then
+    if client:supports_method('textDocument/documentHighlight', bufnr) then
         vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI'}, {
             group = vim.api.nvim_create_augroup('lsp_word_' .. bufnr, {clear = true}),
             buffer = bufnr,
@@ -855,7 +895,7 @@ local on_attach = function(client, bufnr)
     end
 
     -- Support show current function name
-    if client.supports_method 'textDocument/documentSymbol' then
+    if client:supports_method('textDocument/documentSymbol', bufnr) then
         vim.api.nvim_create_autocmd({'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI'}, {
             group = vim.api.nvim_create_augroup('lsp_current_function_' .. bufnr, {clear = true}),
             buffer = bufnr,
@@ -878,12 +918,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
+local kmp_lsp_options = {
+    cmd = {'kmp-lsp'},
+    filetypes = {'kotlin'},
+    root_markers = {'settings.gradle', 'settings.gradle.kts', 'build.gradle', 'build.gradle.kts', 'pom.xml', '.git'},
+}
+
 local lsp_options = {
     ccls = ccls_options,
     lua_ls = lua_ls_options,
+    kmp_lsp = kmp_lsp_options,
 }
 
-local servers = {'ccls', 'lua_ls', 'gopls'}
+local servers = {'ccls', 'lua_ls', 'gopls', 'kmp_lsp'}
 for _, server in ipairs(servers) do
     vim.lsp.config(server, lsp_options[server] or {})
 end
@@ -942,6 +989,12 @@ local function ToggleQuickFix()
         vim.cmd "copen"
     end
 end
+
+-- ; and : swap {{{2
+nmap(';', ':', { silent = false })
+nmap(':', ';', { silent = false })
+map('v', ';', ':', { silent = false })
+map('v', ':', ';', { silent = false })
 
 -- Leader {{{2
 
