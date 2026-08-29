@@ -1,65 +1,4 @@
-# ---------- Exports --------- {{{1
-# ---------- General --------- {{{2
-export LC_ALL=en_US.UTF-8
-export GOPATH=$HOME/go
-export EDITOR=nvim
-export MANPAGER='nvim +Man!'
-
-# PATH: 用 zsh path 数组统一管理，typeset -U 自动去重
-typeset -U path
-path=(
-    $HOME/.local/bin
-    $HOME/.cargo/bin
-    $HOME/bin
-    $HOME/.yarn/bin
-    $HOME/.config/yarn/global/node_modules/.bin
-    $GOPATH/bin
-    /opt/homebrew/bin
-    $path
-)
-
-# JAVA_HOME: 按需启用
-if command -v /opt/homebrew/bin/brew &>/dev/null; then
-    local _java_prefix="/opt/homebrew/Cellar/openjdk/23.0.2"
-    if [[ -d "$_java_prefix/libexec/openjdk.jdk/Contents/Home" ]]; then
-        export JAVA_HOME="$_java_prefix/libexec/openjdk.jdk/Contents/Home"
-        path=($JAVA_HOME/bin $path)
-    fi
-fi
-
-# ---------- brew --------- {{{2
-if [[ "$(uname -s)" == "Linux" ]]; then BREW_TYPE="linuxbrew"; else BREW_TYPE="homebrew"; fi
-# brew 清华源
-# export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
-# export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
-# export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
-# export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
-# export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
-
-# brew 中科大源
-export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
-export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.ustc.edu.cn/homebrew-core.git"
-export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
-
-
-#export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.aliyun.com/homebrew/homebrew-bottles"
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
-
-# ---------- others --------- {{{2
-# manpages colored
-export LESS_TERMCAP_mb=$'\e[1;32m'
-export LESS_TERMCAP_md=$'\e[1;32m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[1;4;31m'
-export LESS_TERMCAP_so=$'\E[30;43m'
-
-export TLDR_AUTO_UPDATE_DISABLED=1
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --no-ignore --ignore-file ~/.fd-ignore'
-
+# 环境变量与 PATH 已迁移至 ~/.zshenv(所有 zsh 进程可见)
 # ---------- zsh settings --------- {{{1
 HISTFILE=~/.histfile
 HISTSIZE=1000000
@@ -97,7 +36,6 @@ function ..() {
 function ../..() {
   cd ../..
 }
-alias socks5="http_proxy=http://192.168.1.204:8118 https_proxy=$http_proxy all_proxy=$http_proxy HTTP_PROXY=$https_proxy HTTPS_PROXY=$https_proxy ALL_PROXY=$all_proxy "
 alias zh=LC_ALL=zh_CN.UTF-8
 if command -v nvim &> /dev/null; then
     alias vim=nvim
@@ -137,10 +75,8 @@ function enable_depot_tools()
 # OS specific settings {{{1
 case "$OSTYPE" in
     darwin*)
-        alias ls='ls -G '
+        alias ls='ls -GA '
         alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
-        export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
-        export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
     ;;
     linux*)
         function brew_enable() {
@@ -323,13 +259,3 @@ claude() {
     fi
 }
 
-# 最终 PATH 清理：过滤不存在的目录
-path=( ${^path}(N-/) )
-
-# >>> Claude Code Router CLI >>>
-# Added by Claude Code Router. Enables the ccr command in new shells.
-case ":$PATH:" in
-  *":$HOME/.claude-code-router/bin:"*) ;;
-  *) export PATH="$HOME/.claude-code-router/bin:$PATH" ;;
-esac
-# <<< Claude Code Router CLI <<<
