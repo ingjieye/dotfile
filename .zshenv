@@ -35,9 +35,11 @@ unset _java_prefix
 # ---------- proxy (ClashX Meta mixed-port) ----------
 export {http,https,all,rsync}_proxy=http://127.0.0.1:7890
 export {HTTP,HTTPS,ALL,RSYNC}_PROXY=http://127.0.0.1:7890
-# 注意: no_proxy 故意不含 10.0.0.0/8 —— 在家时 10.x 需经 Clash 的 Forti 出口进公司内网,
-# 办公室时 Clash 规则(GEOIP,LAN,DIRECT)自动直连,分流决策统一交给 Clash。
-export no_proxy="localhost,127.0.0.1,*.local,192.168.0.0/16"
+# 注意: no_proxy 故意不含 10.0.0.0/8 和 192.168.0.0/16 ——
+# 10.x 在家需经 Forti 进公司内网;192.168.1.x(含 NAS/Forti 出口)交由 Clash 规则
+# (IP-CIDR,192.168.1.0/24,Home)分流,办公室场景 Clash 会自动 DIRECT。
+# 分流决策统一交给 Clash,客户端零特殊分支。
+export no_proxy="localhost,127.0.0.1,*.local"
 export NO_PROXY="$no_proxy"
 
 # 临时开关代理(仅影响当前 shell 及其后代)
