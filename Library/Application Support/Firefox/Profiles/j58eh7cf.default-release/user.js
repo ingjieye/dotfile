@@ -46,12 +46,12 @@ user_pref("network.connectivity-service.enabled", false);
  * SECTION: FASTFOX                                                         *
 ****************************************************************************/
 /** GENERAL ***/
-user_pref("content.notify.interval", 100000);
+//user_pref("content.notify.interval", 100000);
 
 /** GFX ***/
-user_pref("gfx.canvas.accelerated.cache-items", 4096);
-user_pref("gfx.canvas.accelerated.cache-size", 512);
-user_pref("gfx.content.skia-font-cache-size", 20);
+// user_pref("gfx.canvas.accelerated.cache-items", 4096);
+// user_pref("gfx.canvas.accelerated.cache-size", 512);
+// user_pref("gfx.content.skia-font-cache-size", 20);
 
 /** DISK CACHE ***/
 user_pref("browser.cache.jsbc_compression_level", 3);
