@@ -1,0 +1,13 @@
+[ignore]
+.dotconfig
+deploy.sh
+install.sh
+README.md
+CLAUDE.md
+private/
+
+[hardlink]
+Library/Application Support/Firefox/
+Library/Fonts/
+
+# 未匹配以上规则的文件默认 softlink

@@ -19,12 +19,25 @@ get_inode() {
     fi
 }
 
-read_patterns() {
-    local file="$1"
+# Parse a [section] from .dotconfig, return lines as pipe-delimited pattern
+read_section() {
+    local file="$1" section="$2"
     if [[ -f "$file" ]]; then
-        paste -s -d '|' "$file"
-    else
-        echo "a^"
+        awk -v s="$section" '
+            /^\[/ { in_sec = ($0 == "[" s "]"); next }
+            in_sec && /^[^#]/ && NF { print }
+        ' "$file" | paste -s -d '|' -
+    fi
+}
+
+# Parse a [section] from .dotconfig, return lines as array (one per line)
+read_section_lines() {
+    local file="$1" section="$2"
+    if [[ -f "$file" ]]; then
+        awk -v s="$section" '
+            /^\[/ { in_sec = ($0 == "[" s "]"); next }
+            in_sec && /^[^#]/ && NF { print }
+        ' "$file"
     fi
 }
 
@@ -43,30 +56,69 @@ get_files() {
 
 deploy_created_softlinks=0
 deploy_created_hardlinks=0
+deploy_created_dirlinks=0
 deploy_skipped_existing=0
 deploy_skipped_ignored=0
 deploy_created_dirs=0
 deploy_softlink_files=()
 deploy_hardlink_files=()
+deploy_dirlink_files=()
 deploy_dir_files=()
 
 deploy_directory() {
     local source_dir="$1"
     local target_prefix="$2"
 
-    local ignore_file="${source_dir:+$source_dir/}.dotignore"
-    local hardlink_file="${source_dir:+$source_dir/}.dothardlink"
+    local config_file="${source_dir:+$source_dir/}.dotconfig"
 
     local skip_pattern hardlink_pattern
-    skip_pattern=$(read_patterns "$ignore_file")
-    hardlink_pattern=$(read_patterns "$hardlink_file")
+    skip_pattern=$(read_section "$config_file" "ignore")
+    hardlink_pattern=$(read_section "$config_file" "hardlink")
 
+    # directory-level symlinks
+    local dirlinks=()
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && dirlinks+=("$line")
+    done < <(read_section_lines "$config_file" "dirlink")
+
+    for dl in "${dirlinks[@]+"${dirlinks[@]}"}"; do
+        local dl_source="$DOTFILE_DIR/${source_dir:+$source_dir/}$dl"
+        local dl_target="$HOME/$dl"
+        if [[ ! -d "$dl_source" ]]; then
+            echo -e "  ${YELLOW}⚠${NC} dirlink source missing: $dl_source"
+            continue
+        fi
+        local dl_parent
+        dl_parent=$(dirname "$dl_target")
+        if [[ ! -d "$dl_parent" ]]; then
+            mkdir -p "$dl_parent"
+            ((deploy_created_dirs++))
+            deploy_dir_files+=("$dl_parent")
+        fi
+        if [[ -L "$dl_target" ]]; then
+            local actual
+            actual=$(readlink "$dl_target")
+            if [[ "$actual" != "$dl_source" ]]; then
+                echo -e "  ${YELLOW}⚠${NC} $dl (dirlink -> $actual, expected -> $dl_source)"
+            fi
+            ((deploy_skipped_existing++))
+        elif [[ -e "$dl_target" ]]; then
+            echo -e "  ${YELLOW}⚠${NC} $dl (exists but not a symlink, skipping dirlink)"
+            ((deploy_skipped_existing++))
+        else
+            ln -s "$dl_source" "$dl_target"
+            ((deploy_created_dirlinks++))
+            deploy_dirlink_files+=("$dl_target")
+        fi
+    done
+
+    # per-file processing
     local files=()
     while IFS= read -r line; do
         [[ -n "$line" ]] && files+=("$line")
     done < <(get_files "$source_dir")
 
-    if [[ ${#files[@]} -eq 0 ]]; then
+    if [[ ${#files[@]} -eq 0 && ${#dirlinks[@]} -eq 0 ]]; then
         echo "  No files found"
         return
     fi
@@ -77,6 +129,19 @@ deploy_directory() {
         local source_path="$DOTFILE_DIR/$source_file"
 
         if [[ -n "$skip_pattern" && "$target_file" =~ ($skip_pattern) ]]; then
+            ((deploy_skipped_ignored++))
+            continue
+        fi
+
+        # skip files under dirlink directories
+        local under_dirlink=false
+        for dl in "${dirlinks[@]+"${dirlinks[@]}"}"; do
+            if [[ "$target_file" == "$dl/"* ]]; then
+                under_dirlink=true
+                break
+            fi
+        done
+        if [[ "$under_dirlink" == true ]]; then
             ((deploy_skipped_ignored++))
             continue
         fi
@@ -128,6 +193,10 @@ cmd_deploy() {
     for file in "${deploy_hardlink_files[@]+"${deploy_hardlink_files[@]}"}"; do
         echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
     done
+    echo -e "${GREEN}✓${NC} Created dir links: ${GREEN}$deploy_created_dirlinks${NC}"
+    for file in "${deploy_dirlink_files[@]+"${deploy_dirlink_files[@]}"}"; do
+        echo -e "  ${GREEN}✓${NC} ${CYAN}$file${NC}"
+    done
     echo -e "${BLUE}ℹ${NC} Created directories: ${BLUE}$deploy_created_dirs${NC}"
     for file in "${deploy_dir_files[@]+"${deploy_dir_files[@]}"}"; do
         echo -e "  ${BLUE}ℹ${NC} ${CYAN}$file${NC}"
@@ -147,13 +216,42 @@ check_directory() {
     local source_dir="$1"
     local target_prefix="$2"
 
-    local ignore_file="${source_dir:+$source_dir/}.dotignore"
-    local hardlink_file="${source_dir:+$source_dir/}.dothardlink"
+    local config_file="${source_dir:+$source_dir/}.dotconfig"
 
     local skip_pattern hardlink_pattern
-    skip_pattern=$(read_patterns "$ignore_file")
-    hardlink_pattern=$(read_patterns "$hardlink_file")
+    skip_pattern=$(read_section "$config_file" "ignore")
+    hardlink_pattern=$(read_section "$config_file" "hardlink")
 
+    # check directory-level symlinks
+    local dirlinks=()
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && dirlinks+=("$line")
+    done < <(read_section_lines "$config_file" "dirlink")
+
+    for dl in "${dirlinks[@]+"${dirlinks[@]}"}"; do
+        local dl_source="$DOTFILE_DIR/${source_dir:+$source_dir/}$dl"
+        local dl_target="$HOME/$dl"
+        if [[ ! -L "$dl_target" ]]; then
+            if [[ -e "$dl_target" ]]; then
+                echo -e "${YELLOW}[WRONG]${NC}  $dl (exists but not a symlink)"
+                ((check_wrong++))
+            else
+                echo -e "${RED}[MISSING]${NC} $dl"
+                ((check_missing++))
+            fi
+        else
+            local actual
+            actual=$(readlink "$dl_target")
+            if [[ "$actual" != "$dl_source" ]]; then
+                echo -e "${YELLOW}[WRONG]${NC}  $dl (dirlink -> $actual)"
+                ((check_wrong++))
+            else
+                ((check_ok++))
+            fi
+        fi
+    done
+
+    # check per-file links
     local files=()
     while IFS= read -r line; do
         [[ -n "$line" ]] && files+=("$line")
@@ -165,6 +263,18 @@ check_directory() {
         local source_path="$DOTFILE_DIR/$source_file"
 
         if [[ -n "$skip_pattern" && "$target_file" =~ ($skip_pattern) ]]; then
+            continue
+        fi
+
+        # skip files under dirlink directories
+        local under_dirlink=false
+        for dl in "${dirlinks[@]+"${dirlinks[@]}"}"; do
+            if [[ "$target_file" == "$dl/"* ]]; then
+                under_dirlink=true
+                break
+            fi
+        done
+        if [[ "$under_dirlink" == true ]]; then
             continue
         fi
 
