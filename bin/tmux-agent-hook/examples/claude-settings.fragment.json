@@ -11,6 +11,28 @@
         ]
       }
     ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status subagent-start",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/yeyj/dev/playground/tmux_agent_hook/bin/tmux-agent-status subagent-stop",
+            "timeout": 2
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

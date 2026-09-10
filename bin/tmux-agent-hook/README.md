@@ -97,12 +97,48 @@ Merge the hook entries from
 [examples/claude-settings.fragment.json](examples/claude-settings.fragment.json)
 into `~/.claude/settings.json`.
 
+`Stop` fires whenever the turn ends, even if the assistant is only waiting on
+a background subagent (e.g. a forked agent) to notify it later. The
+`SubagentStart`/`SubagentStop` hooks track a per-pane count of subagents that
+are still running, so `mark-done` from `Stop` is skipped while that count is
+above zero — the pane stays `⌛️` until the subagent actually finishes and the
+follow-up turn's own `Stop` fires.
+
 To clear the prefix when the Claude Code CLI exits, launch Claude through the
 wrapper:
 
 ```bash
 bin/claude-tmux-agent
 ```
+
+## pi
+
+Install the extension from [examples/pi-tmux-agent.ts](examples/pi-tmux-agent.ts)
+into pi's auto-discovered extensions directory:
+
+```bash
+mkdir -p ~/.pi/agent/extensions
+ln -sf ~/bin/tmux-agent-hook/examples/pi-tmux-agent.ts \
+  ~/.pi/agent/extensions/pi-tmux-agent.ts
+```
+
+Then reload extensions in a running pi session with `/reload`, or restart pi.
+
+The extension maps pi lifecycle events to the shared hook script:
+
+| pi event          | action         |
+|-------------------|----------------|
+| `agent_start`     | `mark-running` |
+| `agent_settled`   | `mark-done`    |
+| `session_shutdown`| `clear`        |
+
+`agent_settled` fires only after auto-retry, auto-compaction, and queued
+follow-ups finish, so the window flips to ☑️ only once pi is truly idle. pi's
+`session_shutdown` fires on exit and session replacement, so no wrapper is
+required to clear the prefix.
+
+Override the status script path with `PI_TMUX_AGENT_STATUS` (or
+`TMUX_AGENT_STATUS`) if it lives elsewhere.
 
 ## Manual Check
 

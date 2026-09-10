@@ -21,12 +21,12 @@ RUNNING_EVENTS = {"UserPromptSubmit", "user_prompt_submit"}
 DONE_EVENTS = {
     "Stop",
     "StopFailure",
-    "SubagentStop",
     "TaskCompleted",
     "stop",
     "stop_failure",
-    "subagent_stop",
 }
+SUBAGENT_START_EVENTS = {"SubagentStart", "subagent_start"}
+SUBAGENT_STOP_EVENTS = {"SubagentStop", "subagent_stop"}
 CLEAR_EVENTS = {"SessionEnd", "session_end"}
 STATE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "tmux-agent-hook"
 STATE_FILE = STATE_DIR / "state.json"
@@ -106,6 +106,10 @@ def action_from_event(event_name: str | None) -> str | None:
         return None
     if event_name in RUNNING_EVENTS:
         return "mark-running"
+    if event_name in SUBAGENT_START_EVENTS:
+        return "subagent-start"
+    if event_name in SUBAGENT_STOP_EVENTS:
+        return "subagent-stop"
     if event_name in DONE_EVENTS:
         return "mark-done"
     if event_name in CLEAR_EVENTS:
@@ -370,8 +374,29 @@ def apply_state_action(action: str, target: TmuxTarget, state: dict) -> None:
             "session_id": target.session_id,
             "window_id": target.window_id,
             "status": "running",
+            "active_subagents": 0,
         }
+    elif action == "subagent-start":
+        entry = panes.setdefault(
+            target.pane_id,
+            {
+                "session_id": target.session_id,
+                "window_id": target.window_id,
+                "status": "running",
+                "active_subagents": 0,
+            },
+        )
+        entry["active_subagents"] = entry.get("active_subagents", 0) + 1
+    elif action == "subagent-stop":
+        entry = panes.get(target.pane_id)
+        if entry is not None:
+            entry["active_subagents"] = max(0, entry.get("active_subagents", 0) - 1)
     elif action == "mark-done":
+        entry = panes.get(target.pane_id)
+        if entry is not None and entry.get("active_subagents", 0) > 0:
+            # A background subagent is still running; the turn only looked
+            # idle. Keep the pane marked running until it truly finishes.
+            return
         panes[target.pane_id] = {
             "session_id": target.session_id,
             "window_id": target.window_id,
@@ -503,7 +528,14 @@ def apply_action(action: str, pane_id: str) -> int:
     if target is None:
         return 0
 
-    if action not in {"mark-running", "mark-done", "mark-interrupted", "clear"}:
+    if action not in {
+        "mark-running",
+        "mark-done",
+        "mark-interrupted",
+        "subagent-start",
+        "subagent-stop",
+        "clear",
+    }:
         return 2
 
     state, affected_window_ids, affected_session_ids = update_state(action, target)
@@ -524,6 +556,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             "mark-running",
             "mark-done",
             "mark-interrupted",
+            "subagent-start",
+            "subagent-stop",
             "clear",
             "refresh",
             "status-right",

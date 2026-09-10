@@ -153,6 +153,72 @@ class TmuxAgentStatusTest(unittest.TestCase):
         self.assertIn("%2", state["panes"])
         self.assertEqual(MODULE.agent_status_counts(state), (1, 0))
 
+    def test_mark_done_keeps_pane_running_while_subagent_is_active(self):
+        target = MODULE.TmuxTarget(
+            pane_id="%1",
+            session_id="$1",
+            session_name="⌛️dev",
+            window_id="@1",
+            window_name="⌛️node",
+        )
+        state = {
+            "panes": {
+                "%1": {
+                    "session_id": "$1",
+                    "window_id": "@1",
+                    "status": "running",
+                    "active_subagents": 1,
+                },
+            }
+        }
+
+        MODULE.apply_state_action("mark-done", target, state)
+
+        self.assertEqual(state["panes"]["%1"]["status"], "running")
+
+    def test_mark_done_marks_pane_done_once_subagent_finishes(self):
+        target = MODULE.TmuxTarget(
+            pane_id="%1",
+            session_id="$1",
+            session_name="⌛️dev",
+            window_id="@1",
+            window_name="⌛️node",
+        )
+        state = {
+            "panes": {
+                "%1": {
+                    "session_id": "$1",
+                    "window_id": "@1",
+                    "status": "running",
+                    "active_subagents": 1,
+                },
+            }
+        }
+
+        MODULE.apply_state_action("subagent-stop", target, state)
+        MODULE.apply_state_action("mark-done", target, state)
+
+        self.assertEqual(state["panes"]["%1"]["status"], "done")
+
+    def test_subagent_start_increments_counter_on_fresh_pane(self):
+        target = MODULE.TmuxTarget(
+            pane_id="%1",
+            session_id="$1",
+            session_name="dev",
+            window_id="@1",
+            window_name="node",
+        )
+        state = {"panes": {}}
+
+        MODULE.apply_state_action("subagent-start", target, state)
+
+        self.assertEqual(state["panes"]["%1"]["active_subagents"], 1)
+        self.assertEqual(state["panes"]["%1"]["status"], "running")
+
+    def test_action_from_event_maps_subagent_start_and_stop(self):
+        self.assertEqual(MODULE.action_from_event("SubagentStart"), "subagent-start")
+        self.assertEqual(MODULE.action_from_event("SubagentStop"), "subagent-stop")
+
     def test_sync_state_updates_moved_pane_and_reports_old_and_new_targets(self):
         state = {
             "panes": {
